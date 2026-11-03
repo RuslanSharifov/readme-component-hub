@@ -1,0 +1,23 @@
+{
+  "id": "language-analytics",
+  "title": "Tech Language Analytics",
+  "description": "Repository language distribution calculated from GitHub language byte counts.",
+  "category": "Dynamic",
+  "tags": [
+    "languages",
+    "technology",
+    "analytics"
+  ],
+  "author": "RuslanSharifov",
+  "format": "svg",
+  "featured": true,
+  "order": 23,
+  "addedAt": "2026-11-03",
+  "themes": {
+    "dark": "generated/language-analytics/dark.svg",
+    "light": "generated/language-analytics/light.svg",
+    "neon": "generated/language-analytics/neon.svg"
+  },
+  "renderer": "github-languages",
+  "repository": "RuslanSharifov/chrome-ui-gallery"
+}

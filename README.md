@@ -58,6 +58,47 @@ The card is updated by a **scheduled GitHub Action approximately once per hour**
 ![Chrome UI Gallery Stats](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/chrome-ui-gallery-stats/dark.svg)
 ```
 
+## 🧱 New component collection and README Designer
+
+**[Open README Designer](https://ruslansharifov.github.io/readme-component-hub/designer.html)** · [Browse all components](https://ruslansharifov.github.io/readme-component-hub/#explore)
+
+The visual designer combines Markdown text, headings, bold/italic, links, dividers, lists, code blocks and reusable component cards. Add components by **clicking or dragging**, reorder them, build two- or three-column rows, then export an ordinary README.md.
+
+| Component | Type | Preview |
+|---|---|---|
+| Star Growth Chart | Dynamic SVG | ![Star Growth](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/star-growth-chart/dark.svg) |
+| CI/CD Status Card | Dynamic SVG | ![CI Status](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/ci-status-card/dark.svg) |
+| Contribution Heatmap | Dynamic SVG | ![Activity](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/contribution-heatmap/dark.svg) |
+| Tech Language Analytics | Dynamic SVG | ![Languages](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/language-analytics/dark.svg) |
+| Latest Release Card | Dynamic SVG | ![Release](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/latest-release-card/dark.svg) |
+| Project Progress Tracker | Dynamic SVG | ![Progress](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/project-progress-tracker/dark.svg) |
+| Terminal Typing Banner | Animated GIF | ![Terminal](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/terminal-typing-banner/dark.gif) |
+| Developer Identity Card | Static SVG | ![Developer card](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/developer-identity-card/dark.svg) |
+| Premium Dividers Pack | Static SVG | ![Dividers](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/premium-dividers-pack/dark.svg) |
+| Animated Workflow Diagram | Animated GIF | ![Workflow](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/animated-workflow-diagram/dark.gif) |
+
+Every new component has **dark, light and neon** versions. The designer lets you choose **30%, 50%, 70%, 100% image widths**, **left/center/right alignment**, and approximate **0–40% left offsets**. It can arrange two or three components side by side using GitHub-safe HTML tables.
+
+Example: two cards in one README row:
+
+```html
+<table width="100%">
+  <tr>
+    <td width="50%" align="center"><img src="https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/star-growth-chart/dark.svg" width="100%" alt="Star Growth" /></td>
+    <td width="50%" align="center"><img src="https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/ci-status-card/neon.svg" width="100%" alt="CI Status" /></td>
+  </tr>
+</table>
+```
+
+### Important GitHub limitations
+
+- GitHub README images are **not miniature web apps**. They cannot execute scripts or call arbitrary APIs. Dynamic charts are pre-rendered and updated by a scheduled GitHub Action, normally hourly, but scheduled runs and GitHub's image cache may delay visibility.
+- Star-growth history begins with the first recorded snapshot. Earlier growth is **not invented**.
+- The heatmap comes from repository commit history, and the progress card uses issue state rather than an imaginary project completion score.
+- If there is no published release, the release card says so.
+- Inline CSS in a README can be removed by GitHub. Image widths and table-based offsets are best-effort and may render/scroll differently on phones.
+- The live editor is a GitHub-**style** preview, not GitHub's exact server renderer. It uses sanitized Markdown rendering.
+
 ## 🎬 Animated components
 
 These are real, looping GIF files stored in this repository. The previews below are also usable in your own `README.md`.
@@ -187,7 +228,7 @@ Under **Settings → Pages → Build and deployment**, select **GitHub Actions**
 
 ### Made for the GitHub developer community.
 
-**[Explore components](https://ruslansharifov.github.io/readme-component-hub/)** · **[Contribute](CONTRIBUTING.md)** · **[Report an issue](https://github.com/RuslanSharifov/readme-component-hub/issues)**
+**[Explore components](https://ruslansharifov.github.io/readme-component-hub/)** · **[README Designer](https://ruslansharifov.github.io/readme-component-hub/designer.html)** · **[Contribute](CONTRIBUTING.md)** · **[Report an issue](https://github.com/RuslanSharifov/readme-component-hub/issues)**
 
 Maintained by [@RuslanSharifov](https://github.com/RuslanSharifov) · Licensed under [MIT](LICENSE)
 

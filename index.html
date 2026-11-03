@@ -21,6 +21,7 @@
       </a>
       <nav class="desktop-navigation" aria-label="Main navigation">
         <a href="#explore">Explore</a>
+        <a href="./designer.html">README Designer</a>
         <a href="#how-it-works">How it works</a>
         <a href="#contribute">Contribute</a>
       </nav>
@@ -35,6 +36,7 @@
     </div>
     <nav id="mobileNav" class="mobile-navigation" aria-label="Mobile navigation" hidden>
       <a href="#explore">Explore components</a>
+      <a href="./designer.html">README Designer</a>
       <a href="#how-it-works">How it works</a>
       <a href="#contribute">Contribute</a>
       <a href="https://github.com/RuslanSharifov/readme-component-hub" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
@@ -49,7 +51,7 @@
         <p class="hero-description">A growing collection of beautiful GitHub README components. See the real preview, choose a theme, and copy the Markdown. No setup required.</p>
         <div class="hero-buttons">
           <a class="button primary-button" href="#explore">Explore components <span aria-hidden="true">↗</span></a>
-          <a class="button secondary-button" href="https://github.com/RuslanSharifov/readme-component-hub/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">Submit a component <span aria-hidden="true">→</span></a>
+          <a class="button secondary-button" href="./designer.html">Open README Designer <span aria-hidden="true">→</span></a>
         </div>
         <div class="hero-footnote"><span class="tiny-code">&lt;/&gt;</span> Built by developers, for developers.</div>
       </div>
@@ -166,7 +168,13 @@
             <p class="repo-explanation">This card shows the selected repository's data. Embedding it in another README does not automatically change its source.</p>
           </div>
           <div class="setting"><div class="setting-heading">Theme <span id="themeCount">2 options</span></div><div id="themeOptions" class="theme-choices"></div></div>
-          <div class="setting"><div class="setting-heading">Alignment</div><div id="alignmentOptions" class="alignment-choices"><button type="button" data-align="left" class="active" aria-pressed="true">⇤ Left</button><button type="button" data-align="center" aria-pressed="false">↔ Center</button></div></div>
+          <div class="setting"><div class="setting-heading">Alignment</div><div id="alignmentOptions" class="alignment-choices"><button type="button" data-align="left" class="active" aria-pressed="true">⇤ Left</button><button type="button" data-align="center" aria-pressed="false">↔ Center</button><button type="button" data-align="right" aria-pressed="false">Right ⇥</button></div></div>
+          <div class="setting duo-setting">
+            <label>Image width<select id="modalWidth"><option value="30">30%</option><option value="50">50%</option><option value="70">70%</option><option value="100" selected>100%</option></select></label>
+            <label>Left offset<select id="modalOffset"><option value="0">0%</option><option value="10">10%</option><option value="20">20%</option><option value="30">30%</option></select></label>
+          </div>
+          <p class="layout-hint">GitHub README supports width and alignment attributes. Exact offsets and mobile wrapping may differ.</p>
+          <a class="button secondary-button open-designer" id="openDesignerWithComponent" href="./designer.html">Customize in README Designer ↗</a>
           <div class="code-title"><span>README.md</span><small>MARKDOWN</small></div>
           <pre id="markdownCode" class="markdown-code" tabindex="0"></pre>
           <button id="copyMarkdown" class="button primary-button copy-button" type="button"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg> Copy Markdown</button>

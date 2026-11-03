@@ -37,6 +37,14 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python scripts/render_dynamic.py
+      - name: Generate ten showcase components
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/render_showcase.py
+      - name: Verify README generator and Markdown serialization
+        run: |
+          python -m unittest discover -s tests -p 'test_*.py'
+          node --test tests/*.test.mjs
       - name: Commit generated README GIFs to repository
         run: |
           git add -f generated/
@@ -47,11 +55,14 @@ jobs:
             echo "Generated assets already match committed files."
           fi
       - name: Verify browser JavaScript syntax
-        run: node --check src/main.js
+        run: |
+          node --check src/main.js
+          node --check src/designer.js
+          node --check src/designer-core.mjs
       - name: Package static site
         run: |
           mkdir -p dist
-          cp index.html favicon.svg dist/
+          cp index.html designer.html favicon.svg dist/
           cp -r src components generated dist/
           touch dist/.nojekyll
       - uses: actions/configure-pages@v5

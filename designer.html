@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta name="theme-color" content="#0d1419" />
+  <meta name="description" content="Design a beautiful GitHub README with drag-and-drop components, Markdown editing and live preview." />
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./src/styles.css" />
+  <link rel="stylesheet" href="./src/designer.css" />
+  <title>README Designer · README Component Hub</title>
+</head>
+<body>
+  <a href="#designerMain" class="skip-link">Skip to README designer</a>
+  <header class="site-header">
+    <div class="container header-content">
+      <a class="brand" href="./index.html"><span class="brand-icon" aria-hidden="true">&lt;/&gt;</span><span>readme<span class="accent">.</span>hub</span></a>
+      <nav class="desktop-navigation" aria-label="Main navigation">
+        <a href="./index.html#explore">Explore</a>
+        <a href="./designer.html" aria-current="page" class="accent">README Designer</a>
+        <a href="./index.html#contribute">Contribute</a>
+      </nav>
+      <div class="header-right">
+        <a class="github-link" href="https://github.com/RuslanSharifov/readme-component-hub" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="designerMain" class="designer-page">
+    <div class="container designer-top">
+      <div>
+        <div class="section-topline"><span class="small-square"></span> README STUDIO / VISUAL BUILDER</div>
+        <h1>Design your <span class="accent">README.</span></h1>
+        <p>Combine components, write Markdown, and see a GitHub-style preview. Your draft stays in this browser.</p>
+      </div>
+      <div class="top-actions">
+        <button type="button" id="newReadme" class="button secondary-button">New</button>
+        <button type="button" id="downloadReadme" class="button secondary-button">Download .md</button>
+        <button type="button" id="copyReadme" class="button primary-button">Copy README</button>
+      </div>
+    </div>
+    <section class="studio container" aria-label="README designer workspace">
+      <aside class="studio-sidebar" aria-label="Component library">
+        <div class="panel-heading"><span>COMPONENT LIBRARY</span><span class="panel-tiny" id="libraryCount">—</span></div>
+        <div class="panel-inner">
+          <label for="librarySearch" class="visually-hidden">Search components</label>
+          <input id="librarySearch" class="studio-input" type="search" placeholder="Search components…" autocomplete="off" />
+          <label class="visually-hidden" for="libraryCategory">Component category</label>
+          <select id="libraryCategory" class="studio-select"><option value="All">All categories</option></select>
+          <p class="panel-help">Drag a card into the preview or click <strong>Add</strong>. On mobile, use Add.</p>
+        </div>
+        <div id="componentLibrary" class="component-library" aria-live="polite"><p class="panel-help">Loading library…</p></div>
+        <div class="panel-heading" id="structureHeading"><span>DOCUMENT BLOCKS</span><span class="panel-tiny" id="blockCount">0</span></div>
+        <div id="blockList" class="block-list" aria-labelledby="structureHeading"></div>
+      </aside>
+
+      <section class="editor-pane" aria-label="Markdown editor">
+        <div class="panel-heading"><span>README.md</span><span class="panel-tiny">MARKDOWN EDITOR</span></div>
+        <div class="editor-toolbar" role="toolbar" aria-label="Insert Markdown formatting">
+          <button type="button" data-format="h1" title="Heading level 1">H1</button>
+          <button type="button" data-format="h2" title="Heading level 2">H2</button>
+          <button type="button" data-format="bold" title="Bold"><strong>B</strong></button>
+          <button type="button" data-format="italic" title="Italic"><em>I</em></button>
+          <button type="button" data-format="quote" title="Blockquote">❝</button>
+          <button type="button" data-format="list" title="Bullet list">☷</button>
+          <button type="button" data-format="code" title="Code block">&lt;/&gt;</button>
+          <button type="button" data-format="divider" title="Horizontal rule">—</button>
+          <button type="button" data-format="table" title="Markdown table">▦</button>
+          <button type="button" data-format="link" title="Link">↗</button>
+        </div>
+        <label for="markdownInput" class="visually-hidden">Markdown source</label>
+        <textarea id="markdownInput" spellcheck="false" autocomplete="off" aria-describedby="editorHelp"></textarea>
+        <div class="editor-foot">
+          <span id="editorHelp">Edit Markdown directly or insert components from the library.</span>
+          <span id="sourceLength">0 characters</span>
+        </div>
+        <div class="panel-heading" id="layoutHeading"><span>LAYOUT BUILDER</span><span class="panel-tiny">SIDEBY-SIDE</span></div>
+        <div class="layout-builder">
+          <label>First component<select id="rowFirst" class="studio-select"></select></label>
+          <label>Second component<select id="rowSecond" class="studio-select"></select></label>
+          <label>Third (optional)<select id="rowThird" class="studio-select"><option value="">None · 2 columns</option></select></label>
+          <button type="button" id="addComponentRow" class="button secondary-button">+ Add side-by-side row</button>
+          <p class="panel-help">Uses a GitHub README HTML table. Mobile GitHub layouts may scroll horizontally; exact spacing varies.</p>
+        </div>
+        <div class="panel-heading"><span>BLOCK APPEARANCE</span><span class="panel-tiny" id="selectionName">Select a block</span></div>
+        <div class="appearance-panel" id="appearancePanel">
+          <label>Width<select id="blockWidth" class="studio-select"><option value="30">30%</option><option value="50">50%</option><option value="70">70%</option><option value="100">100%</option></select></label>
+          <label>Alignment<select id="blockAlign" class="studio-select"><option value="left">Left</option><option value="center">Center</option><option value="right">Right</option></select></label>
+          <label>Offset from left<select id="blockOffset" class="studio-select"><option value="0">0%</option><option value="10">10%</option><option value="20">20%</option><option value="30">30%</option><option value="40">40%</option></select></label>
+          <label>Style<select id="blockTheme" class="studio-select"><option value="dark">Dark</option><option value="light">Light</option><option value="neon">Neon</option></select></label>
+          <p class="panel-help span-full">Width and offset use HTML attributes supported by GitHub's README renderer, but exact spacing and mobile behavior are approximate. No inline CSS or JavaScript is exported.</p>
+        </div>
+      </section>
+
+      <section class="preview-pane" aria-label="GitHub Markdown preview">
+        <div class="panel-heading"><span>LIVE PREVIEW</span><span class="preview-status"><span class="online-bullet"></span> RENDERED</span></div>
+        <div class="preview-controls">
+          <div class="seg-controls" aria-label="Preview width">
+            <button type="button" data-size="desktop" class="selected" aria-pressed="true">Desktop</button>
+            <button type="button" data-size="mobile" aria-pressed="false">Mobile</button>
+          </div>
+          <div class="seg-controls" aria-label="Preview theme">
+            <button type="button" data-skin="dark" class="selected" aria-pressed="true">Dark</button>
+            <button type="button" data-skin="light" aria-pressed="false">Light</button>
+          </div>
+        </div>
+        <div class="preview-surface" id="previewSurface">
+          <div class="readme-preview dark-skin" id="readmePreview" aria-live="polite"></div>
+        </div>
+        <div class="preview-caption">GitHub-style preview, not GitHub's exact renderer. Unsupported Markdown, SVG caching and mobile table layout may differ on GitHub.</div>
+      </section>
+    </section>
+    <div class="container bottom-help">No account or database needed. Markdown is generated locally. <a href="./index.html#explore">Back to component gallery ↗</a></div>
+  </main>
+  <div id="designerToast" class="toast" role="status" aria-live="polite"></div>
+  <script defer src="https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/dist/markdown-it.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
+  <script type="module" src="./src/designer.js"></script>
+</body>
+</html>

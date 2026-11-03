@@ -9,7 +9,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 COMPONENTS = ROOT / "components"
 CATEGORIES = {"Animations", "Badges", "Dividers", "Cards", "Dynamic"}
-RENDERERS = {"typing", "orbit", "wave", "pulse"}
+RENDERERS = {"typing", "orbit", "wave", "pulse", "typing-banner", "workflow-gif"}
+STATIC_RENDERERS = {"identity-card", "divider-pack"}
+DYNAMIC_RENDERERS = {
+    "github-repo", "github-stars-history", "github-ci", "github-heatmap",
+    "github-languages", "github-release", "github-progress"
+}
 DYNAMIC_RENDERER = "github-repo"
 REPO_PATTERN = re.compile(r"^[A-Za-z0-9_.-]{1,100}/[A-Za-z0-9_.-]{1,100}$")
 ID_PATTERN = re.compile(r"^[a-z][a-z0-9-]{2,47}$")
@@ -31,10 +36,11 @@ def validate(file: Path) -> dict:
     assert data["format"] in {"svg","gif"} and type(data["featured"]) is bool
     assert type(data["order"]) is int and 0 <= data["order"] <= 10000
     assert isinstance(data["addedAt"],str) and re.fullmatch(r"20[0-9]{2}-[01][0-9]-[0-3][0-9]",data["addedAt"])
-    assert isinstance(data["themes"],dict) and set(data["themes"]) == {"dark","light"}
+    assert isinstance(data["themes"],dict) and {"dark", "light"} <= data["themes"].keys()
+    assert set(data["themes"]) <= {"dark", "light", "neon"}
     renderer = data.get("renderer")
     generated = renderer is not None
-    dynamic = renderer == DYNAMIC_RENDERER
+    dynamic = renderer in DYNAMIC_RENDERERS
     if dynamic:
         assert data["format"] == "svg" and data["category"] == "Dynamic"
         assert isinstance(data.get("repository"), str) and REPO_PATTERN.fullmatch(data["repository"]), f"{file}: invalid repository"
@@ -42,11 +48,11 @@ def validate(file: Path) -> dict:
     else:
         assert "repository" not in data, f"{file}: repository only applies to dynamic cards"
         if generated:
-            assert data["format"] == "gif" and renderer in RENDERERS, f"{file}: invalid renderer"
+            assert ((data["format"] == "gif" and renderer in RENDERERS)
+                    or (data["format"] == "svg" and renderer in STATIC_RENDERERS)), f"{file}: invalid renderer"
     for theme,path in data["themes"].items():
-        expected = f"generated/{ident}/{theme}.svg" if dynamic else (
-            f"generated/{ident}/{theme}.gif" if generated else f"components/{ident}/{theme}.{data['format']}"
-        )
+        expected = (f"generated/{ident}/{theme}.{data['format']}" if generated
+                    else f"components/{ident}/{theme}.{data['format']}")
         assert path == expected, f"{file}: expected {expected}"
         if not generated:
             asset = ROOT / path
