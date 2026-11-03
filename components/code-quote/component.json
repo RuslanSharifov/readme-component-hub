@@ -1,0 +1,20 @@
+{
+  "id": "code-quote",
+  "title": "Developer Quote",
+  "description": "A tasteful code-inspired quote card for your profile.",
+  "category": "Cards",
+  "tags": [
+    "quote",
+    "profile",
+    "card"
+  ],
+  "author": "RuslanSharifov",
+  "format": "svg",
+  "featured": false,
+  "order": 7,
+  "addedAt": "2026-11-03",
+  "themes": {
+    "dark": "components/code-quote/dark.svg",
+    "light": "components/code-quote/light.svg"
+  }
+}

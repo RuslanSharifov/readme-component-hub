@@ -1,0 +1,21 @@
+{
+  "id": "orbit-loader",
+  "title": "Orbit Loader",
+  "description": "Four orbiting dots, looping smoothly and endlessly.",
+  "category": "Animations",
+  "tags": [
+    "orbit",
+    "dots",
+    "loader"
+  ],
+  "author": "RuslanSharifov",
+  "format": "gif",
+  "featured": true,
+  "order": 2,
+  "addedAt": "2026-11-03",
+  "themes": {
+    "dark": "generated/orbit-loader/dark.gif",
+    "light": "generated/orbit-loader/light.gif"
+  },
+  "renderer": "orbit"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "terminal-card",
+  "title": "Terminal Card",
+  "description": "A friendly terminal panel that makes your profile look like a workspace.",
+  "category": "Cards",
+  "tags": [
+    "terminal",
+    "command",
+    "profile"
+  ],
+  "author": "RuslanSharifov",
+  "format": "svg",
+  "featured": false,
+  "order": 8,
+  "addedAt": "2026-11-03",
+  "themes": {
+    "dark": "components/terminal-card/dark.svg",
+    "light": "components/terminal-card/light.svg"
+  }
+}

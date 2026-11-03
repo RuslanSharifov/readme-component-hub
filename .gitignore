@@ -1,0 +1,5 @@
+__pycache__/
+generated/
+components/catalog.json
+node_modules/
+.DS_Store

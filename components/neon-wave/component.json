@@ -1,0 +1,21 @@
+{
+  "id": "neon-wave",
+  "title": "Neon Waveform",
+  "description": "An expressive waveform made for music and coding profiles.",
+  "category": "Animations",
+  "tags": [
+    "music",
+    "wave",
+    "animation"
+  ],
+  "author": "RuslanSharifov",
+  "format": "gif",
+  "featured": true,
+  "order": 3,
+  "addedAt": "2026-11-03",
+  "themes": {
+    "dark": "generated/neon-wave/dark.gif",
+    "light": "generated/neon-wave/light.gif"
+  },
+  "renderer": "wave"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "tech-pills",
+  "title": "Tech Stack Pills",
+  "description": "Beautiful compact badges for popular developer technologies.",
+  "category": "Badges",
+  "tags": [
+    "typescript",
+    "react",
+    "python",
+    "stack"
+  ],
+  "author": "RuslanSharifov",
+  "format": "svg",
+  "featured": false,
+  "order": 6,
+  "addedAt": "2026-11-03",
+  "themes": {
+    "dark": "components/tech-pills/dark.svg",
+    "light": "components/tech-pills/light.svg"
+  }
+}
