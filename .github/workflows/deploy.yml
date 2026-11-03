@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    # Refresh GitHub repository data every hour (UTC). GitHub may delay runs.
+    - cron: '17 * * * *'
 
 permissions:
   contents: write
@@ -30,11 +33,15 @@ jobs:
         run: python scripts/build_catalog.py
       - name: Generate animated GIF assets
         run: python scripts/render_gifs.py
+      - name: Generate GitHub repository stats cards
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/render_dynamic.py
       - name: Commit generated README GIFs to repository
         run: |
           git add -f generated/
           if ! git diff --cached --quiet; then
-            git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "chore(assets): update generated README GIFs [skip ci]"
+            git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "chore(assets): refresh README component images [skip ci]"
             git push origin HEAD:main
           else
             echo "Generated assets already match committed files."

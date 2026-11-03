@@ -91,7 +91,7 @@ function cardHTML(entry) {
   return '<button type="button" class="component-card" data-component="' + escapeHTML(entry.id) +
     '" aria-label="Preview ' + name + '">' +
     '<span class="card-preview"><span class="card-preview-image"><img src="' + img + '" alt="' + name + ' preview" loading="lazy" decoding="async"></span>' +
-    '<span class="card-top-badge">' + (entry.format === 'gif' ? '<span class="animation-dot"></span> ANIMATED' : 'SVG') + '</span></span>' +
+    '<span class="card-top-badge">' + (entry.renderer === 'github-repo' ? '<span class="animation-dot"></span> DYNAMIC' : entry.format === 'gif' ? '<span class="animation-dot"></span> ANIMATED' : 'SVG') + '</span></span>' +
     '<span class="card-content"><span class="card-category">' + escapeHTML(entry.category).toUpperCase() + '</span>' +
     '<span class="card-name-row"><strong>' + name + '</strong><span class="card-arrow" aria-hidden="true">↗</span></span>' +
     '<span class="card-description">' + description + '</span>' +
@@ -150,7 +150,7 @@ function openModal(id) {
   $('#modalDescription').textContent = entry.description;
   $('#modalTags').innerHTML = entry.tags.slice(0, 4).map((tag) => '<span>' + escapeHTML(tag) + '</span>').join('');
   $('#modalAuthor').textContent = 'Made by @' + entry.author;
-  $('#previewFormat').textContent = entry.format.toUpperCase();
+  $('#previewFormat').textContent = entry.renderer === 'github-repo' ? 'SYNCED DATA · SVG' : entry.format.toUpperCase();
   $('#viewSource').href = REPOSITORY + '/tree/main/components/' + encodeURIComponent(entry.id);
   $('#themeCount').textContent = '2 available';
   els.alignOptions.querySelectorAll('button').forEach((button) => {
