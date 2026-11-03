@@ -11,6 +11,8 @@ const state = {
   selected: null,
   theme: 'dark',
   align: 'left',
+  width: 100,
+  offset: 0,
   focusBeforeModal: null,
 };
 
@@ -91,7 +93,7 @@ function cardHTML(entry) {
   return '<button type="button" class="component-card" data-component="' + escapeHTML(entry.id) +
     '" aria-label="Preview ' + name + '">' +
     '<span class="card-preview"><span class="card-preview-image"><img src="' + img + '" alt="' + name + ' preview" loading="lazy" decoding="async"></span>' +
-    '<span class="card-top-badge">' + (entry.renderer === 'github-repo' ? '<span class="animation-dot"></span> DYNAMIC' : entry.format === 'gif' ? '<span class="animation-dot"></span> ANIMATED' : 'SVG') + '</span></span>' +
+    '<span class="card-top-badge">' + (entry.category === 'Dynamic' ? '<span class="animation-dot"></span> DYNAMIC' : entry.format === 'gif' ? '<span class="animation-dot"></span> ANIMATED' : 'SVG') + '</span></span>' +
     '<span class="card-content"><span class="card-category">' + escapeHTML(entry.category).toUpperCase() + '</span>' +
     '<span class="card-name-row"><strong>' + name + '</strong><span class="card-arrow" aria-hidden="true">↗</span></span>' +
     '<span class="card-description">' + description + '</span>' +
@@ -108,32 +110,38 @@ function renderCatalog() {
 }
 
 function markdown() {
-  const entry = state.selected;
-  if (!entry) return '';
-  const url = hostedUrl(entry.themes[state.theme]);
-  if (state.align === 'center') {
-    return '<p align="center">\n  <img src="' + url + '" alt="' + escapeHTML(entry.title) + '" />\n</p>';
-  }
-  return '![' + escapeMarkdown(entry.title) + '](' + url + ')';
+  const entry=state.selected;
+  if(!entry) return '';
+  const url=hostedUrl(entry.themes[state.theme] || entry.themes.dark);
+  const alt=escapeHTML(entry.title), width=state.width;
+  if(state.align==='left' && width===100 && state.offset===0)
+    return '!['+escapeMarkdown(entry.title)+']('+url+')';
+  const img='<img src="'+url+'" alt="'+alt+'" width="'+width+'%" />';
+  if(state.offset>0)
+    return '<table width="100%"><tr><td width="'+state.offset+'%">&nbsp;</td><td width="'+(100-state.offset)+'%" align="'+state.align+'">\n'+img+'\n</td></tr></table>';
+  return '<p align="'+state.align+'">\n  '+img+'\n</p>';
 }
-
 function updateMarkdown() {
-  els.code.textContent = markdown();
-  $('#modalPreview').classList.toggle('centered', state.align === 'center');
+  els.code.textContent=markdown();
+  const area=$('#modalPreview');
+  area.classList.toggle('centered',state.align==='center');
+  area.classList.toggle('right-aligned',state.align==='right');
+  els.modalImage.style.width=String(state.width)+'%';
+  els.modalImage.style.marginLeft=state.offset?String(state.offset)+'%':'0';
 }
-
 function showTheme() {
-  const entry = state.selected;
-  if (!entry) return;
-  const path = entry.themes[state.theme];
-  els.modalImage.src = assetUrl(path);
-  els.modalImage.alt = entry.title + ' (' + state.theme + ' theme)';
-  $('#modalPreview').classList.toggle('light-preview', state.theme === 'light');
-  els.themeOptions.innerHTML = ['dark', 'light'].map((theme) => (
-    '<button type="button" class="theme-choice' + (state.theme === theme ? ' active' : '') +
-    '" data-theme="' + theme + '" aria-pressed="' + (state.theme === theme ? 'true' : 'false') + '">' +
-    '<span class="theme-swatch ' + theme + '"></span> ' + (theme === 'dark' ? 'Dark' : 'Light') + '</button>'
-  )).join('');
+  const entry=state.selected;
+  if(!entry) return;
+  if(!entry.themes[state.theme]) state.theme='dark';
+  const path=entry.themes[state.theme];
+  els.modalImage.src=assetUrl(path);
+  els.modalImage.alt=entry.title+' ('+state.theme+' variant)';
+  $('#modalPreview').classList.toggle('light-preview',state.theme==='light');
+  els.themeOptions.innerHTML=Object.keys(entry.themes).map(theme=>
+    '<button type="button" class="theme-choice'+(state.theme===theme?' active':'')+
+    '" data-theme="'+theme+'" aria-pressed="'+(state.theme===theme?'true':'false')+'">'+
+    '<span class="theme-swatch '+theme+'"></span> '+(theme[0].toUpperCase()+theme.slice(1))+'</button>'
+  ).join('');
   updateMarkdown();
 }
 
@@ -143,6 +151,10 @@ function openModal(id) {
   state.selected = entry;
   state.theme = 'dark';
   state.align = 'left';
+  state.width = 100;
+  state.offset = 0;
+  $('#modalWidth').value='100';
+  $('#modalOffset').value='0';
   state.focusBeforeModal = document.activeElement;
   $('#modalBreadcrumb').textContent = entry.id.toUpperCase();
   $('#modalCategory').textContent = entry.category;
@@ -151,17 +163,18 @@ function openModal(id) {
   $('#modalTags').innerHTML = entry.tags.slice(0, 4).map((tag) => '<span>' + escapeHTML(tag) + '</span>').join('');
   $('#modalAuthor').textContent = 'Made by @' + entry.author;
   const repoWrap = $('#repoSelectorWrap');
-  repoWrap.hidden = entry.renderer !== 'github-repo';
-  if (entry.renderer === 'github-repo') {
-    const tracked = state.components.filter((item) => item.renderer === 'github-repo');
+  repoWrap.hidden = entry.category !== 'Dynamic';
+  if (entry.category === 'Dynamic') {
+    const tracked = state.components.filter((item) => item.renderer === entry.renderer);
     $('#repoSelect').innerHTML = tracked.map((item) =>
       '<option value="' + escapeHTML(item.id) + '"' + (item.id === entry.id ? ' selected' : '') + '>' +
       escapeHTML(item.repository) + '</option>'
     ).join('');
   }
-  $('#previewFormat').textContent = entry.renderer === 'github-repo' ? 'SYNCED DATA · SVG' : entry.format.toUpperCase();
+  $('#previewFormat').textContent = entry.category === 'Dynamic' ? 'SCHEDULED DATA · SVG' : entry.format.toUpperCase();
   $('#viewSource').href = REPOSITORY + '/tree/main/components/' + encodeURIComponent(entry.id);
-  $('#themeCount').textContent = '2 available';
+  $('#themeCount').textContent = Object.keys(entry.themes).length + ' available';
+  $('#openDesignerWithComponent').href='./designer.html?component='+encodeURIComponent(entry.id);
   els.alignOptions.querySelectorAll('button').forEach((button) => {
     button.classList.toggle('active', button.dataset.align === 'left');
     button.setAttribute('aria-pressed', button.dataset.align === 'left' ? 'true' : 'false');
@@ -263,6 +276,12 @@ function setupEvents() {
       choice.setAttribute('aria-pressed', String(active));
     });
     updateMarkdown();
+  });
+  $('#modalWidth').addEventListener('change',event=>{
+    state.width=Number(event.target.value);updateMarkdown();
+  });
+  $('#modalOffset').addEventListener('change',event=>{
+    state.offset=Number(event.target.value);updateMarkdown();
   });
   els.copy.addEventListener('click', () => copyToClipboard(markdown()));
   $('#repoSelect').addEventListener('change', (event) => {
