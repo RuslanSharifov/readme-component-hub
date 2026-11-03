@@ -31,7 +31,7 @@ python3 scripts/render_gifs.py
 python3 -m http.server 8000
 ```
 
-Open http://localhost:8000/readme-component-hub/ if using a suitable project-root proxy, or simply http://localhost:8000/ when serving this repository directory directly.
+Open **http://localhost:8000/** in your browser.
 
 ## GitHub Pages deployment
 

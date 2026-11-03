@@ -118,6 +118,7 @@ function markdown() {
 
 function updateMarkdown() {
   els.code.textContent = markdown();
+  $('#modalPreview').classList.toggle('centered', state.align === 'center');
 }
 
 function showTheme() {

@@ -322,3 +322,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,pr
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
 }
+
+/* The live preview respects README alignment, not just the copied code. */
+.modal-preview{justify-content:flex-start}
+.modal-preview.centered{justify-content:center}
