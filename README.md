@@ -10,7 +10,7 @@
 
 Explore SVG and animated GIF components, search or filter by category, choose light/dark versions, preview the **actual image shown in GitHub README**, and copy ready-to-paste Markdown. Everything is stored in this repository. No database, token, API key or independent server is needed.
 
-GitHub Pages hosts the gallery and the resulting assets. GitHub Actions validates manifests, renders built-in GIFs, and publishes the static site.
+GitHub Pages hosts the gallery and its previews. GitHub Actions validates manifests, generates animated GIFs, **commits them to the repository**, and publishes the static site. The generated Markdown uses raw GitHub asset URLs for reliable README embedding.
 
 ## Quick start
 
@@ -39,4 +39,4 @@ In repository **Settings → Pages → Build and deployment**, choose **GitHub A
 
 https://ruslansharifov.github.io/readme-component-hub/
 
-For new community components, see [CONTRIBUTING.md](CONTRIBUTING.md). All artwork/source is versioned in Git; generated GIFs are produced at deploy time and served by GitHub Pages.
+For new community components, see [CONTRIBUTING.md](CONTRIBUTING.md). All artwork/source lives in Git, and the deploy workflow commits generated GIF assets to `generated/` on `main`. Markdown embeds load these files from `raw.githubusercontent.com`; gallery previews use the matching Pages copies.

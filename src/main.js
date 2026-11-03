@@ -1,6 +1,6 @@
 /* README Component Hub — entirely static, no backend required. */
 const REPOSITORY = 'https://github.com/RuslanSharifov/readme-component-hub';
-const PAGES_ROOT = 'https://ruslansharifov.github.io/readme-component-hub/';
+const RAW_ASSETS_ROOT = 'https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/';
 const $ = (selector, scope = document) => scope.querySelector(selector);
 
 const state = {
@@ -49,7 +49,8 @@ function assetUrl(path) {
 }
 
 function hostedUrl(path) {
-  return new URL(path, PAGES_ROOT).href;
+  // GitHub-hosted raw assets are easier for GitHub README's image proxy to fetch.
+  return new URL(path, RAW_ASSETS_ROOT).href;
 }
 
 function categories() {
