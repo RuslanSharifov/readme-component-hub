@@ -223,7 +223,7 @@ function bindEvents() {
   });
   for(const dropTarget of [$('#previewSurface'),source]){
     dropTarget.addEventListener('dragover',e=>{
-      if(e.dataTransfer.types.includes('text/x-rch-component')){e.preventDefault();e.dataTransfer.dropEffect='copy'}
+      if(Array.from(e.dataTransfer.types).includes('text/x-rch-component')){e.preventDefault();e.dataTransfer.dropEffect='copy'}
     });
     dropTarget.addEventListener('drop',e=>{
       const id=e.dataTransfer.getData('text/x-rch-component');
@@ -296,6 +296,13 @@ async function init() {
     if(!response.ok) throw new Error('HTTP '+response.status);
     catalog=validatedCatalog(await response.json());
     populateSelects();renderLibrary();refresh();
+    const requested=new URLSearchParams(window.location.search).get('component');
+    source.selectionStart=source.value.length;
+    source.selectionEnd=source.value.length;
+    if(requested && byId(requested)) {
+      addComponent(byId(requested));
+      window.history.replaceState(null,'',window.location.pathname+window.location.hash);
+    }
   } catch(error) {
     console.error(error);
     $('#componentLibrary').textContent='Unable to load the component catalog. Reload this page or check GitHub Pages.';
