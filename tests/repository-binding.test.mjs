@@ -32,7 +32,7 @@ test('repository URL parser accepts GitHub links and owner/repo names',()=>{
 test('new repository generates its own dynamic image URL but keeps static assets shared',()=>{
   const chosen={slug:'RuslanSharifov/chrome-ui-gallery',branch:'main'};
   assert.equal(repoAssetURL(stats,'dark',chosen),
-    'https://raw.githubusercontent.com/RuslanSharifov/chrome-ui-gallery/main/.github/readme-component-hub/repository-stats/dark.svg');
+    'https://raw.githubusercontent.com/RuslanSharifov/chrome-ui-gallery/readme-component-hub-assets/.github/readme-component-hub/repository-stats/dark.svg');
   assert.equal(repoAssetURL(growth,'neon',chosen),
     'https://raw.githubusercontent.com/RuslanSharifov/chrome-ui-gallery/main/.github/readme-component-hub/star-growth-chart/neon.svg');
   assert.match(repoAssetURL(staticCard,'dark',chosen),/readme-component-hub\/main\/components\/terminal-card\/dark.svg$/);

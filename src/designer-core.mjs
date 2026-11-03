@@ -8,6 +8,7 @@ export const THEMES = ['dark','light','neon'];
 export const DEFAULT_REPOSITORY = Object.freeze({slug:'RuslanSharifov/readme-component-hub',branch:'main'});
 export const INSTALL_PATH = '.github/workflows/readme-component-hub.yml';
 export const GENERATED_PATH = '.github/readme-component-hub';
+export const ASSET_BRANCH = 'readme-component-hub-assets';
 export const DYNAMIC_COMPONENT_IDS = new Set([
   'repository-stats','chrome-ui-gallery-stats','star-growth-chart','ci-status-card',
   'contribution-heatmap','language-analytics','latest-release-card','project-progress-tracker'
@@ -54,7 +55,7 @@ export function repoAssetURL(entry,theme='dark',target=DEFAULT_REPOSITORY) {
       return RAW_ROOT+'generated/repository-stats/'+selected+'.svg';
     return imageURL(entry,selected);
   }
-  return 'https://raw.githubusercontent.com/'+slug+'/'+safeBranch(config.branch)+'/'+
+  return 'https://raw.githubusercontent.com/'+slug+'/'+ASSET_BRANCH+'/' +
     GENERATED_PATH+'/'+entry.id+'/'+selected+'.svg';
 }
 export function workflowTemplate() {

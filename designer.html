@@ -58,7 +58,7 @@
       <details id="workflowSetup" class="workflow-setup" hidden>
         <summary><span>One-time setup for auto-updating GitHub README cards</span><span class="workflow-disclosure">⌄</span></summary>
         <div class="workflow-details">
-          <p>GitHub Pages cannot generate files inside your repository. Add this GitHub Actions workflow to the selected repository once, then run it to create its own SVG assets. Static GIF/SVG components work without setup.</p>
+          <p>GitHub Pages cannot generate files inside your repository. Add this GitHub Actions workflow once. It writes SVG files into a separate readme-component-hub-assets branch, so protected main branches need no direct pushes. Static GIF/SVG components work without setup.</p>
           <div class="workflow-instructions">
             <span><strong>1.</strong> Create <code>.github/workflows/readme-component-hub.yml</code> in your target repository.</span>
             <span><strong>2.</strong> Paste the workflow below and commit it to the default branch.</span>
@@ -70,7 +70,7 @@
             <a id="openTargetRepository" class="button secondary-button" href="https://github.com" target="_blank" rel="noopener noreferrer">Open target repository ↗</a>
           </div>
           <pre id="workflowCode" class="workflow-code" tabindex="0"></pre>
-          <p class="workflow-warning">Until this workflow has run successfully, your custom repository's dynamic images will not exist and GitHub README will display missing images. The Designer's live preview reads public GitHub API data, but its exported Markdown points to the repository's generated assets.</p>
+          <p class="workflow-warning">Until this workflow has run successfully, your custom repository's dynamic images will not exist and GitHub README will display missing images. The Designer's live preview reads public GitHub API data, but its exported Markdown points to the repository's generated assets on the dedicated asset branch.</p>
         </div>
       </details>
     </section>
