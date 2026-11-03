@@ -150,6 +150,15 @@ function openModal(id) {
   $('#modalDescription').textContent = entry.description;
   $('#modalTags').innerHTML = entry.tags.slice(0, 4).map((tag) => '<span>' + escapeHTML(tag) + '</span>').join('');
   $('#modalAuthor').textContent = 'Made by @' + entry.author;
+  const repoWrap = $('#repoSelectorWrap');
+  repoWrap.hidden = entry.renderer !== 'github-repo';
+  if (entry.renderer === 'github-repo') {
+    const tracked = state.components.filter((item) => item.renderer === 'github-repo');
+    $('#repoSelect').innerHTML = tracked.map((item) =>
+      '<option value="' + escapeHTML(item.id) + '"' + (item.id === entry.id ? ' selected' : '') + '>' +
+      escapeHTML(item.repository) + '</option>'
+    ).join('');
+  }
   $('#previewFormat').textContent = entry.renderer === 'github-repo' ? 'SYNCED DATA · SVG' : entry.format.toUpperCase();
   $('#viewSource').href = REPOSITORY + '/tree/main/components/' + encodeURIComponent(entry.id);
   $('#themeCount').textContent = '2 available';
@@ -256,6 +265,11 @@ function setupEvents() {
     updateMarkdown();
   });
   els.copy.addEventListener('click', () => copyToClipboard(markdown()));
+  $('#repoSelect').addEventListener('change', (event) => {
+    const selected = state.components.find((item) => item.id === event.target.value && item.renderer === 'github-repo');
+    if (!selected) return;
+    openModal(selected.id);
+  });
 
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && !els.modal.hidden) {

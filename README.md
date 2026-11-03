@@ -48,6 +48,16 @@ The **Repository Stats Card** retrieves public data through GitHub Actions and p
 
 The card is updated by a **scheduled GitHub Action approximately once per hour** (GitHub may delay scheduled jobs). It does not refresh instantly when the number of stars changes. To track a different repository, create a new component manifest with `"renderer": "github-repo"` and `"repository": "OWNER/REPO"`, and open a PR. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
+> **Repository selection matters:** Every dynamic stats SVG is bound to a specific GitHub repository. It **cannot detect which README embeds it**. Pick the desired repository in the gallery selector; the generated Markdown will use that repository's own card. Data refreshes approximately hourly, not on every view.
+
+### Chrome UI Gallery — dynamic stats
+
+![Chrome UI Gallery Stats](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/chrome-ui-gallery-stats/dark.svg)
+
+```md
+![Chrome UI Gallery Stats](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/chrome-ui-gallery-stats/dark.svg)
+```
+
 ## 🎬 Animated components
 
 These are real, looping GIF files stored in this repository. The previews below are also usable in your own `README.md`.

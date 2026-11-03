@@ -160,6 +160,11 @@
           <div class="preview-credit"><span id="modalAuthor"></span><a id="viewSource" target="_blank" rel="noopener noreferrer" href="#">View source ↗</a></div>
         </div>
         <div class="customize-column">
+          <div id="repoSelectorWrap" class="setting" hidden>
+            <div class="setting-heading">Tracked GitHub repository <span>updates hourly</span></div>
+            <select id="repoSelect" class="repo-select" aria-label="Choose tracked GitHub repository"></select>
+            <p class="repo-explanation">This card shows the selected repository's data. Embedding it in another README does not automatically change its source.</p>
+          </div>
           <div class="setting"><div class="setting-heading">Theme <span id="themeCount">2 options</span></div><div id="themeOptions" class="theme-choices"></div></div>
           <div class="setting"><div class="setting-heading">Alignment</div><div id="alignmentOptions" class="alignment-choices"><button type="button" data-align="left" class="active" aria-pressed="true">⇤ Left</button><button type="button" data-align="center" aria-pressed="false">↔ Center</button></div></div>
           <div class="code-title"><span>README.md</span><small>MARKDOWN</small></div>

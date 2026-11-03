@@ -326,3 +326,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,pr
 /* The live preview respects README alignment, not just the copied code. */
 .modal-preview{justify-content:flex-start}
 .modal-preview.centered{justify-content:center}
+
+/* Repository selector for dynamically refreshed GitHub statistics */
+.repo-select{width:100%;min-height:44px;padding:9px 13px;border:1px solid #3a5b50;border-radius:10px;background:#172b29;color:#e5f6e9;cursor:pointer;font-size:13px;font-weight:650}
+.repo-select option{color:#e8f4ef;background:#19272b}
+.repo-explanation{margin:9px 0 0;color:#94aaa7;font-size:11px;line-height:1.55}
