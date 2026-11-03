@@ -4,7 +4,7 @@
 <circle cx="39" cy="42" r="5" fill="#C2A8FF"/>
 <text x="54" y="47" font-family="Arial,sans-serif" font-size="14" font-weight="bold" letter-spacing="1.6" fill="#C2A8FF">GITHUB / ACTIVITY</text>
 <text x="36" y="91" font-family="Arial,sans-serif" font-size="26" font-weight="bold" fill="#F0E9FF">Commit Activity</text>
-<text x="38" y="116" font-family="Arial,sans-serif" font-size="13" fill="#A59DCA">RuslanSharifov/chrome-ui-gallery</text>
+<text x="38" y="116" font-family="Arial,sans-serif" font-size="13" fill="#A59DCA">RuslanSharifov/readme-component-hub</text>
 <rect x="42" y="144" width="35" height="10" rx="3" fill="#44325E"/>
 <rect x="42" y="158" width="35" height="10" rx="3" fill="#44325E"/>
 <rect x="42" y="172" width="35" height="10" rx="3" fill="#44325E"/>
@@ -57,10 +57,10 @@
 <rect x="399" y="144" width="35" height="10" rx="3" fill="#44325E"/>
 <rect x="399" y="158" width="35" height="10" rx="3" fill="#44325E"/>
 <rect x="399" y="172" width="35" height="10" rx="3" fill="#44325E"/>
-<rect x="399" y="186" width="35" height="10" rx="3" fill="#C2A8FF"/>
-<rect x="399" y="200" width="35" height="10" rx="3" fill="#7961A9"/>
-<rect x="399" y="214" width="35" height="10" rx="3" fill="#7961A9"/>
-<rect x="399" y="228" width="35" height="10" rx="3" fill="#54417B"/>
+<rect x="399" y="186" width="35" height="10" rx="3" fill="#44325E"/>
+<rect x="399" y="200" width="35" height="10" rx="3" fill="#44325E"/>
+<rect x="399" y="214" width="35" height="10" rx="3" fill="#44325E"/>
+<rect x="399" y="228" width="35" height="10" rx="3" fill="#44325E"/>
 <rect x="450" y="144" width="35" height="10" rx="3" fill="#44325E"/>
 <rect x="450" y="158" width="35" height="10" rx="3" fill="#44325E"/>
 <rect x="450" y="172" width="35" height="10" rx="3" fill="#44325E"/>
@@ -74,21 +74,21 @@
 <rect x="501" y="186" width="35" height="10" rx="3" fill="#44325E"/>
 <rect x="501" y="200" width="35" height="10" rx="3" fill="#44325E"/>
 <rect x="501" y="214" width="35" height="10" rx="3" fill="#44325E"/>
-<rect x="501" y="228" width="35" height="10" rx="3" fill="#54417B"/>
-<rect x="552" y="144" width="35" height="10" rx="3" fill="#54417B"/>
-<rect x="552" y="158" width="35" height="10" rx="3" fill="#54417B"/>
-<rect x="552" y="172" width="35" height="10" rx="3" fill="#54417B"/>
-<rect x="552" y="186" width="35" height="10" rx="3" fill="#7961A9"/>
-<rect x="552" y="200" width="35" height="10" rx="3" fill="#54417B"/>
-<rect x="552" y="214" width="35" height="10" rx="3" fill="#54417B"/>
+<rect x="501" y="228" width="35" height="10" rx="3" fill="#44325E"/>
+<rect x="552" y="144" width="35" height="10" rx="3" fill="#44325E"/>
+<rect x="552" y="158" width="35" height="10" rx="3" fill="#44325E"/>
+<rect x="552" y="172" width="35" height="10" rx="3" fill="#44325E"/>
+<rect x="552" y="186" width="35" height="10" rx="3" fill="#44325E"/>
+<rect x="552" y="200" width="35" height="10" rx="3" fill="#44325E"/>
+<rect x="552" y="214" width="35" height="10" rx="3" fill="#44325E"/>
 <rect x="552" y="228" width="35" height="10" rx="3" fill="#44325E"/>
 <rect x="603" y="144" width="35" height="10" rx="3" fill="#44325E"/>
 <rect x="603" y="158" width="35" height="10" rx="3" fill="#44325E"/>
 <rect x="603" y="172" width="35" height="10" rx="3" fill="#44325E"/>
 <rect x="603" y="186" width="35" height="10" rx="3" fill="#44325E"/>
 <rect x="603" y="200" width="35" height="10" rx="3" fill="#44325E"/>
-<rect x="603" y="214" width="35" height="10" rx="3" fill="#54417B"/>
-<rect x="603" y="228" width="35" height="10" rx="3" fill="#44325E"/>
-<text x="40" y="249" font-family="Arial,sans-serif" font-size="12" font-weight="normal" fill="#A59DCA">Latest 84 days • 230 commits fetched</text>
-<text x="38" y="261" font-family="Arial,sans-serif" font-size="11" font-weight="normal" fill="#A59DCA">Synced 03 Nov 2026 17:12 UTC</text>
+<rect x="603" y="214" width="35" height="10" rx="3" fill="#44325E"/>
+<rect x="603" y="228" width="35" height="10" rx="3" fill="#C2A8FF"/>
+<text x="40" y="249" font-family="Arial,sans-serif" font-size="12" font-weight="normal" fill="#A59DCA">Latest 84 days • 26 commits fetched</text>
+<text x="38" y="261" font-family="Arial,sans-serif" font-size="11" font-weight="normal" fill="#A59DCA">Synced 03 Nov 2026 17:37 UTC</text>
 </svg>
