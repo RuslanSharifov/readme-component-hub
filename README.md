@@ -4,15 +4,18 @@
 
 ### Make your README remarkable.
 
-A community-built collection of beautiful **GitHub README components**, including animated GIFs, SVG cards, badges, and dividers.
+A community-built library of **GitHub README components**: animated GIFs, live SVG cards, badges and dividers, ready to paste into any `README.md`.
 
-**Preview it. Customize it. Copy the Markdown.**
+**Preview it · Customise it · Copy the Markdown**
 
-[**Explore the live gallery**](https://ruslansharifov.github.io/readme-component-hub/) · [Contribute a component](CONTRIBUTING.md) · [Browse the source](components/)
+[**Live gallery**](https://ruslansharifov.github.io/readme-component-hub/) · [**README Designer**](https://ruslansharifov.github.io/readme-component-hub/designer.html) · [Contribute](CONTRIBUTING.md) · [Browse components](components/)
 
 [![Validate components](https://github.com/RuslanSharifov/readme-component-hub/actions/workflows/validate.yml/badge.svg)](https://github.com/RuslanSharifov/readme-component-hub/actions/workflows/validate.yml)
 [![Deploy GitHub Pages](https://github.com/RuslanSharifov/readme-component-hub/actions/workflows/deploy.yml/badge.svg)](https://github.com/RuslanSharifov/readme-component-hub/actions/workflows/deploy.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-9bf2ba?style=flat-square)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-8df7ba?style=flat-square)](LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/RuslanSharifov/readme-component-hub?style=flat-square&color=8df7ba)](https://github.com/RuslanSharifov/readme-component-hub/stargazers)
+
+<br />
 
 <img src="https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/typing-intro/dark.gif" width="620" alt="Animated typing introduction example" />
 
@@ -20,23 +23,130 @@ A community-built collection of beautiful **GitHub README components**, includin
 
 ---
 
-## ✨ What is README Component Hub?
+## Table of contents
 
-README Component Hub helps developers make their GitHub profiles and project documentation more expressive without setting up a backend or writing their own animations.
+- [Why README Component Hub?](#why-readme-component-hub)
+- [Quick start](#quick-start)
+- [Component gallery](#component-gallery)
+- [Dynamic GitHub cards](#dynamic-github-cards)
+- [README Designer](#readme-designer)
+- [Add your own component](#add-your-own-component)
+- [How it works](#how-it-works)
+- [Run and deploy locally](#run-and-deploy-locally)
+- [License](#license)
 
-- **Real previews:** the gallery displays the actual SVG or GIF assets used in a README.
-- **Ready-to-paste Markdown:** choose a component and copy its embed code.
-- **Dark and light themes:** every component includes both variants.
-- **Search and filters:** discover components by title, category, tag, or author.
-- **Community contributions:** anyone can propose new components through a pull request.
-- **GitHub-powered:** source, images, validation, and hosting all live on GitHub.
+---
+
+## Why README Component Hub?
+
+Expressive READMEs usually require custom animation code or a server. This project removes both. Every component is a static SVG or GIF hosted on GitHub, so it works on any profile or repository without a backend.
+
+| | Feature |
+|---|---|
+| 🔍 | **Real previews**: the gallery shows the exact assets your README will load. |
+| 🎨 | **Three themes**: every component ships in dark and light, and most include neon. |
+| 📋 | **One-click Markdown**: copy an embed snippet with width and alignment already set. |
+| 📊 | **Dynamic cards**: repository stats, CI status, release info and star history refresh hourly. |
+| 🧱 | **Visual designer**: compose text, components and multi-column rows, then export `README.md`. |
+| 🤝 | **Community-driven**: contribute components through a standard GitHub pull request. |
 
 > [!TIP]
-> Open the **[live gallery](https://ruslansharifov.github.io/readme-component-hub/)** to preview the animations, change themes and alignment, and copy the exact Markdown snippet.
+> Open the **[live gallery](https://ruslansharifov.github.io/readme-component-hub/)** to preview animations, switch themes and alignment, and copy the exact Markdown.
 
-## 📊 Dynamic GitHub repository card
+---
 
-The **Repository Stats Card** retrieves public data through GitHub Actions and publishes a standalone SVG image. It includes **stars, forks, open issues (GitHub's count also includes pull requests), latest push date and refresh time**.
+## Quick start
+
+1. Visit the [component gallery](https://ruslansharifov.github.io/readme-component-hub/) and choose a component.
+2. Select a theme (dark, light or neon) and an alignment.
+3. Click **Copy Markdown** and paste it into your `README.md`.
+
+For example, to display the animated **Neon Waveform**:
+
+```md
+![Neon Waveform](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/neon-wave/dark.gif)
+```
+
+To centre the component:
+
+```html
+<p align="center">
+  <img src="https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/neon-wave/dark.gif" alt="Neon Waveform" />
+</p>
+```
+
+For the light theme, replace `dark.gif` with `light.gif`. SVG components use `dark.svg` and `light.svg`.
+
+> [!IMPORTANT]
+> Use the `raw.githubusercontent.com` links generated by the gallery. The website runs on GitHub Pages, but the image files are stored directly in this repository.
+
+---
+
+## Component gallery
+
+### 🎬 Animated components
+
+Looping GIF files stored in this repository. Each one can be used directly in your own README.
+
+| Typing Introduction | Orbit Loader |
+|:---:|:---:|
+| <img src="https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/typing-intro/dark.gif" width="410" alt="Animated typing introduction" /> | <img src="https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/orbit-loader/dark.gif" width="410" alt="Animated orbit loading dots" /> |
+| An animated terminal-style greeting. · [Source](components/typing-intro/) · [Light](generated/typing-intro/light.gif) | Smooth orbiting dots. · [Source](components/orbit-loader/) · [Light](generated/orbit-loader/light.gif) |
+
+| Neon Waveform | System Status |
+|:---:|:---:|
+| <img src="https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/neon-wave/dark.gif" width="410" alt="Animated neon waveform" /> | <img src="https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/pulse-status/dark.gif" width="410" alt="Animated status indicator" /> |
+| A music-inspired waveform. · [Source](components/neon-wave/) · [Light](generated/neon-wave/light.gif) | A pulsing operational status badge. · [Source](components/pulse-status/) · [Light](generated/pulse-status/light.gif) |
+
+### 🧩 Static SVG components
+
+Lightweight vector designs that render well on GitHub.
+
+| Minimal Divider | Tech Stack Pills |
+|:---:|:---:|
+| <img src="https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/components/minimal-divider/dark.svg" width="410" alt="Minimal decorative README divider" /> | <img src="https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/components/tech-pills/dark.svg" width="410" alt="Developer technology stack badges" /> |
+| Separate README sections elegantly. · [Source](components/minimal-divider/) · [Light](components/minimal-divider/light.svg) | Show a compact tech stack. · [Source](components/tech-pills/) · [Light](components/tech-pills/light.svg) |
+
+| Developer Quote | Terminal Card |
+|:---:|:---:|
+| <img src="https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/components/code-quote/dark.svg" width="410" alt="Developer quote card" /> | <img src="https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/components/terminal-card/dark.svg" width="410" alt="Developer terminal card" /> |
+| A simple inspirational quote card. · [Source](components/code-quote/) · [Light](components/code-quote/light.svg) | A developer-themed terminal panel. · [Source](components/terminal-card/) · [Light](components/terminal-card/light.svg) |
+
+### ⚡ Generated component collection
+
+Dynamic SVG and animated GIF components, rendered and updated by GitHub Actions.
+
+| Component | Type | Preview |
+|---|---|---|
+| Star Growth Chart | Dynamic SVG | ![Star Growth](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/star-growth-chart/dark.svg) |
+| CI/CD Status Card | Dynamic SVG | ![CI Status](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/ci-status-card/dark.svg) |
+| Contribution Heatmap | Dynamic SVG | ![Activity](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/contribution-heatmap/dark.svg) |
+| Tech Language Analytics | Dynamic SVG | ![Languages](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/language-analytics/dark.svg) |
+| Latest Release Card | Dynamic SVG | ![Release](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/latest-release-card/dark.svg) |
+| Project Progress Tracker | Dynamic SVG | ![Progress](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/project-progress-tracker/dark.svg) |
+| Terminal Typing Banner | Animated GIF | ![Terminal](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/terminal-typing-banner/dark.gif) |
+| Developer Identity Card | Static SVG | ![Developer card](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/developer-identity-card/dark.svg) |
+| Premium Dividers Pack | Static SVG | ![Dividers](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/premium-dividers-pack/dark.svg) |
+| Animated Workflow Diagram | Animated GIF | ![Workflow](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/animated-workflow-diagram/dark.gif) |
+
+Every component includes dark, light and neon variants where applicable. Image width can be set to 30%, 50%, 70% or 100%, with left, centre or right alignment and an approximate left offset of 0–40%.
+
+**Example: two cards side by side**
+
+```html
+<table width="100%">
+  <tr>
+    <td width="50%" align="center"><img src="https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/star-growth-chart/dark.svg" width="100%" alt="Star Growth" /></td>
+    <td width="50%" align="center"><img src="https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/ci-status-card/neon.svg" width="100%" alt="CI Status" /></td>
+  </tr>
+</table>
+```
+
+---
+
+## Dynamic GitHub cards
+
+The **Repository Stats Card** fetches public data through GitHub Actions and publishes a standalone SVG. It shows **stars, forks, open issues, latest push date and refresh time**.
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/repository-stats/dark.svg" width="680" alt="Dynamic GitHub repository statistics card" />
@@ -46,11 +156,10 @@ The **Repository Stats Card** retrieves public data through GitHub Actions and p
 ![Repository Stats](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/repository-stats/dark.svg)
 ```
 
-The card is updated by a **scheduled GitHub Action approximately once per hour** (GitHub may delay scheduled jobs). It does not refresh instantly when the number of stars changes. To track a different repository, create a new component manifest with `"renderer": "github-repo"` and `"repository": "OWNER/REPO"`, and open a PR. See [CONTRIBUTING.md](CONTRIBUTING.md).
+> [!NOTE]
+> GitHub's open issue count also includes pull requests. Cards refresh **about once per hour** through a scheduled workflow, so they do not update instantly when stars change.
 
-> **Repository selection matters:** Every dynamic stats SVG is bound to a specific GitHub repository. It **cannot detect which README embeds it**. Pick the desired repository in the gallery selector; the generated Markdown will use that repository's own card. Data refreshes approximately hourly, not on every view.
-
-### Chrome UI Gallery — dynamic stats
+### Chrome UI Gallery stats
 
 ![Chrome UI Gallery Stats](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/chrome-ui-gallery-stats/dark.svg)
 
@@ -58,21 +167,28 @@ The card is updated by a **scheduled GitHub Action approximately once per hour**
 ![Chrome UI Gallery Stats](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/chrome-ui-gallery-stats/dark.svg)
 ```
 
-## 🔗 Bind README Designer to any GitHub repository
+### Choosing a repository
 
-**[Open README Designer](https://ruslansharifov.github.io/readme-component-hub/designer.html)** and paste a public URL such as \`https://github.com/RuslanSharifov/chrome-ui-gallery\` into **Target repository**. Empty input uses **[RuslanSharifov/readme-component-hub](https://github.com/RuslanSharifov/readme-component-hub)**.
+Each dynamic SVG is bound to one GitHub repository and **cannot detect which README embeds it**. Select the repository in the gallery; the generated Markdown then points to that repository's own card. To track a different repository, add a component manifest with `"renderer": "github-repo"` and `"repository": "OWNER/REPO"`, then open a pull request. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-- The repository URL controls the **whole Designer document**, not just the next component.
-- Changing it rewrites all **previously inserted managed component blocks**, including two/three-column rows, while leaving your manually written Markdown outside those blocks unchanged.
-- Live preview loads public repository statistics through the GitHub API in the browser.
-- Static images stay hosted by README Component Hub. **Dynamic SVGs link to the selected repository's own generated assets**, not the demo repository.
-- GitHub's default branch is detected for the workflow installation page. The generated SVGs use a dedicated \`readme-component-hub-assets\` branch, independent of protected \`main\` branches. The chosen repository is remembered in the browser.
+---
+
+## README Designer
+
+The **[README Designer](https://ruslansharifov.github.io/readme-component-hub/designer.html)** is a visual editor for complete README files. Combine Markdown text, headings, lists, code blocks and component cards. Drag components into place, build two- or three-column rows, then export an ordinary `README.md`.
+
+### Bind the Designer to any public repository
+
+Paste a public URL, such as `https://github.com/RuslanSharifov/chrome-ui-gallery`, into **Target repository**. Leaving the field empty uses [readme-component-hub](https://github.com/RuslanSharifov/readme-component-hub).
+
+- The repository controls the **whole document**. Changing it rewrites every managed component block, while Markdown you wrote by hand stays unchanged.
+- Live previews load public statistics through the GitHub API in the browser.
+- Static images remain hosted by this project. Dynamic SVGs link to the selected repository's own generated assets.
+- Generated SVGs are published to a dedicated `readme-component-hub-assets` branch, which works even when `main` is protected.
 
 ### One-time setup for dynamic cards in another repository
 
-GitHub Pages **cannot write files into arbitrary repositories**. To make the exported dynamic-card links work, the destination repository must have a workflow creating the SVGs. The Designer includes **Copy workflow YAML** and **Download workflow** controls to make this a one-time setup.
-
-Create \`.github/workflows/readme-component-hub.yml\` in the target repository's default branch:
+GitHub Pages cannot write files into other repositories, so the target repository needs a small workflow. The Designer provides **Copy workflow YAML** and **Download workflow** buttons. Create `.github/workflows/readme-component-hub.yml` on the default branch:
 
 ```yaml
 name: Update README Component Hub cards
@@ -89,125 +205,39 @@ jobs:
       contents: write
 ```
 
-Commit it, then use **Actions → Update README Component Hub cards → Run workflow** once. If needed, set **Settings → Actions → General → Workflow permissions** to allow read/write access for the repository's \`GITHUB_TOKEN\`. After the first successful run, the workflow creates \`.github/readme-component-hub/<component-id>/<theme>.svg\` in the selected repository's dedicated `readme-component-hub-assets` branch and refreshes it on its hourly schedule (GitHub can delay scheduled jobs).
+Commit the file, then run **Actions → Update README Component Hub cards → Run workflow** once. If the run fails with a permissions error, enable read and write access under **Settings → Actions → General → Workflow permissions**. After the first successful run, cards are written to `.github/readme-component-hub/<component-id>/<theme>.svg` on the assets branch and refresh hourly.
 
-Example for **Chrome UI Gallery** after installation:
+Example for Chrome UI Gallery after installation:
 
 ```md
 ![Star Growth](https://raw.githubusercontent.com/RuslanSharifov/chrome-ui-gallery/readme-component-hub-assets/.github/readme-component-hub/star-growth-chart/dark.svg)
 ```
 
-If you **haven't installed and run the workflow**, custom-repository dynamic SVG URLs won't exist yet. The Designer will still show a live browser preview, but pasting the exported link into a GitHub README won't show an image until installation finishes. No account login or private API key is needed on the Designer site.
+> [!WARNING]
+> The reusable workflow runs public code from this repository's `main` branch with `contents: write` access. Review it first. For stricter reproducibility, pin the reference to an audited commit SHA instead of `@main`.
 
-**Security note:** The example workflow runs public code from this repository's \`main\` branch in your project with \`contents: write\`. Review and trust the code first; for stricter reproducibility, pin the reusable-workflow reference to an audited commit SHA instead of \`@main\`.
+### Limitations to know
 
-## 🧱 New component collection and README Designer
+- GitHub README images cannot run scripts or call APIs. Charts are pre-rendered, so they can lag by up to an hour.
+- Star history begins at the first recorded snapshot. Earlier growth is not estimated.
+- The heatmap reflects commit history, and the progress card uses issue state rather than a calculated completion score.
+- If a repository has no published release, the release card says so.
+- GitHub may strip inline CSS. Width and table-based offsets are best-effort and can differ on phones.
+- The live editor is a GitHub-**style** preview, not GitHub's server renderer.
 
-**[Open README Designer](https://ruslansharifov.github.io/readme-component-hub/designer.html)** · [Browse all components](https://ruslansharifov.github.io/readme-component-hub/#explore)
+---
 
-The visual designer combines Markdown text, headings, bold/italic, links, dividers, lists, code blocks and reusable component cards. Add components by **clicking or dragging**, reorder them, build two- or three-column rows, then export an ordinary README.md.
+## Add your own component
 
-| Component | Type | Preview |
-|---|---|---|
-| Star Growth Chart | Dynamic SVG | ![Star Growth](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/star-growth-chart/dark.svg) |
-| CI/CD Status Card | Dynamic SVG | ![CI Status](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/ci-status-card/dark.svg) |
-| Contribution Heatmap | Dynamic SVG | ![Activity](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/contribution-heatmap/dark.svg) |
-| Tech Language Analytics | Dynamic SVG | ![Languages](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/language-analytics/dark.svg) |
-| Latest Release Card | Dynamic SVG | ![Release](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/latest-release-card/dark.svg) |
-| Project Progress Tracker | Dynamic SVG | ![Progress](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/project-progress-tracker/dark.svg) |
-| Terminal Typing Banner | Animated GIF | ![Terminal](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/terminal-typing-banner/dark.gif) |
-| Developer Identity Card | Static SVG | ![Developer card](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/developer-identity-card/dark.svg) |
-| Premium Dividers Pack | Static SVG | ![Dividers](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/premium-dividers-pack/dark.svg) |
-| Animated Workflow Diagram | Animated GIF | ![Workflow](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/animated-workflow-diagram/dark.gif) |
+Contributions are welcome. Submit an original SVG or GIF component through a pull request, with no separate account or service.
 
-Every new component has **dark, light and neon** versions. The designer lets you choose **30%, 50%, 70%, 100% image widths**, **left/center/right alignment**, and approximate **0–40% left offsets**. It can arrange two or three components side by side using GitHub-safe HTML tables.
+1. **Fork** the repository and create a branch.
+2. Add a folder at `components/your-component-name/`.
+3. Include a `component.json` manifest, a `README.md` and both dark and light images.
+4. Follow the safety and naming rules in [CONTRIBUTING.md](CONTRIBUTING.md).
+5. Open a **pull request**. After review, GitHub Actions rebuilds the gallery.
 
-Example: two cards in one README row:
-
-```html
-<table width="100%">
-  <tr>
-    <td width="50%" align="center"><img src="https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/star-growth-chart/dark.svg" width="100%" alt="Star Growth" /></td>
-    <td width="50%" align="center"><img src="https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/ci-status-card/neon.svg" width="100%" alt="CI Status" /></td>
-  </tr>
-</table>
-```
-
-### Important GitHub limitations
-
-- GitHub README images are **not miniature web apps**. They cannot execute scripts or call arbitrary APIs. Dynamic charts are pre-rendered and updated by a scheduled GitHub Action, normally hourly, but scheduled runs and GitHub's image cache may delay visibility.
-- Star-growth history begins with the first recorded snapshot. Earlier growth is **not invented**.
-- The heatmap comes from repository commit history, and the progress card uses issue state rather than an imaginary project completion score.
-- If there is no published release, the release card says so.
-- Inline CSS in a README can be removed by GitHub. Image widths and table-based offsets are best-effort and may render/scroll differently on phones.
-- The live editor is a GitHub-**style** preview, not GitHub's exact server renderer. It uses sanitized Markdown rendering.
-
-## 🎬 Animated components
-
-These are real, looping GIF files stored in this repository. The previews below are also usable in your own `README.md`.
-
-| Typing Introduction | Orbit Loader |
-|:---:|:---:|
-| <img src="https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/typing-intro/dark.gif" width="410" alt="Animated typing introduction" /> | <img src="https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/orbit-loader/dark.gif" width="410" alt="Animated orbit loading dots" /> |
-| An animated terminal-style greeting. [Source](components/typing-intro/) · [Light](generated/typing-intro/light.gif) | Smooth orbiting dots. [Source](components/orbit-loader/) · [Light](generated/orbit-loader/light.gif) |
-
-| Neon Waveform | System Status |
-|:---:|:---:|
-| <img src="https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/neon-wave/dark.gif" width="410" alt="Animated neon waveform" /> | <img src="https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/pulse-status/dark.gif" width="410" alt="Animated status indicator" /> |
-| A music-inspired waveform. [Source](components/neon-wave/) · [Light](generated/neon-wave/light.gif) | A pulsing operational status badge. [Source](components/pulse-status/) · [Light](generated/pulse-status/light.gif) |
-
-## 🧩 SVG components
-
-Lightweight, static SVG designs that work in GitHub README files.
-
-| Minimal Divider | Tech Stack Pills |
-|:---:|:---:|
-| <img src="https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/components/minimal-divider/dark.svg" width="410" alt="Minimal decorative README divider" /> | <img src="https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/components/tech-pills/dark.svg" width="410" alt="Developer technology stack badges" /> |
-| Separate README sections elegantly. [Source](components/minimal-divider/) · [Light](components/minimal-divider/light.svg) | Show a compact tech stack. [Source](components/tech-pills/) · [Light](components/tech-pills/light.svg) |
-
-| Developer Quote | Terminal Card |
-|:---:|:---:|
-| <img src="https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/components/code-quote/dark.svg" width="410" alt="Developer quote card" /> | <img src="https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/components/terminal-card/dark.svg" width="410" alt="Developer terminal card" /> |
-| A simple inspirational quote card. [Source](components/code-quote/) · [Light](components/code-quote/light.svg) | A developer-themed terminal panel. [Source](components/terminal-card/) · [Light](components/terminal-card/light.svg) |
-
-## 🚀 Use a component in your README
-
-**1.** Visit the [component gallery](https://ruslansharifov.github.io/readme-component-hub/).
-
-**2.** Choose a component, then select **Dark / Light** and **Left / Center** alignment.
-
-**3.** Click **Copy Markdown** and paste the result into any GitHub `README.md`.
-
-For example, to display the animated **Neon Waveform**:
-
-```md
-![Neon Waveform](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/neon-wave/dark.gif)
-```
-
-For a centered component:
-
-```html
-<p align="center">
-  <img src="https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/neon-wave/dark.gif" alt="Neon Waveform" />
-</p>
-```
-
-For the light theme, replace `dark.gif` with `light.gif`. SVG components use `dark.svg` and `light.svg` instead.
-
-> [!IMPORTANT]
-> **Use the `raw.githubusercontent.com` links generated by the gallery** in your README. The website runs on GitHub Pages, but the README-ready image files are stored directly in this repository.
-
-## 🤝 Add your own component
-
-This is an **open-source community gallery**. You can submit an original SVG or GIF component without installing a separate app or registering a new account beyond GitHub.
-
-1. **Fork** this repository and create a branch.
-2. Add a new directory under `components/your-component-name/`.
-3. Include a `component.json` manifest, a `README.md`, and your component images (dark and light).
-4. Follow the safety and file naming rules in [CONTRIBUTING.md](CONTRIBUTING.md).
-5. Open a **pull request**. After review and merge, GitHub Actions rebuilds the gallery.
-
-The component metadata looks like this:
+A manifest looks like this:
 
 ```json
 {
@@ -228,25 +258,27 @@ The component metadata looks like this:
 }
 ```
 
-For animated GIF submissions, refer to [the contribution guide](CONTRIBUTING.md). The gallery accepts files and metadata through GitHub pull requests; it does **not** execute arbitrary scripts from contributors.
+For animated GIF submissions, see [CONTRIBUTING.md](CONTRIBUTING.md). The gallery accepts files and metadata only. It never executes contributor code.
 
-## 🛠️ How it works
+---
+
+## How it works
 
 | Part | Technology |
 |---|---|
-| Website | HTML, CSS, and vanilla JavaScript |
+| Website | HTML, CSS and vanilla JavaScript |
 | Hosting | GitHub Pages |
-| Component catalog | Per-component JSON manifests |
-| Artwork | SVG + animated GIF + periodically updated repository stats SVG |
-| Automated builds and checks | GitHub Actions |
-| Community contributions | GitHub pull requests |
-| Database / separate backend | Not required |
+| Catalog | One JSON manifest per component, compiled by `scripts/build_catalog.py` |
+| Artwork | SVG, animated GIF and periodically refreshed repository statistics |
+| Automation | GitHub Actions for validation, rendering and deployment |
+| Contributions | GitHub pull requests |
+| Backend or database | None required |
 
-Dynamic GitHub stats cards are refreshed hourly by a scheduled workflow. The catalog is generated by `scripts/build_catalog.py`. The built-in animated examples are rendered by `scripts/render_gifs.py` and committed to `generated/` by the deployment workflow. Both themes are served as normal files, and the website uses the same images for its live previews.
+The deployment workflow regenerates animated GIFs and dynamic cards, runs the tests and publishes the site. Both themes are served as normal files, so the website previews the same images that appear in your README.
 
-### Run locally
+### Run and deploy locally
 
-Requirements: Python 3.10+ and Pillow for GIF rendering.
+**Requirements:** Python 3.10+ and Pillow for GIF rendering. No separate JavaScript build step is needed.
 
 ```bash
 git clone https://github.com/RuslanSharifov/readme-component-hub.git
@@ -257,23 +289,27 @@ python3 scripts/render_gifs.py
 python3 -m http.server 8000
 ```
 
-Open [http://localhost:8000](http://localhost:8000) in your browser. A separate JavaScript build tool is not needed.
+Open <http://localhost:8000> in your browser.
 
-### Deploy with GitHub Pages
-
-Under **Settings → Pages → Build and deployment**, select **GitHub Actions**. The [deployment workflow](.github/workflows/deploy.yml) publishes the site whenever changes are pushed to `main`.
+To publish your own copy, go to **Settings → Pages → Build and deployment** and select **GitHub Actions**. The [deployment workflow](.github/workflows/deploy.yml) publishes the site on every push to `main`.
 
 **Live website:** https://ruslansharifov.github.io/readme-component-hub/
 
 ---
 
+## License
+
+Released under the [MIT License](LICENSE).
+
 <div align="center">
 
-### Made for the GitHub developer community.
+### Made for the GitHub developer community
 
 **[Explore components](https://ruslansharifov.github.io/readme-component-hub/)** · **[README Designer](https://ruslansharifov.github.io/readme-component-hub/designer.html)** · **[Contribute](CONTRIBUTING.md)** · **[Report an issue](https://github.com/RuslanSharifov/readme-component-hub/issues)**
 
-Maintained by [@RuslanSharifov](https://github.com/RuslanSharifov) · Licensed under [MIT](LICENSE)
+Maintained by [@RuslanSharifov](https://github.com/RuslanSharifov)
+
+<br />
 
 <img src="https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/components/minimal-divider/dark.svg" width="620" alt="Decorative footer divider" />
 

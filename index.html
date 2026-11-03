@@ -2,58 +2,68 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0d1419" />
-  <meta name="description" content="Discover and preview open-source GitHub README components. Animated GIFs, SVG badges, live previews and one-click Markdown." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <script>document.documentElement.classList.add('js');</script>
+  <meta name="theme-color" content="#071110" />
+  <meta name="description" content="A curated, open-source gallery of GitHub README components: animated GIFs, live SVG cards, dividers and badges. Preview, theme and copy Markdown in seconds." />
   <meta property="og:title" content="README Component Hub — Make your README remarkable" />
-  <meta property="og:description" content="Open-source README components. Preview it, choose a theme, copy the Markdown." />
+  <meta property="og:description" content="Open-source README components. Preview them, choose a theme and copy the Markdown." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="./src/styles.css" />
-  <title>README Component Hub — Open-source README components</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="./src/site.css" />
+  <title>README Component Hub — Open-source GitHub README components</title>
 </head>
 <body>
+  <canvas id="particleField" aria-hidden="true"></canvas>
+  <div class="ambient" aria-hidden="true"></div>
+
   <a href="#explore" class="skip-link">Skip to components</a>
+
   <header class="site-header">
     <div class="container header-content">
       <a class="brand" href="#top" aria-label="README Component Hub home">
-        <span class="brand-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="m8 5-6 7 6 7M16 5l6 7-6 7M14 3l-4 18"/></svg></span>
+        <span class="brand-icon" aria-hidden="true">&lt;/&gt;</span>
         <span>readme<span class="accent">.</span>hub</span>
       </a>
       <nav class="desktop-navigation" aria-label="Main navigation">
-        <a href="#explore">Explore</a>
-        <a href="./designer.html">README Designer</a>
+        <a href="#explore">Components</a>
+        <a href="./designer.html">Designer</a>
         <a href="#how-it-works">How it works</a>
         <a href="#contribute">Contribute</a>
       </nav>
       <div class="header-right">
         <a class="github-link" href="https://github.com/RuslanSharifov/readme-component-hub" target="_blank" rel="noopener noreferrer">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 .75a11.25 11.25 0 0 0-3.56 21.93c.56.1.77-.24.77-.54v-2.08c-3.13.68-3.79-1.33-3.79-1.33-.5-1.27-1.23-1.61-1.23-1.61-1.03-.7.08-.69.08-.69 1.14.08 1.74 1.16 1.74 1.16 1.02 1.74 2.67 1.23 3.32.94.1-.74.4-1.24.73-1.52-2.5-.28-5.15-1.26-5.15-5.59 0-1.23.44-2.24 1.16-3.03-.12-.29-.5-1.44.11-3 0 0 .95-.3 3.11 1.15a10.8 10.8 0 0 1 5.66 0c2.16-1.45 3.11-1.15 3.11-1.15.61 1.56.23 2.71.11 3 .72.79 1.16 1.8 1.16 3.03 0 4.34-2.64 5.31-5.15 5.59.41.35.77 1.05.77 2.12v3.15c0 .3.2.65.78.54A11.25 11.25 0 0 0 12 .75Z"/></svg>
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M12 .75a11.25 11.25 0 0 0-3.56 21.93c.56.1.77-.24.77-.54v-2.08c-3.13.68-3.79-1.33-3.79-1.33-.5-1.27-1.23-1.61-1.23-1.61-1.03-.7.08-.69.08-.69 1.14.08 1.74 1.16 1.74 1.16 1.02 1.74 2.67 1.23 3.32.94.1-.74.4-1.24.73-1.52-2.5-.28-5.15-1.26-5.15-5.59 0-1.23.44-2.24 1.16-3.03-.12-.29-.5-1.44.11-3 0 0 .95-.3 3.11 1.15a10.8 10.8 0 0 1 5.66 0c2.16-1.45 3.11-1.15 3.11-1.15.61 1.56.23 2.71.11 3 .72.79 1.16 1.8 1.16 3.03 0 4.34-2.64 5.31-5.15 5.59.41.35.77 1.05.77 2.12v3.15c0 .3.2.65.78.54A11.25 11.25 0 0 0 12 .75Z"/></svg>
           <span>GitHub</span>
-          <span aria-hidden="true">↗</span>
+          <span class="ext" aria-hidden="true">↗</span>
         </a>
         <button id="menuToggle" class="menu-toggle" type="button" aria-label="Open navigation" aria-controls="mobileNav" aria-expanded="false"><span></span><span></span><span></span></button>
       </div>
     </div>
     <nav id="mobileNav" class="mobile-navigation" aria-label="Mobile navigation" hidden>
-      <a href="#explore">Explore components</a>
+      <a href="#explore">Browse components</a>
       <a href="./designer.html">README Designer</a>
       <a href="#how-it-works">How it works</a>
       <a href="#contribute">Contribute</a>
-      <a href="https://github.com/RuslanSharifov/readme-component-hub" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      <a href="https://github.com/RuslanSharifov/readme-component-hub" target="_blank" rel="noopener noreferrer">View on GitHub ↗</a>
     </nav>
   </header>
 
   <main id="top">
-    <section class="hero container" aria-labelledby="heroTitle">
+    <section class="hero container" data-shape="sphere" aria-labelledby="heroTitle">
       <div class="hero-content">
-        <div class="eyebrow"><span class="status-dot"></span> OPEN SOURCE <span class="eyebrow-separator">/</span> COMMUNITY BUILT</div>
-        <h1 id="heroTitle">Make your<br><span class="outlined-word">README</span><br>remarkable<span class="accent">.</span></h1>
-        <p class="hero-description">A growing collection of beautiful GitHub README components. See the real preview, choose a theme, and copy the Markdown. No setup required.</p>
+        <div class="eyebrow"><span class="status-dot" aria-hidden="true"></span> OPEN SOURCE <span class="eyebrow-separator">/</span> COMMUNITY BUILT</div>
+        <h1 id="heroTitle">Make your<br><span class="gradient-word">README</span><br>remarkable<span class="accent">.</span></h1>
+        <p class="hero-description">A curated, community-built library of GitHub README components. Preview the real output, pick a theme and copy ready-to-paste Markdown. No setup, no account, no API key.</p>
         <div class="hero-buttons">
-          <a class="button primary-button" href="#explore">Explore components <span aria-hidden="true">↗</span></a>
+          <a class="button primary-button" href="#explore">Browse components <span aria-hidden="true">↗</span></a>
           <a class="button secondary-button" href="./designer.html">Open README Designer <span aria-hidden="true">→</span></a>
         </div>
-        <div class="hero-footnote"><span class="tiny-code">&lt;/&gt;</span> Built by developers, for developers.</div>
+        <div class="hero-footnote"><span class="tiny-code" aria-hidden="true">&lt;/&gt;</span> Built by developers, for developers.</div>
       </div>
 
       <div class="hero-visual">
@@ -61,9 +71,9 @@
         <div class="decorative-plus" aria-hidden="true">+</div>
         <div class="readme-window">
           <div class="window-top">
-            <span class="traffic-lights"><i></i><i></i><i></i></span>
+            <span class="traffic-lights" aria-hidden="true"><i></i><i></i><i></i></span>
             <span class="filename">README.md</span>
-            <span class="branch-name">main <span>⌄</span></span>
+            <span class="branch-name">main ⌄</span>
           </div>
           <div class="window-body">
             <div class="code-row"><span class="line-number">01</span><span class="line-heading"># Hello, world 👋</span></div>
@@ -75,89 +85,129 @@
             <div class="code-row"><span class="line-number">06</span><span class="line-heading">## My toolkit</span></div>
             <div class="mini-badges"><span>TypeScript</span><span>React</span><span>Python</span><span>GitHub</span></div>
           </div>
-          <div class="window-bottom"><span><i class="online-bullet"></i> Preview rendered</span><span>Markdown <span class="accent">✦</span></span></div>
+          <div class="window-bottom"><span><i class="online-bullet" aria-hidden="true"></i> Preview rendered</span><span>Markdown <span class="accent">✦</span></span></div>
         </div>
-        <div class="floating-label"><span class="float-symbol">✧</span><span><strong>Copy. Paste. Done.</strong><small>It really is that simple</small></span></div>
+        <div class="floating-label"><span class="float-symbol" aria-hidden="true">✧</span><span><strong>Copy. Paste. Done.</strong><small>That is all it takes</small></span></div>
       </div>
     </section>
 
-    <section class="stats container" aria-label="Project facts">
+    <section class="stats container reveal" aria-label="Project facts">
       <div class="stat"><strong id="componentCount">—</strong><span>Components</span></div>
-      <div class="stat-divider"></div>
       <div class="stat"><strong id="categoryCount">—</strong><span>Categories</span></div>
-      <div class="stat-divider"></div>
       <div class="stat"><strong>100<span class="accent">%</span></strong><span>Open source</span></div>
-      <div class="stat-divider"></div>
       <div class="stat"><strong>$0</strong><span>To get started</span></div>
     </section>
 
-    <section class="catalog container" id="explore" aria-labelledby="catalogTitle">
-      <div class="section-topline"><span class="small-square"></span> THE COLLECTION</div>
-      <div class="section-heading">
-        <div><h2 id="catalogTitle">Find your next <em>favorite.</em></h2><p>Curated components. Real previews. Zero setup.</p></div>
-        <div id="resultCount" class="results-count" aria-live="polite">Loading components...</div>
+    <section class="catalog container" id="explore" data-shape="grid" aria-labelledby="catalogTitle">
+      <div class="section-topline reveal"><span class="small-square" aria-hidden="true"></span> THE COLLECTION</div>
+      <div class="section-heading reveal">
+        <div>
+          <h2 id="catalogTitle">Find your next <em>favorite.</em></h2>
+          <p>Curated components with real previews and zero setup. Click any card to see it, customise it and copy the Markdown.</p>
+        </div>
+        <div id="resultCount" class="results-count" aria-live="polite">Loading components…</div>
       </div>
 
-      <div class="catalog-toolbar">
+      <div class="catalog-toolbar reveal">
         <label class="search-box" for="searchInput">
-          <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg>
-          <input type="search" id="searchInput" placeholder="Search components, tags, creators..." autocomplete="off" />
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg>
+          <input type="search" id="searchInput" placeholder="Search by name, tag or author" autocomplete="off" />
           <kbd>/</kbd>
         </label>
-        <label class="sort-wrapper">Sort: <select id="sortSelect"><option value="featured">Featured</option><option value="name">Name A–Z</option><option value="newest">Newest</option></select></label>
+        <label class="sort-wrapper">Sort by
+          <select id="sortSelect">
+            <option value="featured">Featured</option>
+            <option value="name">Name A–Z</option>
+            <option value="newest">Newest</option>
+          </select>
+        </label>
       </div>
-      <div id="filterRow" class="filter-row" aria-label="Component categories">
+      <div id="filterRow" class="filter-row reveal" aria-label="Component categories">
         <button type="button" class="filter-chip active" data-category="All" aria-pressed="true">All components</button>
       </div>
       <div id="catalogGrid" class="catalog-grid" aria-live="polite">
         <div class="loading-message"><span class="spinner" aria-hidden="true"></span> Loading components…</div>
       </div>
       <div id="emptyState" class="empty-state" hidden>
-        <div class="empty-symbol">⌕</div><h3>Nothing found</h3><p>Try another search or show all categories.</p>
+        <div class="empty-symbol" aria-hidden="true">⌕</div>
+        <h3>No components match</h3>
+        <p>Try a different search term, or show every category again.</p>
         <button id="resetFilters" class="button secondary-button" type="button">Clear filters</button>
       </div>
     </section>
 
-    <section class="how" id="how-it-works" aria-labelledby="howTitle">
+    <section class="how" id="how-it-works" data-shape="torus" aria-labelledby="howTitle">
       <div class="container">
-        <div class="section-topline"><span class="small-square"></span> QUICK START</div>
-        <div class="how-heading"><h2 id="howTitle">Three steps.<br><em>Infinite possibilities.</em></h2><p>No account, no API key, no configuration.</p></div>
+        <div class="section-topline reveal"><span class="small-square" aria-hidden="true"></span> QUICK START</div>
+        <div class="how-heading reveal">
+          <h2 id="howTitle">Three steps to a <em>better README.</em></h2>
+          <p>No account, no API key and no configuration files.</p>
+        </div>
         <div class="steps">
-          <article class="step"><span class="step-number">01 / EXPLORE</span><div class="step-icon">⌕</div><h3>Find a component</h3><p>Browse the library and pick something that feels like you.</p></article>
-          <article class="step"><span class="step-number">02 / CUSTOMIZE</span><div class="step-icon">◈</div><h3>Make it yours</h3><p>Switch between light and dark, then choose the alignment.</p></article>
-          <article class="step"><span class="step-number">03 / SHIP IT</span><div class="step-icon">↗</div><h3>Copy and paste</h3><p>Drop the generated Markdown into your GitHub README.md.</p></article>
+          <article class="step reveal" style="--d:0s">
+            <span class="step-number">01 / EXPLORE</span>
+            <div class="step-icon" aria-hidden="true">⌕</div>
+            <h3>Find a component</h3>
+            <p>Browse the collection, filter by category and pick the style that suits your profile.</p>
+          </article>
+          <article class="step reveal" style="--d:.12s">
+            <span class="step-number">02 / CUSTOMISE</span>
+            <div class="step-icon" aria-hidden="true">◈</div>
+            <h3>Make it yours</h3>
+            <p>Switch between dark, light and neon themes, then set the alignment and width.</p>
+          </article>
+          <article class="step reveal" style="--d:.24s">
+            <span class="step-number">03 / SHIP IT</span>
+            <div class="step-icon" aria-hidden="true">↗</div>
+            <h3>Copy and paste</h3>
+            <p>Paste the generated Markdown into your repository’s README.md. It renders on GitHub immediately.</p>
+          </article>
         </div>
       </div>
     </section>
 
-    <section class="contribute container" id="contribute">
-      <div class="contribute-card">
+    <section class="contribute container" id="contribute" data-shape="helix" aria-labelledby="contributeTitle">
+      <div class="contribute-card reveal">
         <div class="contribute-deco" aria-hidden="true"><span>{ }</span><i>+</i></div>
         <div class="contribute-copy">
           <div class="section-topline">BUILT TOGETHER</div>
-          <h2>Have something <em>awesome?</em></h2>
-          <p>Join the community. Add an SVG or GIF component through a GitHub pull request, and see it in the gallery after review.</p>
+          <h2 id="contributeTitle">Have something <em>awesome?</em></h2>
+          <p>Share an SVG or GIF component through a GitHub pull request. Once it is reviewed and merged, it appears in the gallery automatically.</p>
           <a class="button primary-button" href="https://github.com/RuslanSharifov/readme-component-hub/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">Contribute a component <span aria-hidden="true">↗</span></a>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="footer">
+  <footer class="footer" data-shape="cube">
     <div class="container footer-inner">
-      <a class="brand" href="#top"><span class="brand-icon footer-icon">&lt;/&gt;</span><span>readme<span class="accent">.</span>hub</span></a>
-      <span>Made for the GitHub community. MIT licensed.</span>
-      <a href="https://github.com/RuslanSharifov/readme-component-hub" target="_blank" rel="noopener noreferrer">View on GitHub ↗</a>
+      <a class="brand" href="#top"><span class="brand-icon footer-icon" aria-hidden="true">&lt;/&gt;</span><span>readme<span class="accent">.</span>hub</span></a>
+      <span>Made for the GitHub community · MIT licensed</span>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="https://github.com/RuslanSharifov/readme-component-hub" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+        <a href="./designer.html">Designer</a>
+        <a href="https://github.com/RuslanSharifov/readme-component-hub/issues" target="_blank" rel="noopener noreferrer">Report an issue ↗</a>
+      </nav>
     </div>
   </footer>
 
   <div class="modal-backdrop" id="modalBackdrop" hidden>
     <section class="component-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDescription" tabindex="-1" id="componentModal">
-      <div class="modal-bar"><span>COMPONENT / <span id="modalBreadcrumb" class="accent"></span></span><button class="close-modal" type="button" id="closeModal" aria-label="Close component preview">✕</button></div>
-      <div class="modal-intro"><div><span id="modalCategory" class="modal-category"></span><h2 id="modalTitle"></h2><p id="modalDescription"></p></div><div id="modalTags" class="modal-tags"></div></div>
+      <div class="modal-bar">
+        <span>COMPONENT / <span id="modalBreadcrumb" class="accent"></span></span>
+        <button class="close-modal" type="button" id="closeModal" aria-label="Close component preview">✕</button>
+      </div>
+      <div class="modal-intro">
+        <div>
+          <span id="modalCategory" class="modal-category"></span>
+          <h2 id="modalTitle"></h2>
+          <p id="modalDescription"></p>
+        </div>
+        <div id="modalTags" class="modal-tags"></div>
+      </div>
       <div class="modal-columns">
         <div class="preview-column">
-          <div class="preview-label"><span><i class="online-bullet"></i> LIVE README PREVIEW</span><span id="previewFormat">SVG</span></div>
+          <div class="preview-label"><span><i class="online-bullet" aria-hidden="true"></i>LIVE README PREVIEW</span><span id="previewFormat">SVG</span></div>
           <div id="modalPreview" class="modal-preview"><img id="modalImage" alt="" /></div>
           <div class="preview-credit"><span id="modalAuthor"></span><a id="viewSource" target="_blank" rel="noopener noreferrer" href="#">View source ↗</a></div>
         </div>
@@ -165,25 +215,52 @@
           <div id="repoSelectorWrap" class="setting" hidden>
             <div class="setting-heading">Tracked GitHub repository <span>updates hourly</span></div>
             <select id="repoSelect" class="repo-select" aria-label="Choose tracked GitHub repository"></select>
-            <p class="repo-explanation">This card shows the selected repository's data. Embedding it in another README does not automatically change its source.</p>
+            <p class="repo-explanation">This card shows the selected repository’s data. Embedding it in another README does not change its source.</p>
           </div>
-          <div class="setting"><div class="setting-heading">Theme <span id="themeCount">2 options</span></div><div id="themeOptions" class="theme-choices"></div></div>
-          <div class="setting"><div class="setting-heading">Alignment</div><div id="alignmentOptions" class="alignment-choices"><button type="button" data-align="left" class="active" aria-pressed="true">⇤ Left</button><button type="button" data-align="center" aria-pressed="false">↔ Center</button><button type="button" data-align="right" aria-pressed="false">Right ⇥</button></div></div>
+          <div class="setting">
+            <div class="setting-heading">Theme <span id="themeCount">2 options</span></div>
+            <div id="themeOptions" class="theme-choices"></div>
+          </div>
+          <div class="setting">
+            <div class="setting-heading">Alignment</div>
+            <div id="alignmentOptions" class="alignment-choices">
+              <button type="button" data-align="left" class="active" aria-pressed="true">⇤ Left</button>
+              <button type="button" data-align="center" aria-pressed="false">↔ Center</button>
+              <button type="button" data-align="right" aria-pressed="false">Right ⇥</button>
+            </div>
+          </div>
           <div class="setting duo-setting">
-            <label>Image width<select id="modalWidth"><option value="30">30%</option><option value="50">50%</option><option value="70">70%</option><option value="100" selected>100%</option></select></label>
-            <label>Left offset<select id="modalOffset"><option value="0">0%</option><option value="10">10%</option><option value="20">20%</option><option value="30">30%</option></select></label>
+            <label>Image width
+              <select id="modalWidth">
+                <option value="30">30%</option>
+                <option value="50">50%</option>
+                <option value="70">70%</option>
+                <option value="100" selected>100%</option>
+              </select>
+            </label>
+            <label>Left offset
+              <select id="modalOffset">
+                <option value="0">0%</option>
+                <option value="10">10%</option>
+                <option value="20">20%</option>
+                <option value="30">30%</option>
+              </select>
+            </label>
           </div>
-          <p class="layout-hint">GitHub README supports width and alignment attributes. Exact offsets and mobile wrapping may differ.</p>
-          <a class="button secondary-button open-designer" id="openDesignerWithComponent" href="./designer.html">Customize in README Designer ↗</a>
+          <p class="layout-hint">GitHub supports width and alignment attributes. Exact offsets and mobile wrapping may vary.</p>
+          <a class="button secondary-button open-designer" id="openDesignerWithComponent" href="./designer.html">Customise in README Designer ↗</a>
           <div class="code-title"><span>README.md</span><small>MARKDOWN</small></div>
           <pre id="markdownCode" class="markdown-code" tabindex="0"></pre>
           <button id="copyMarkdown" class="button primary-button copy-button" type="button"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg> Copy Markdown</button>
-          <p class="copy-help">Works directly in a GitHub README.md file</p>
+          <p class="copy-help">Paste directly into any GitHub README.md file.</p>
         </div>
       </div>
     </section>
   </div>
+
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
   <script type="module" src="./src/main.js"></script>
+  <script type="module" src="./src/effects.js"></script>
 </body>
 </html>
