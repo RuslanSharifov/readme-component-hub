@@ -26,10 +26,12 @@ jobs:
           python-version: "3.12"
       - name: Install image dependencies
         run: python -m pip install -r requirements-assets.txt
-      - name: Build component catalog
+      - name: Validate component manifests
         run: python scripts/build_catalog.py
       - name: Generate animated GIF assets
         run: python scripts/render_gifs.py
+      - name: Verify browser JavaScript syntax
+        run: node --check src/main.js
       - name: Package static site
         run: |
           mkdir -p dist
@@ -37,6 +39,8 @@ jobs:
           cp -r src components generated dist/
           touch dist/.nojekyll
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

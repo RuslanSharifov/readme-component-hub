@@ -24,3 +24,5 @@ jobs:
         run: python scripts/build_catalog.py
       - name: Confirm built-in GIF animations render
         run: python scripts/render_gifs.py
+      - name: Check browser JavaScript syntax
+        run: node --check src/main.js
