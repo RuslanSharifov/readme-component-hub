@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="280" viewBox="0 0 720 280" role="img" aria-label="Creative Developer">
+<rect x="1" y="1" width="718" height="278" rx="21" fill="#140F28" stroke="#554673" stroke-width="2"/>
+<rect x="17" y="16" width="686" height="248" rx="15" fill="#211C3B"/>
+<circle cx="39" cy="42" r="5" fill="#C2A8FF"/>
+<text x="54" y="47" font-family="Arial,sans-serif" font-size="14" font-weight="bold" letter-spacing="1.6" fill="#C2A8FF">DEVELOPER / PROFILE</text>
+<text x="36" y="91" font-family="Arial,sans-serif" font-size="26" font-weight="bold" fill="#F0E9FF">Creative Developer</text>
+<rect x="40" y="127" width="85" height="85" rx="20" fill="#44325E" stroke="#554673"/>
+<text x="82" y="181" font-family="Arial,sans-serif" font-size="24" font-weight="bold" fill="#C2A8FF" text-anchor="middle">&lt;/&gt;</text>
+<text x="148" y="162" font-family="Arial,sans-serif" font-size="23" font-weight="bold" fill="#F0E9FF">Full Stack Engineer</text>
+<text x="148" y="190" font-family="Arial,sans-serif" font-size="16" font-weight="normal" fill="#A59DCA">Crafting thoughtful software.</text>
+<rect x="45" y="226" width="160" height="31" rx="9" fill="#44325E"/>
+<text x="125" y="247" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="#C2A8FF" text-anchor="middle">PYTHON</text>
+<rect x="230" y="226" width="160" height="31" rx="9" fill="#44325E"/>
+<text x="310" y="247" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="#C2A8FF" text-anchor="middle">.NET</text>
+<rect x="415" y="226" width="160" height="31" rx="9" fill="#44325E"/>
+<text x="495" y="247" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="#C2A8FF" text-anchor="middle">TYPESCRIPT</text>
+</svg>
