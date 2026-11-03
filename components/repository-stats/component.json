@@ -1,0 +1,24 @@
+{
+  "id": "repository-stats",
+  "title": "Repository Stats Card",
+  "description": "A scheduled GitHub data card with stars, forks, issues and latest code update.",
+  "category": "Dynamic",
+  "tags": [
+    "stars",
+    "forks",
+    "github",
+    "repository",
+    "stats"
+  ],
+  "author": "RuslanSharifov",
+  "format": "svg",
+  "featured": true,
+  "order": 0,
+  "addedAt": "2026-11-03",
+  "themes": {
+    "dark": "generated/repository-stats/dark.svg",
+    "light": "generated/repository-stats/light.svg"
+  },
+  "renderer": "github-repo",
+  "repository": "RuslanSharifov/readme-component-hub"
+}

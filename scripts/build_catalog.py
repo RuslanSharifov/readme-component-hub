@@ -8,14 +8,16 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 COMPONENTS = ROOT / "components"
-CATEGORIES = {"Animations", "Badges", "Dividers", "Cards"}
+CATEGORIES = {"Animations", "Badges", "Dividers", "Cards", "Dynamic"}
 RENDERERS = {"typing", "orbit", "wave", "pulse"}
+DYNAMIC_RENDERER = "github-repo"
+REPO_PATTERN = re.compile(r"^[A-Za-z0-9_.-]{1,100}/[A-Za-z0-9_.-]{1,100}$")
 ID_PATTERN = re.compile(r"^[a-z][a-z0-9-]{2,47}$")
 AUTHOR_PATTERN = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$")
 
 def validate(file: Path) -> dict:
     data = json.loads(file.read_text(encoding="utf-8"))
-    allowed = {"id","title","description","category","tags","author","format","featured","order","addedAt","themes","renderer"}
+    allowed = {"id","title","description","category","tags","author","format","featured","order","addedAt","themes","renderer","repository"}
     required = allowed - {"renderer"}
     assert isinstance(data, dict) and required <= data.keys() <= allowed, f"{file}: invalid keys"
     ident = data["id"]
@@ -30,11 +32,21 @@ def validate(file: Path) -> dict:
     assert type(data["order"]) is int and 0 <= data["order"] <= 10000
     assert isinstance(data["addedAt"],str) and re.fullmatch(r"20[0-9]{2}-[01][0-9]-[0-3][0-9]",data["addedAt"])
     assert isinstance(data["themes"],dict) and set(data["themes"]) == {"dark","light"}
-    generated = "renderer" in data
-    if generated:
-        assert data["format"] == "gif" and data["renderer"] in RENDERERS, f"{file}: invalid renderer"
+    renderer = data.get("renderer")
+    generated = renderer is not None
+    dynamic = renderer == DYNAMIC_RENDERER
+    if dynamic:
+        assert data["format"] == "svg" and data["category"] == "Dynamic"
+        assert isinstance(data.get("repository"), str) and REPO_PATTERN.fullmatch(data["repository"]), f"{file}: invalid repository"
+        assert ".." not in data["repository"], f"{file}: unsafe repository path"
+    else:
+        assert "repository" not in data, f"{file}: repository only applies to dynamic cards"
+        if generated:
+            assert data["format"] == "gif" and renderer in RENDERERS, f"{file}: invalid renderer"
     for theme,path in data["themes"].items():
-        expected = f"generated/{ident}/{theme}.gif" if generated else f"components/{ident}/{theme}.{data['format']}"
+        expected = f"generated/{ident}/{theme}.svg" if dynamic else (
+            f"generated/{ident}/{theme}.gif" if generated else f"components/{ident}/{theme}.{data['format']}"
+        )
         assert path == expected, f"{file}: expected {expected}"
         if not generated:
             asset = ROOT / path
