@@ -32,9 +32,9 @@ test('repository URL parser accepts GitHub links and owner/repo names',()=>{
 test('new repository generates its own dynamic image URL but keeps static assets shared',()=>{
   const chosen={slug:'RuslanSharifov/chrome-ui-gallery',branch:'main'};
   assert.equal(repoAssetURL(stats,'dark',chosen),
-    'https://raw.githubusercontent.com/RuslanSharifov/chrome-ui-gallery/main/.github/readme-component-hub/repository-stats/dark.svg');
+    'https://raw.githubusercontent.com/RuslanSharifov/chrome-ui-gallery/readme-component-hub-assets/.github/readme-component-hub/repository-stats/dark.svg');
   assert.equal(repoAssetURL(growth,'neon',chosen),
-    'https://raw.githubusercontent.com/RuslanSharifov/chrome-ui-gallery/main/.github/readme-component-hub/star-growth-chart/neon.svg');
+    'https://raw.githubusercontent.com/RuslanSharifov/chrome-ui-gallery/readme-component-hub-assets/.github/readme-component-hub/star-growth-chart/neon.svg');
   assert.match(repoAssetURL(staticCard,'dark',chosen),/readme-component-hub\/main\/components\/terminal-card\/dark.svg$/);
   assert.equal(repoAssetURL(stats,'dark',DEFAULT_REPOSITORY),
     'https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/repository-stats/dark.svg');
@@ -50,14 +50,14 @@ test('all previous components and rows rebind on repo change without rewriting p
     '\n\nExternal URL: https://example.com/this-should-not-change';
   const target={slug:'RuslanSharifov/chrome-ui-gallery',branch:'main'};
   const changed=rebindDesignerMarkdown(original,[stats,staticCard,growth],target);
-  assert.match(changed,/chrome-ui-gallery\/main\/\.github\/readme-component-hub\/repository-stats\/dark.svg/);
-  assert.match(changed,/chrome-ui-gallery\/main\/\.github\/readme-component-hub\/star-growth-chart\/neon.svg/);
+  assert.match(changed,/chrome-ui-gallery\/readme-component-hub-assets\/\.github\/readme-component-hub\/repository-stats\/dark.svg/);
+  assert.match(changed,/chrome-ui-gallery\/readme-component-hub-assets\/\.github\/readme-component-hub\/star-growth-chart\/neon.svg/);
   assert.match(changed,/readme-component-hub\/main\/components\/terminal-card\/dark.svg/);
   assert.match(changed,/User-written explanation/);
   assert.match(changed,/example\.com\/this-should-not-change/);
   assert.equal(getBlocks(changed).length,2);
   const next=rebindDesignerMarkdown(changed,[stats,staticCard,growth],DEFAULT_REPOSITORY);
-  assert.doesNotMatch(next,/chrome-ui-gallery\/main\/\.github\/readme-component-hub/);
+  assert.doesNotMatch(next,/chrome-ui-gallery\/readme-component-hub-assets\/\.github\/readme-component-hub/);
   assert.match(next,/readme-component-hub\/main\/generated\/repository-stats\/dark.svg/);
   assert.doesNotMatch(cleanForExport(next),/<!-- rch:/);
 });

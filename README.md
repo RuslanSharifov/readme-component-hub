@@ -66,7 +66,7 @@ The card is updated by a **scheduled GitHub Action approximately once per hour**
 - Changing it rewrites all **previously inserted managed component blocks**, including two/three-column rows, while leaving your manually written Markdown outside those blocks unchanged.
 - Live preview loads public repository statistics through the GitHub API in the browser.
 - Static images stay hosted by README Component Hub. **Dynamic SVGs link to the selected repository's own generated assets**, not the demo repository.
-- The correct default branch is discovered from GitHub (for example \`main\` or \`master\`). The currently chosen repository is remembered in the browser.
+- GitHub's default branch is detected for the workflow installation page. The generated SVGs use a dedicated \`readme-component-hub-assets\` branch, independent of protected \`main\` branches. The chosen repository is remembered in the browser.
 
 ### One-time setup for dynamic cards in another repository
 
@@ -89,12 +89,12 @@ jobs:
       contents: write
 ```
 
-Commit it, then use **Actions → Update README Component Hub cards → Run workflow** once. If needed, set **Settings → Actions → General → Workflow permissions** to allow read/write access for the repository's \`GITHUB_TOKEN\`. After the first successful run, the workflow creates \`.github/readme-component-hub/<component-id>/<theme>.svg\` in the selected repository and refreshes it on its hourly schedule (GitHub can delay scheduled jobs).
+Commit it, then use **Actions → Update README Component Hub cards → Run workflow** once. If needed, set **Settings → Actions → General → Workflow permissions** to allow read/write access for the repository's \`GITHUB_TOKEN\`. After the first successful run, the workflow creates \`.github/readme-component-hub/<component-id>/<theme>.svg\` in the selected repository's dedicated `readme-component-hub-assets` branch and refreshes it on its hourly schedule (GitHub can delay scheduled jobs).
 
 Example for **Chrome UI Gallery** after installation:
 
 ```md
-![Star Growth](https://raw.githubusercontent.com/RuslanSharifov/chrome-ui-gallery/main/.github/readme-component-hub/star-growth-chart/dark.svg)
+![Star Growth](https://raw.githubusercontent.com/RuslanSharifov/chrome-ui-gallery/readme-component-hub-assets/.github/readme-component-hub/star-growth-chart/dark.svg)
 ```
 
 If you **haven't installed and run the workflow**, custom-repository dynamic SVG URLs won't exist yet. The Designer will still show a live browser preview, but pasting the exported link into a GitHub README won't show an image until installation finishes. No account login or private API key is needed on the Designer site.
