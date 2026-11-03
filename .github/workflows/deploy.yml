@@ -60,7 +60,10 @@ jobs:
           node --check src/designer.js
           node --check src/designer-core.mjs
           node --check src/repo-preview.mjs
-          node --check src/effects.js
+          node --check src/hero.js
+          node --check src/site.js
+          node --check src/repo.js
+          node --check src/composer.js
       - name: Package static site
         run: |
           mkdir -p dist
