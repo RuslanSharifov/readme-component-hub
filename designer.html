@@ -39,6 +39,41 @@
         <button type="button" id="copyReadme" class="button primary-button">Copy README</button>
       </div>
     </div>
+    <section class="repo-connection container" aria-label="Target GitHub repository settings">
+      <div class="repo-connection-top">
+        <div>
+          <div class="section-topline"><span class="small-square"></span> REPOSITORY CONNECTION</div>
+          <h2>Bind components to your project</h2>
+          <p>Enter your public repository once. Previously added cards, new components and copied Markdown will follow it.</p>
+        </div>
+        <span class="repo-service-pill"><span class="online-bullet"></span> GitHub API</span>
+      </div>
+      <label for="repositoryInput" class="repo-input-label">Target repository URL</label>
+      <div class="repo-input-line">
+        <input id="repositoryInput" class="studio-input" type="url" spellcheck="false" autocomplete="url" placeholder="https://github.com/OWNER/REPOSITORY" aria-describedby="repoStatus" />
+        <button type="button" id="applyRepository" class="button primary-button">Connect repository</button>
+        <button type="button" id="resetRepository" class="button secondary-button">Use default</button>
+      </div>
+      <p id="repoStatus" class="repo-status" role="status" aria-live="polite">Default: RuslanSharifov/readme-component-hub</p>
+      <details id="workflowSetup" class="workflow-setup" hidden>
+        <summary><span>One-time setup for auto-updating GitHub README cards</span><span class="workflow-disclosure">⌄</span></summary>
+        <div class="workflow-details">
+          <p>GitHub Pages cannot generate files inside your repository. Add this GitHub Actions workflow to the selected repository once, then run it to create its own SVG assets. Static GIF/SVG components work without setup.</p>
+          <div class="workflow-instructions">
+            <span><strong>1.</strong> Create <code>.github/workflows/readme-component-hub.yml</code> in your target repository.</span>
+            <span><strong>2.</strong> Paste the workflow below and commit it to the default branch.</span>
+            <span><strong>3.</strong> Go to Actions → <strong>Update README Component Hub cards</strong> → Run workflow. Future updates are scheduled hourly, though GitHub may delay them.</span>
+          </div>
+          <div class="workflow-buttons">
+            <button type="button" id="copyWorkflow" class="button secondary-button">Copy workflow YAML</button>
+            <button type="button" id="downloadWorkflow" class="button secondary-button">Download workflow</button>
+            <a id="openTargetRepository" class="button secondary-button" href="https://github.com" target="_blank" rel="noopener noreferrer">Open target repository ↗</a>
+          </div>
+          <pre id="workflowCode" class="workflow-code" tabindex="0"></pre>
+          <p class="workflow-warning">Until this workflow has run successfully, your custom repository's dynamic images will not exist and GitHub README will display missing images. The Designer's live preview reads public GitHub API data, but its exported Markdown points to the repository's generated assets.</p>
+        </div>
+      </details>
+    </section>
     <section class="studio container" aria-label="README designer workspace">
       <aside class="studio-sidebar" aria-label="Component library">
         <div class="panel-heading"><span>COMPONENT LIBRARY</span><span class="panel-tiny" id="libraryCount">—</span></div>
