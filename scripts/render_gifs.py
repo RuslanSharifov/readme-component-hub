@@ -89,7 +89,7 @@ def main():
     entries=json.loads(CATALOG.read_text(encoding="utf-8"))
     num=0
     for entry in entries:
-        if not entry.get("renderer"):
+        if entry.get("renderer") not in RENDERERS:
             continue
         for theme in ("dark","light"):
             frames,delay=RENDERERS[entry["renderer"]](theme)
