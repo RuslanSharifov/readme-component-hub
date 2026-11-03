@@ -18,7 +18,7 @@ AUTHOR_PATTERN = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$")
 def validate(file: Path) -> dict:
     data = json.loads(file.read_text(encoding="utf-8"))
     allowed = {"id","title","description","category","tags","author","format","featured","order","addedAt","themes","renderer","repository"}
-    required = allowed - {"renderer"}
+    required = allowed - {"renderer", "repository"}
     assert isinstance(data, dict) and required <= data.keys() <= allowed, f"{file}: invalid keys"
     ident = data["id"]
     assert isinstance(ident,str) and ID_PATTERN.fullmatch(ident) and ident == file.parent.name, f"{file}: invalid ID"
