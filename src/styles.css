@@ -331,3 +331,16 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,pr
 .repo-select{width:100%;min-height:44px;padding:9px 13px;border:1px solid #3a5b50;border-radius:10px;background:#172b29;color:#e5f6e9;cursor:pointer;font-size:13px;font-weight:650}
 .repo-select option{color:#e8f4ef;background:#19272b}
 .repo-explanation{margin:9px 0 0;color:#94aaa7;font-size:11px;line-height:1.55}
+
+/* Expanded Markdown sizing, alignment and theme settings */
+.alignment-choices{grid-template-columns:repeat(3,minmax(0,1fr))}
+.alignment-choices button{min-width:0}
+.theme-choices{grid-template-columns:repeat(auto-fit,minmax(90px,1fr))}
+.theme-swatch.neon{background:#8e73d7;border-color:#bfa6f3}
+.modal-preview.right-aligned{justify-content:flex-end}
+.modal-preview img{object-fit:contain}
+.duo-setting{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.duo-setting label{display:grid;gap:6px;color:#a9c5bb;font-size:11px;font-weight:650}
+.duo-setting select{min-height:41px;border-radius:8px;border:1px solid #425c52;background:#192b2c;color:#ebf4ed;padding:8px}
+.layout-hint{color:#8ea8a0;font-size:11px;line-height:1.6;margin:0}
+.open-designer{min-height:39px;font-size:11px}
