@@ -12,6 +12,12 @@ Explore SVG and animated GIF components, search or filter by category, choose li
 
 GitHub Pages hosts the gallery and its previews. GitHub Actions validates manifests, generates animated GIFs, **commits them to the repository**, and publishes the static site. The generated Markdown uses raw GitHub asset URLs for reliable README embedding.
 
+## Live animated example
+
+This is the same GIF that the gallery provides for GitHub README files. It is stored in the repository, so it does not depend on GitHub Pages' image-hosting cache.
+
+![Neon Waveform](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/neon-wave/dark.gif)
+
 ## Quick start
 
 1. Open the [gallery](https://ruslansharifov.github.io/readme-component-hub/).
