@@ -1,0 +1,23 @@
+{
+  "id": "contribution-heatmap",
+  "title": "Contribution Heatmap",
+  "description": "A 12-week commit activity heatmap based on recent repository commits.",
+  "category": "Dynamic",
+  "tags": [
+    "heatmap",
+    "commits",
+    "activity"
+  ],
+  "author": "RuslanSharifov",
+  "format": "svg",
+  "featured": true,
+  "order": 22,
+  "addedAt": "2026-11-03",
+  "themes": {
+    "dark": "generated/contribution-heatmap/dark.svg",
+    "light": "generated/contribution-heatmap/light.svg",
+    "neon": "generated/contribution-heatmap/neon.svg"
+  },
+  "renderer": "github-heatmap",
+  "repository": "RuslanSharifov/chrome-ui-gallery"
+}

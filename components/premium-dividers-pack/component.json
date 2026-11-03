@@ -1,0 +1,22 @@
+{
+  "id": "premium-dividers-pack",
+  "title": "Premium Dividers Pack",
+  "description": "Three elegant geometric section dividers in a single SVG.",
+  "category": "Dividers",
+  "tags": [
+    "divider",
+    "section",
+    "minimal"
+  ],
+  "author": "RuslanSharifov",
+  "format": "svg",
+  "featured": true,
+  "order": 28,
+  "addedAt": "2026-11-03",
+  "themes": {
+    "dark": "generated/premium-dividers-pack/dark.svg",
+    "light": "generated/premium-dividers-pack/light.svg",
+    "neon": "generated/premium-dividers-pack/neon.svg"
+  },
+  "renderer": "divider-pack"
+}

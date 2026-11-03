@@ -1,0 +1,22 @@
+{
+  "id": "terminal-typing-banner",
+  "title": "Terminal Typing Banner",
+  "description": "A cinematic animated terminal intro with a real frame-by-frame GIF.",
+  "category": "Animations",
+  "tags": [
+    "terminal",
+    "typing",
+    "animated"
+  ],
+  "author": "RuslanSharifov",
+  "format": "gif",
+  "featured": true,
+  "order": 26,
+  "addedAt": "2026-11-03",
+  "themes": {
+    "dark": "generated/terminal-typing-banner/dark.gif",
+    "light": "generated/terminal-typing-banner/light.gif",
+    "neon": "generated/terminal-typing-banner/neon.gif"
+  },
+  "renderer": "typing-banner"
+}
