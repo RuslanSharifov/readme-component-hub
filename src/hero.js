@@ -4,6 +4,8 @@
    - Pauses when scrolled out of view and respects reduced motion */
 
 const TAU = Math.PI * 2;
+const INK = 'rgb(14, 15, 16)';
+const ACCENT = 'rgb(255, 90, 31)';
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 const SHAPES = {
@@ -147,7 +149,7 @@ export function initHero() {
     const R = 96, R2 = R * R;
 
     ctx.clearRect(0, 0, W, H);
-    ctx.fillStyle = 'rgb(160, 240, 196)';
+    ctx.fillStyle = INK;
 
     for (let i = 0; i < count; i++) {
       const j = i * 3;
@@ -161,7 +163,8 @@ export function initHero() {
       const y2 = y * cosX - z1 * sinX;
       const z2 = y * sinX + z1 * cosX;
 
-      const persp = 3.2 / (3.2 - z2);
+      const zc = Math.max(-1.2, Math.min(1.2, z2)); // clamp: intro particles can sit near the camera
+      const persp = 3.2 / (3.2 - zc);
       let sx = cx + x1 * size * persp;
       let sy = cy + y2 * size * persp;
 
@@ -174,8 +177,9 @@ export function initHero() {
         sy += (dy / d) * f;
       }
 
-      const depth = Math.min(1, Math.max(0, (z2 + 1.3) / 2.6));
-      ctx.globalAlpha = 0.1 + depth * 0.85;
+      const depth = Math.min(1, Math.max(0, (zc + 1.3) / 2.6));
+      ctx.fillStyle = (i % 17 === 0) ? ACCENT : INK;
+      ctx.globalAlpha = 0.12 + depth * 0.82;
       ctx.beginPath();
       ctx.arc(sx, sy, 0.6 + persp * 0.8, 0, TAU);
       ctx.fill();

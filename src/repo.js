@@ -50,19 +50,20 @@ function renderChart(points) {
   // A single snapshot is shown as a dot only; a line or area needs two points.
   const curve = points.length > 1
     ? '<polygon points="' + area + '" fill="url(#sparkFill)"/>' +
-      '<polyline points="' + line + '" fill="none" stroke="#8df7ba" stroke-width="2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>'
+      '<polyline points="' + line + '" fill="none" stroke="#ff5a1f" stroke-width="2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>'
     : '';
   host.innerHTML =
     '<svg viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none" role="img" aria-label="Stars over time">' +
     '<defs><linearGradient id="sparkFill" x1="0" x2="0" y1="0" y2="1">' +
-    '<stop offset="0" stop-color="#8df7ba" stop-opacity=".35"/><stop offset="1" stop-color="#8df7ba" stop-opacity="0"/></linearGradient></defs>' +
-    curve + '<g fill="#8df7ba">' + dots + '</g></svg>' +
+    '<stop offset="0" stop-color="#ff5a1f" stop-opacity=".35"/><stop offset="1" stop-color="#ff5a1f" stop-opacity="0"/></linearGradient></defs>' +
+    curve + '<g fill="#ff5a1f">' + dots + '</g></svg>' +
     '<p class="spark-note">' + (points.length === 1 ? 'History starts with the first snapshot.' : points.length + ' snapshots recorded') + '</p>';
 }
 
 function renderCategories(components) {
   const list = document.getElementById('categoryBars');
   if (!list) return;
+  setText('componentCountRepo', String(components.length));
   const counts = {};
   components.forEach((c) => { counts[c.category] = (counts[c.category] || 0) + 1; });
   const total = Math.max(1, components.length);
