@@ -1,0 +1,42 @@
+name: Render repository-bound README cards
+on:
+  workflow_call:
+permissions:
+  contents: write
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout target repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Checkout component renderer
+        uses: actions/checkout@v4
+        with:
+          repository: RuslanSharifov/readme-component-hub
+          ref: main
+          path: .readme-component-hub-source
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install image dependencies
+        run: python -m pip install -r .readme-component-hub-source/requirements-assets.txt
+      - name: Generate SVG cards for target repository
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          python .readme-component-hub-source/scripts/render_target.py \
+            --repo "$REPOSITORY" --output ".github/readme-component-hub"
+      - name: Commit updated assets
+        run: |
+          git add -f .github/readme-component-hub/
+          if ! git diff --cached --quiet; then
+            git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              commit -m "chore(readme): update repository cards [skip ci]"
+            git push
+          else
+            echo "No asset changes"
+          fi

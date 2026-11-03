@@ -1,19 +1,30 @@
 import {
   escapeHTML, imageURL, imageMarkdown, imageHTML, rowHTML, makeBlock,
   getBlocks, replaceBlock, removeBlock, moveBlock, cleanForExport,
-  validatedCatalog, normalizeOptions
+  validatedCatalog, normalizeOptions, DEFAULT_REPOSITORY, INSTALL_PATH,
+  parseRepository, rebindDesignerMarkdown, workflowTemplate, isDynamicComponent
 } from './designer-core.mjs';
+import {fetchRepositorySnapshot, liveSVG, dynamicImageMetadata} from './repo-preview.mjs';
 
 const $ = (s, root=document) => root.querySelector(s);
 const source = $('#markdownInput');
 const preview = $('#readmePreview');
 const storageKey = 'rch_readme_designer_v1';
+const repoStorageKey = 'rch_readme_repository_v1';
 const defaultText = '# My GitHub README\n\nBuilding thoughtful software, one commit at a time.\n\n## My projects\n\nAdd a component from the library to customize this README.\n';
 let catalog = [];
 let selectedId = null;
 let dragId = null;
 let counter = 1;
 let timer = null;
+let repositoryTimer = null;
+let repositoryRequest = 0;
+let repositorySnapshot = null;
+const initialRepository = (() => {
+  try { return parseRepository(localStorage.getItem(repoStorageKey) || ''); }
+  catch { return {...DEFAULT_REPOSITORY}; }
+})();
+let targetRepo = initialRepository;
 const byId = id => catalog.find(item=>item.id===id);
 const getSaved = () => {try {return localStorage.getItem(storageKey)} catch {return null}};
 const save = value => {try {localStorage.setItem(storageKey,value)} catch {}};
@@ -27,6 +38,8 @@ function notify(message) {
   timer=window.setTimeout(()=>el.classList.remove('visible'),2400);
 }
 function assetPreview(entry,theme='dark') {
+  if (isDynamicComponent(entry))
+    return liveSVG(entry,theme,targetRepo.slug,repositorySnapshot);
   const path=entry.themes[theme] || entry.themes.dark;
   return new URL(path,document.baseURI).href;
 }
@@ -47,7 +60,7 @@ function nextId() {
 function addComponent(entry) {
   if (!entry) return;
   const o={id:nextId(),kind:'component',items:[entry.id],width:100,align:'center',offset:0,theme:'dark'};
-  insertRaw(makeBlock(o,imageMarkdown(entry,o)));
+  insertRaw(makeBlock(o,imageMarkdown(entry,o,targetRepo)));
   selectedId=o.id;
   refresh();
   notify('Component added to your README');
@@ -57,7 +70,7 @@ function addRow() {
   const items=ids.map(byId).filter(Boolean);
   if (items.length<2) {notify('Choose at least two components');return}
   const o={id:nextId(),kind:'row',items:ids,width:100,align:'center',offset:0,theme:'dark'};
-  insertRaw(makeBlock(o,rowHTML(items,o)));
+  insertRaw(makeBlock(o,rowHTML(items,o,targetRepo)));
   selectedId=o.id;
   refresh();
   notify('Side-by-side layout added');
@@ -69,10 +82,90 @@ function blockSource(block, options) {
     offset:options.offset ?? block.offset,
     theme:options.theme ?? block.theme
   };
-  if (block.kind==='row') return makeBlock(item,rowHTML(item.items.map(byId).filter(Boolean),item));
+  if (block.kind==='row') return makeBlock(item,rowHTML(item.items.map(byId).filter(Boolean),item,targetRepo));
   const entry=byId(item.items[0]);
-  return entry?makeBlock(item,imageMarkdown(entry,item)):block.full;
+  return entry?makeBlock(item,imageMarkdown(entry,item,targetRepo)):block.full;
 }
+function repositoryMessage(message,style='normal') {
+  const el=$('#repoStatus');
+  el.textContent=message;
+  el.classList.toggle('is-error',style==='error');
+  el.classList.toggle('is-loading',style==='loading');
+}
+function saveRepository() {
+  try {localStorage.setItem(repoStorageKey,targetRepo.slug)} catch {}
+}
+function updateRepositoryUI() {
+  const custom=targetRepo.slug.toLowerCase()!==DEFAULT_REPOSITORY.slug.toLowerCase();
+  $('#workflowSetup').hidden=!custom;
+  $('#workflowCode').textContent=workflowTemplate();
+  $('#openTargetRepository').href='https://github.com/'+targetRepo.slug+'/new/'+encodeURIComponent(targetRepo.branch);
+}
+function setRepoLinks() {
+  if (!catalog.length) return;
+  source.value=rebindDesignerMarkdown(source.value,catalog,targetRepo);
+  refresh();
+}
+async function applyRepository({explicit=false}={}) {
+  const input=$('#repositoryInput').value;
+  let requested;
+  try {requested=parseRepository(input);}
+  catch(error) {
+    repositoryMessage(error.message,'error');
+    $('#repositoryInput').setAttribute('aria-invalid','true');
+    if (explicit) notify(error.message);
+    return false;
+  }
+  $('#repositoryInput').removeAttribute('aria-invalid');
+  const same=requested.slug.toLowerCase()===targetRepo.slug.toLowerCase();
+  if (same && repositorySnapshot && !explicit) return true;
+  const request=++repositoryRequest;
+  targetRepo=same?{...targetRepo}:{...requested};
+  repositorySnapshot=null;
+  saveRepository();
+  updateRepositoryUI();
+  setRepoLinks();
+  renderLibrary();
+  repositoryMessage('Checking GitHub repository: '+targetRepo.slug+' …','loading');
+  try {
+    const snapshot=await fetchRepositorySnapshot(targetRepo.slug);
+    if(request!==repositoryRequest) return false;
+    repositorySnapshot=snapshot;
+    targetRepo={
+      slug:snapshot.repo.full_name || targetRepo.slug,
+      branch:snapshot.repo.default_branch || 'main'
+    };
+    // Do not overwrite a URL the user is currently typing.
+    const typed=parseRepository($('#repositoryInput').value);
+    if(typed.slug.toLowerCase()===targetRepo.slug.toLowerCase())
+      $('#repositoryInput').value='https://github.com/'+targetRepo.slug;
+    saveRepository();
+    setRepoLinks();
+    updateRepositoryUI();
+    renderLibrary();
+    const note=targetRepo.slug.toLowerCase()===DEFAULT_REPOSITORY.slug.toLowerCase()?
+      'Hub assets are ready to use.':'Set up the workflow below once before embedding dynamic cards.';
+    repositoryMessage('Connected: '+targetRepo.slug+' · branch '+targetRepo.branch+'. '+note);
+    return true;
+  } catch(error) {
+    if(request!==repositoryRequest) return false;
+    repositorySnapshot=null;
+    setRepoLinks();
+    renderLibrary();
+    updateRepositoryUI();
+    repositoryMessage('Could not verify '+targetRepo.slug+': '+error.message+
+      '. Check the repository link. Exported dynamic images require the workflow and a correct default branch.','error');
+    return false;
+  }
+}
+async function exportMarkdown() {
+  let entered;
+  try {entered=parseRepository($('#repositoryInput').value)}
+  catch(error) {notify(error.message);$('#repositoryInput').focus();return null}
+  if(entered.slug.toLowerCase()!==targetRepo.slug.toLowerCase()) await applyRepository({explicit:true});
+  return cleanForExport(source.value);
+}
+
 function selectedBlock() {
   return getBlocks(source.value).find(x=>x.id===selectedId);
 }
@@ -125,6 +218,14 @@ function renderPreview() {
     });
     for (const a of preview.querySelectorAll('a')) {
       a.target='_blank';a.rel='noopener noreferrer';
+    }
+    for (const img of preview.querySelectorAll('img')) {
+      const match=dynamicImageMetadata(img.getAttribute('src'));
+      const entry=match && byId(match.id);
+      if (entry && isDynamicComponent(entry)) {
+        img.src=liveSVG(entry,match.theme,targetRepo.slug,repositorySnapshot);
+        img.alt=entry.title+' — '+targetRepo.slug;
+      }
     }
   } else {
     // Never inject untrusted Markdown without a sanitization library.
@@ -208,6 +309,27 @@ function bindEvents() {
     }
     if(e.key==='Tab'){e.preventDefault();source.setRangeText('  ',source.selectionStart,source.selectionEnd,'end');refresh()}
   });
+  $('#repositoryInput').addEventListener('input',()=>{
+    window.clearTimeout(repositoryTimer);
+    repositoryTimer=window.setTimeout(()=>applyRepository(),650);
+  });
+  $('#repositoryInput').addEventListener('change',()=>{
+    window.clearTimeout(repositoryTimer);applyRepository();
+  });
+  $('#applyRepository').addEventListener('click',()=>applyRepository({explicit:true}));
+  $('#resetRepository').addEventListener('click',()=>{
+    $('#repositoryInput').value='';
+    window.clearTimeout(repositoryTimer);
+    applyRepository({explicit:true});
+  });
+  $('#copyWorkflow').addEventListener('click',()=>copyText(workflowTemplate())
+    .then(()=>notify('Workflow YAML copied')).catch(()=>notify('Unable to copy workflow')));
+  $('#downloadWorkflow').addEventListener('click',()=>{
+    const file=new Blob([workflowTemplate()],{type:'text/yaml;charset=utf-8'});
+    const link=URL.createObjectURL(file),a=document.createElement('a');
+    a.href=link;a.download=INSTALL_PATH.split('/').pop();document.body.appendChild(a);a.click();a.remove();
+    window.setTimeout(()=>URL.revokeObjectURL(link),1000);
+  });
   $('#librarySearch').addEventListener('input',renderLibrary);
   $('#libraryCategory').addEventListener('change',renderLibrary);
   $('#componentLibrary').addEventListener('click',e=>{
@@ -264,10 +386,16 @@ function bindEvents() {
     if(source.value.trim() && !confirm('Create a new README? Your current draft will be replaced.'))return;
     source.value=defaultText;selectedId=null;refresh();notify('New README created');
   });
-  $('#copyReadme').addEventListener('click',()=>copyText(cleanForExport(source.value))
-    .then(()=>notify('README copied to clipboard')).catch(()=>notify('Unable to copy Markdown')));
-  $('#downloadReadme').addEventListener('click',()=>{
-    const data=new Blob([cleanForExport(source.value)],{type:'text/markdown;charset=utf-8'});
+  $('#copyReadme').addEventListener('click',async()=>{
+    const content=await exportMarkdown();
+    if(content!==null) copyText(content)
+      .then(()=>notify('Repository-bound README copied'))
+      .catch(()=>notify('Unable to copy Markdown'));
+  });
+  $('#downloadReadme').addEventListener('click',async()=>{
+    const content=await exportMarkdown();
+    if(content===null)return;
+    const data=new Blob([content],{type:'text/markdown;charset=utf-8'});
     const url=URL.createObjectURL(data),a=document.createElement('a');
     a.href=url;a.download='README.md';document.body.appendChild(a);a.click();a.remove();
     window.setTimeout(()=>URL.revokeObjectURL(url),1000);
@@ -295,7 +423,12 @@ async function init() {
     const response=await fetch('./components/catalog.json',{cache:'no-store'});
     if(!response.ok) throw new Error('HTTP '+response.status);
     catalog=validatedCatalog(await response.json());
-    populateSelects();renderLibrary();refresh();
+    populateSelects();
+    $('#repositoryInput').value='https://github.com/'+targetRepo.slug;
+    updateRepositoryUI();
+    setRepoLinks();
+    renderLibrary();
+    applyRepository({explicit:true});
     const requested=new URLSearchParams(window.location.search).get('component');
     source.selectionStart=source.value.length;
     source.selectionEnd=source.value.length;

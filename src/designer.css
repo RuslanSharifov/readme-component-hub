@@ -79,3 +79,31 @@
 @media(max-width:1250px){.studio{grid-template-columns:260px 1fr;gap:12px}.preview-pane{grid-column:1/-1}.preview-surface{min-height:370px}.readme-preview{min-height:320px}}
 @media(max-width:850px){.designer-top{align-items:flex-start;flex-direction:column}.studio{width:calc(100% - 30px);grid-template-columns:1fr}.preview-pane{grid-column:auto}.component-library{grid-template-columns:1fr 1fr;max-height:340px}.designer-page{padding-top:27px}.top-actions{width:100%}.top-actions .button{flex:1}}
 @media(max-width:540px){.component-library{grid-template-columns:1fr}.layout-builder{grid-template-columns:1fr}.layout-builder label:nth-child(3),.layout-builder button,.layout-builder p{grid-column:auto}.designer-top h1{font-size:39px}#markdownInput{min-height:315px}.preview-surface{padding:8px}.readme-preview{padding:12px}.bottom-help{display:block}.bottom-help a{display:block;margin-top:7px}}
+
+/* Repository-wide GitHub binding in README Designer */
+.repo-connection{margin-top:8px;margin-bottom:18px;border:1px solid #36574e;background:linear-gradient(135deg,#162824,#152027);border-radius:15px;padding:22px 24px}
+.repo-connection-top{display:flex;align-items:start;justify-content:space-between;gap:14px}
+.repo-connection-top h2{font-size:22px;letter-spacing:-.7px;margin:9px 0 6px}
+.repo-connection-top p{font-size:12px;color:#9db6ac;line-height:1.55;margin:0 0 17px}
+.repo-service-pill{font-size:10px;font-weight:750;color:#acf1c3;background:#234338;border:1px solid #3f7159;border-radius:30px;padding:8px 12px;white-space:nowrap}
+.repo-input-label{font-size:11px;font-weight:750;color:#bed8c7;display:block;margin-bottom:8px}
+.repo-input-line{display:flex;gap:9px;align-items:center}
+.repo-input-line input{flex:1;font-size:13px;min-height:43px;background:#101e22}
+.repo-input-line .button{font-size:12px;padding:9px 13px;min-height:43px}
+.repo-status{font-size:12px;color:#aadbc0;line-height:1.5;margin:11px 0 0;overflow-wrap:anywhere}
+.repo-status.is-error{color:#f1b19f}
+.repo-status.is-loading{color:#c7cca6}
+.workflow-setup{margin-top:16px;border:1px solid #406052;border-radius:12px;background:#15251e;overflow:hidden}
+.workflow-setup summary{cursor:pointer;padding:14px 17px;color:#a8eec0;font-size:12px;font-weight:760;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.workflow-disclosure{font-size:17px}
+.workflow-setup[open] .workflow-disclosure{transform:rotate(180deg)}
+.workflow-details{padding:1px 16px 16px;border-top:1px solid #345245}
+.workflow-details>p{color:#aec5b7;font-size:12px;line-height:1.7}
+.workflow-instructions{display:grid;gap:7px;font-size:12px;color:#c9dace;margin:11px 0}
+.workflow-instructions code{color:#b8f2c4;background:#203e33;border-radius:4px;padding:2px 4px;overflow-wrap:anywhere}
+.workflow-buttons{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.workflow-buttons .button{font-size:11px;min-height:37px}
+.workflow-code{white-space:pre;overflow:auto;background:#0b1919;color:#b9eccc;border:1px solid #385c4b;border-radius:10px;padding:15px;font:11px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace;max-height:270px}
+.workflow-details .workflow-warning{color:#e2c69d}
+@media(max-width:850px){.repo-connection{width:calc(100% - 30px);padding:18px}.repo-input-line{flex-wrap:wrap}.repo-input-line input{flex-basis:100%}.repo-input-line .button{flex:1}.repo-service-pill{display:none}}
+@media(max-width:540px){.repo-connection-top h2{font-size:20px}.repo-input-line .button{font-size:11px;padding:9px 8px}}

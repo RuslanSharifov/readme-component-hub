@@ -19,5 +19,5 @@
     "neon": "generated/ci-status-card/neon.svg"
   },
   "renderer": "github-ci",
-  "repository": "RuslanSharifov/chrome-ui-gallery"
+  "repository": "RuslanSharifov/readme-component-hub"
 }

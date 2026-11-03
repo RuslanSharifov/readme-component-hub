@@ -4,6 +4,84 @@ export const WIDTH_PRESETS = [30,50,70,100];
 export const ALIGNS = ['left','center','right'];
 export const SPACING_PRESETS = [0,10,20,30,40];
 export const THEMES = ['dark','light','neon'];
+
+export const DEFAULT_REPOSITORY = Object.freeze({slug:'RuslanSharifov/readme-component-hub',branch:'main'});
+export const INSTALL_PATH = '.github/workflows/readme-component-hub.yml';
+export const GENERATED_PATH = '.github/readme-component-hub';
+export const DYNAMIC_COMPONENT_IDS = new Set([
+  'repository-stats','chrome-ui-gallery-stats','star-growth-chart','ci-status-card',
+  'contribution-heatmap','language-analytics','latest-release-card','project-progress-tracker'
+]);
+const REPO_PART = /^[a-zA-Z0-9](?:[a-zA-Z0-9._-]{0,98}[a-zA-Z0-9])?$/;
+export function parseRepository(value) {
+  const input=String(value??'').trim();
+  if (!input) return {...DEFAULT_REPOSITORY};
+  let slug=input.replace(/\/+$/,'');
+  if (/^https?:\/\//i.test(slug)) {
+    let url;
+    try {url=new URL(slug)} catch {throw new TypeError('Enter a valid GitHub repository URL');}
+    if (url.protocol!=='https:' || url.hostname.toLowerCase()!=='github.com' ||
+        url.username || url.password || url.search || url.hash)
+      throw new TypeError('Only https://github.com/OWNER/REPO is supported');
+    slug=url.pathname.replace(/^\/|\/$/g,'');
+  }
+  slug=slug.replace(/\.git$/i,'');
+  const parts=slug.split('/');
+  if(parts.length!==2 || !parts.every(x=>REPO_PART.test(x)) ||
+     parts.some(x=>x==='.'||x==='..'||x.includes('..')))
+    throw new TypeError('Use a public GitHub repository link: https://github.com/OWNER/REPO');
+  if (slug.toLowerCase()===DEFAULT_REPOSITORY.slug.toLowerCase())
+    return {...DEFAULT_REPOSITORY};
+  return {slug,branch:'main'};
+}
+export function safeBranch(value) {
+  const s=String(value||'main');
+  if (!/^[a-zA-Z0-9._/-]{1,200}$/.test(s) || s.startsWith('/') || s.includes('..') || s.includes('//'))
+    return 'main';
+  return s.split('/').map(encodeURIComponent).join('/');
+}
+export function isDynamicComponent(entry) {
+  return entry?.category==='Dynamic' && DYNAMIC_COMPONENT_IDS.has(entry.id);
+}
+export function repoAssetURL(entry,theme='dark',target=DEFAULT_REPOSITORY) {
+  if (!isDynamicComponent(entry)) return imageURL(entry,theme);
+  const selected=chooseTheme(entry,theme);
+  const config=target?.slug?target:DEFAULT_REPOSITORY;
+  const slug=parseRepository(config.slug).slug;
+  if (slug.toLowerCase()===DEFAULT_REPOSITORY.slug.toLowerCase()) {
+    // The legacy Chrome UI Gallery card must not show Chrome stats in the hub's README.
+    if(entry.id==='chrome-ui-gallery-stats')
+      return RAW_ROOT+'generated/repository-stats/'+selected+'.svg';
+    return imageURL(entry,selected);
+  }
+  return 'https://raw.githubusercontent.com/'+slug+'/'+safeBranch(config.branch)+'/'+
+    GENERATED_PATH+'/'+entry.id+'/'+selected+'.svg';
+}
+export function workflowTemplate() {
+  return 'name: Update README Component Hub cards\n'+
+    'on:\n'+
+    '  workflow_dispatch:\n'+
+    '  schedule:\n'+
+    "    - cron: '23 * * * *'\n"+
+    'permissions:\n'+
+    '  contents: write\n'+
+    'jobs:\n'+
+    '  update:\n'+
+    '    uses: RuslanSharifov/readme-component-hub/.github/workflows/render-repository.yml@main\n'+
+    '    permissions:\n'+
+    '      contents: write\n';
+}
+export function rebindDesignerMarkdown(source,catalog,repository=DEFAULT_REPOSITORY) {
+  const byId=new Map(catalog.map(c=>[c.id,c]));
+  return String(source).replace(BLOCK_REGEX,(whole,id,kind,ids,width,align,offset,theme)=>{
+    const entries=ids.split(',').map(name=>byId.get(name));
+    if (entries.some(e=>!e)) return whole;
+    const o={id,kind,items:ids.split(','),width:Number(width),align,offset:Number(offset),theme};
+    const html=kind==='row'?rowHTML(entries,o,repository):imageMarkdown(entries[0],o,repository);
+    return makeBlock(o,html);
+  });
+}
+
 export function escapeHTML(input) {
   return String(input ?? '').replace(/[&<>"']/g, char =>
     ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -30,26 +108,26 @@ export function normalizeOptions(entry,o={}) {
   return {width:cleanWidth(o.width??100),offset:cleanOffset(o.offset??0),
     align:ALIGNS.includes(o.align)?o.align:'center',theme:chooseTheme(entry,o.theme??'dark')};
 }
-export function imageHTML(entry,options={}) {
+export function imageHTML(entry,options={},repository=DEFAULT_REPOSITORY) {
   const o=normalizeOptions(entry,options);
-  const img='<img src="'+imageURL(entry,o.theme)+'" alt="'+escapeHTML(entry.title)+'" width="'+o.width+'%" />';
+  const img='<img src="'+repoAssetURL(entry,o.theme,repository)+'" alt="'+escapeHTML(entry.title)+'" width="'+o.width+'%" />';
   if (!o.offset) return '<p align="'+o.align+'">\n  '+img+'\n</p>';
   const remaining=100-o.offset;
   return '<table width="100%"><tr><td width="'+o.offset+'%">&nbsp;</td><td width="'+remaining+'%" align="'+o.align+'">\n'+img+'\n</td></tr></table>';
 }
-export function imageMarkdown(entry,options={}) {
+export function imageMarkdown(entry,options={},repository=DEFAULT_REPOSITORY) {
   const o=normalizeOptions(entry,options);
   if (o.width===100 && o.offset===0 && o.align==='left')
-    return '!['+escapeMD(entry.title)+']('+imageURL(entry,o.theme)+')';
-  return imageHTML(entry,o);
+    return '!['+escapeMD(entry.title)+']('+repoAssetURL(entry,o.theme,repository)+')';
+  return imageHTML(entry,o,repository);
 }
-export function rowHTML(entries,options={}) {
+export function rowHTML(entries,options={},repository=DEFAULT_REPOSITORY) {
   if (!Array.isArray(entries) || entries.length<2 || entries.length>3)
     throw new TypeError('A row needs two or three components');
   const sizes=entries.map((_,i)=>i===entries.length-1?
     100-Math.floor(100/entries.length)*(entries.length-1):Math.floor(100/entries.length));
   const cells=entries.map((entry,i)=>'<td width="'+sizes[i]+'%" align="center" valign="top"><img src="'+
-    imageURL(entry,options.theme??'dark')+'" alt="'+escapeHTML(entry.title)+'" width="100%" /></td>').join('\n');
+    repoAssetURL(entry,options.theme??'dark',repository)+'" alt="'+escapeHTML(entry.title)+'" width="100%" /></td>').join('\n');
   return '<table width="100%">\n<tr>\n'+cells+'\n</tr>\n</table>';
 }
 export function marker(meta) {

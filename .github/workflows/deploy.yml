@@ -59,6 +59,7 @@ jobs:
           node --check src/main.js
           node --check src/designer.js
           node --check src/designer-core.mjs
+          node --check src/repo-preview.mjs
       - name: Package static site
         run: |
           mkdir -p dist

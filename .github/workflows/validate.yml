@@ -26,11 +26,12 @@ jobs:
         run: python scripts/render_gifs.py
       - name: Check SVG generators and run offline Python tests
         run: |
-          python -m py_compile scripts/render_dynamic.py scripts/render_showcase.py
+          python -m py_compile scripts/render_dynamic.py scripts/render_showcase.py scripts/render_target.py
           python -m unittest discover -s tests -p 'test_*.py'
       - name: Check browser scripts and Node layout tests
         run: |
           node --check src/main.js
           node --check src/designer.js
           node --check src/designer-core.mjs
+          node --check src/repo-preview.mjs
           node --test tests/*.test.mjs

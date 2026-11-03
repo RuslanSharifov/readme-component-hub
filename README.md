@@ -58,6 +58,49 @@ The card is updated by a **scheduled GitHub Action approximately once per hour**
 ![Chrome UI Gallery Stats](https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/chrome-ui-gallery-stats/dark.svg)
 ```
 
+## 🔗 Bind README Designer to any GitHub repository
+
+**[Open README Designer](https://ruslansharifov.github.io/readme-component-hub/designer.html)** and paste a public URL such as \`https://github.com/RuslanSharifov/chrome-ui-gallery\` into **Target repository**. Empty input uses **[RuslanSharifov/readme-component-hub](https://github.com/RuslanSharifov/readme-component-hub)**.
+
+- The repository URL controls the **whole Designer document**, not just the next component.
+- Changing it rewrites all **previously inserted managed component blocks**, including two/three-column rows, while leaving your manually written Markdown outside those blocks unchanged.
+- Live preview loads public repository statistics through the GitHub API in the browser.
+- Static images stay hosted by README Component Hub. **Dynamic SVGs link to the selected repository's own generated assets**, not the demo repository.
+- The correct default branch is discovered from GitHub (for example \`main\` or \`master\`). The currently chosen repository is remembered in the browser.
+
+### One-time setup for dynamic cards in another repository
+
+GitHub Pages **cannot write files into arbitrary repositories**. To make the exported dynamic-card links work, the destination repository must have a workflow creating the SVGs. The Designer includes **Copy workflow YAML** and **Download workflow** controls to make this a one-time setup.
+
+Create \`.github/workflows/readme-component-hub.yml\` in the target repository's default branch:
+
+```yaml
+name: Update README Component Hub cards
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 * * * *'
+permissions:
+  contents: write
+jobs:
+  update:
+    uses: RuslanSharifov/readme-component-hub/.github/workflows/render-repository.yml@main
+    permissions:
+      contents: write
+```
+
+Commit it, then use **Actions → Update README Component Hub cards → Run workflow** once. If needed, set **Settings → Actions → General → Workflow permissions** to allow read/write access for the repository's \`GITHUB_TOKEN\`. After the first successful run, the workflow creates \`.github/readme-component-hub/<component-id>/<theme>.svg\` in the selected repository and refreshes it on its hourly schedule (GitHub can delay scheduled jobs).
+
+Example for **Chrome UI Gallery** after installation:
+
+```md
+![Star Growth](https://raw.githubusercontent.com/RuslanSharifov/chrome-ui-gallery/main/.github/readme-component-hub/star-growth-chart/dark.svg)
+```
+
+If you **haven't installed and run the workflow**, custom-repository dynamic SVG URLs won't exist yet. The Designer will still show a live browser preview, but pasting the exported link into a GitHub README won't show an image until installation finishes. No account login or private API key is needed on the Designer site.
+
+**Security note:** The example workflow runs public code from this repository's \`main\` branch in your project with \`contents: write\`. Review and trust the code first; for stricter reproducibility, pin the reusable-workflow reference to an audited commit SHA instead of \`@main\`.
+
 ## 🧱 New component collection and README Designer
 
 **[Open README Designer](https://ruslansharifov.github.io/readme-component-hub/designer.html)** · [Browse all components](https://ruslansharifov.github.io/readme-component-hub/#explore)
