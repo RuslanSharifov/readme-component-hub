@@ -85,10 +85,10 @@
 <rect x="603" y="144" width="35" height="10" rx="3" fill="#DAF3E5"/>
 <rect x="603" y="158" width="35" height="10" rx="3" fill="#DAF3E5"/>
 <rect x="603" y="172" width="35" height="10" rx="3" fill="#DAF3E5"/>
-<rect x="603" y="186" width="35" height="10" rx="3" fill="#DAF3E5"/>
-<rect x="603" y="200" width="35" height="10" rx="3" fill="#13815C"/>
+<rect x="603" y="186" width="35" height="10" rx="3" fill="#13815C"/>
+<rect x="603" y="200" width="35" height="10" rx="3" fill="#265B4D"/>
 <rect x="603" y="214" width="35" height="10" rx="3" fill="#265B4D"/>
-<rect x="603" y="228" width="35" height="10" rx="3" fill="#265B4D"/>
-<text x="40" y="249" font-family="Arial,sans-serif" font-size="12" font-weight="normal" fill="#587672">Latest 84 days • 40 commits fetched</text>
-<text x="38" y="261" font-family="Arial,sans-serif" font-size="11" font-weight="normal" fill="#587672">Synced 05 Nov 2026 20:40 UTC</text>
+<rect x="603" y="228" width="35" height="10" rx="3" fill="#DAF3E5"/>
+<text x="40" y="249" font-family="Arial,sans-serif" font-size="12" font-weight="normal" fill="#587672">Latest 84 days • 41 commits fetched</text>
+<text x="38" y="261" font-family="Arial,sans-serif" font-size="11" font-weight="normal" fill="#587672">Synced 06 Nov 2026 01:34 UTC</text>
 </svg>
