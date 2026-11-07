@@ -144,7 +144,8 @@ export function initHero() {
     const cosY = Math.cos(s.rotY), sinY = Math.sin(s.rotY);
     const tilt = s.rotX + pointer.ny * 0.3;
     const cosX = Math.cos(tilt), sinX = Math.sin(tilt);
-    const size = Math.min(W, H) * 0.395 * tune.scale;
+    // Slightly smaller figures with the same number of points produce a denser, clearer silhouette.
+    const size = Math.min(W, H) * 0.34 * tune.scale;
     const cx = W / 2, cy = H / 2;
     const R = 96, R2 = R * R;
 
@@ -181,7 +182,8 @@ export function initHero() {
       ctx.fillStyle = (i % 17 === 0) ? ACCENT : INK;
       ctx.globalAlpha = 0.18 + depth * 0.78;
       ctx.beginPath();
-      ctx.arc(sx, sy, 0.62 + persp * 0.92, 0, TAU);
+      // Keep individual particles crisp even when the shape is more compact.
+      ctx.arc(sx, sy, 0.55 + persp * 0.77, 0, TAU);
       ctx.fill();
     }
     ctx.globalAlpha = 1;
