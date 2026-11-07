@@ -53,9 +53,9 @@ test('aurora particle design keeps at least triple density and no automated shap
   const page=readFileSync(new URL('../index.html',import.meta.url),'utf8');
   const designer=readFileSync(new URL('../designer.html',import.meta.url),'utf8');
   const neon=readFileSync(new URL('../src/aurora-theme.css',import.meta.url),'utf8');
-  assert.match(hero,/mobile: \{ min: 1530, max: 2040 \}/);
-  assert.match(hero,/tablet: \{ min: 2940, max: 3920 \}/);
-  assert.match(hero,/desktop: \{ min: 5100, max: 6800 \}/);
+  assert.match(hero,/mobile: \{ min: 1530, max: 2550 \}/);
+  assert.match(hero,/tablet: \{ min: 2940, max: 4900 \}/);
+  assert.match(hero,/desktop: \{ min: 5100, max: 8500 \}/);
   assert.doesNotMatch(hero,/setInterval\(next/);
   assert.match(hero,/const stride = s.count \/ count/);
   assert.match(neon,/--glow-purple:#ad8dff/);
