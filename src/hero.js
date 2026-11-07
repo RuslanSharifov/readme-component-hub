@@ -16,7 +16,7 @@ const SHAPES = {
     return [Math.cos(t) * r, y, Math.sin(t) * r];
   },
   torus(i, n) {
-    const cols = 64;
+    const cols = 88;
     const rows = Math.max(1, Math.ceil(n / cols));
     const u = ((i % cols) / cols) * TAU;
     const v = (Math.floor(i / cols) / rows) * TAU;
@@ -118,7 +118,7 @@ export function initHero() {
     canvas.width = Math.floor(s.W * s.dpr);
     canvas.height = Math.floor(s.H * s.dpr);
     ctx.setTransform(s.dpr, 0, 0, s.dpr, 0, 0);
-    const count = s.W < 700 ? 300 : s.W < 1100 ? 480 : 720;
+    const count = s.W < 700 ? 510 : s.W < 1100 ? 980 : 1700;
     if (count !== s.count) {
       s.count = count;
       s.targets = buildTargets(count);
@@ -144,7 +144,7 @@ export function initHero() {
     const cosY = Math.cos(s.rotY), sinY = Math.sin(s.rotY);
     const tilt = s.rotX + pointer.ny * 0.3;
     const cosX = Math.cos(tilt), sinX = Math.sin(tilt);
-    const size = Math.min(W, H) * 0.36 * tune.scale;
+    const size = Math.min(W, H) * 0.395 * tune.scale;
     const cx = W / 2, cy = H / 2;
     const R = 96, R2 = R * R;
 
@@ -179,9 +179,9 @@ export function initHero() {
 
       const depth = Math.min(1, Math.max(0, (zc + 1.3) / 2.6));
       ctx.fillStyle = (i % 17 === 0) ? ACCENT : INK;
-      ctx.globalAlpha = 0.12 + depth * 0.82;
+      ctx.globalAlpha = 0.18 + depth * 0.78;
       ctx.beginPath();
-      ctx.arc(sx, sy, 0.6 + persp * 0.8, 0, TAU);
+      ctx.arc(sx, sy, 0.62 + persp * 0.92, 0, TAU);
       ctx.fill();
     }
     ctx.globalAlpha = 1;

@@ -1,3 +1,4 @@
+import {snippet as neonSnippet, escapeHTML} from './neon-core.mjs';
 /* README Composer: pick components and produce a complete README.md document.
    Uses the same asset URLs as the gallery, so the output renders on GitHub. */
 
@@ -7,6 +8,7 @@ const els = {
   chips: document.getElementById('composeChips'),
   title: document.getElementById('composeTitleInput'),
   tagline: document.getElementById('composeTagline'),
+  caption: document.getElementById('composeCaption'),
   theme: document.getElementById('composeTheme'),
   align: document.getElementById('composeAlign'),
   width: document.getElementById('composeWidth'),
@@ -32,24 +34,15 @@ function selectedComponents() {
 }
 
 function buildMarkdown() {
-  const title = els.title.value.trim() || 'Hello, world';
-  const tagline = els.tagline.value.trim();
-  const theme = els.theme.value;
-  const align = els.align.value;
-  const width = els.width.value;
-  const items = selectedComponents();
-
-  const lines = [];
-  lines.push('<div align="' + align + '">', '');
-  lines.push('# ' + title, '');
-  if (tagline) lines.push(tagline, '');
-  items.forEach((c) => {
-    const url = RAW_ROOT + assetPath(c, theme);
-    lines.push('<p align="' + align + '">');
-    lines.push('  <img src="' + url + '" width="' + width + '%" alt="' + esc(c.title) + '" />');
-    lines.push('</p>', '');
-  });
-  lines.push('</div>', '');
+  const title=els.title.value.trim() || 'Hello, world';
+  const tagline=els.tagline.value.trim();
+  const lines=['# '+title,''];
+  if(tagline)lines.push(tagline,'');
+  for(const item of selectedComponents()){
+    if(item.id==='neon-wave')
+      lines.push(neonSnippet({caption:els.caption.value,theme:els.theme.value,
+        width:Number(els.width.value),align:els.align.value}),'');
+  }
   return lines.join('\n');
 }
 
@@ -105,7 +98,7 @@ function bind() {
     renderChips();
     renderOutput();
   });
-  [els.title, els.tagline, els.theme, els.align, els.width].forEach((el) => {
+  [els.title, els.tagline, els.caption, els.theme, els.align, els.width].forEach((el) => {
     el.addEventListener('input', renderOutput);
     el.addEventListener('change', renderOutput);
   });

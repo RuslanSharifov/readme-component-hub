@@ -1,3 +1,4 @@
+import {snippet as neonSnippet, DEFAULTS as neonDefaults} from './neon-core.mjs';
 /* README Component Hub — entirely static, no backend required. */
 const REPOSITORY = 'https://github.com/RuslanSharifov/readme-component-hub';
 const RAW_ASSETS_ROOT = 'https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/';
@@ -13,6 +14,7 @@ const state = {
   align: 'left',
   width: 100,
   offset: 0,
+  caption: neonDefaults.caption,
   focusBeforeModal: null,
 };
 
@@ -112,17 +114,13 @@ function renderCatalog() {
 function markdown() {
   const entry=state.selected;
   if(!entry) return '';
-  const url=hostedUrl(entry.themes[state.theme] || entry.themes.dark);
-  const alt=escapeHTML(entry.title), width=state.width;
-  if(state.align==='left' && width===100 && state.offset===0)
-    return '!['+escapeMarkdown(entry.title)+']('+url+')';
-  const img='<img src="'+url+'" alt="'+alt+'" width="'+width+'%" />';
-  if(state.offset>0)
-    return '<table width="100%"><tr><td width="'+state.offset+'%">&nbsp;</td><td width="'+(100-state.offset)+'%" align="'+state.align+'">\n'+img+'\n</td></tr></table>';
-  return '<p align="'+state.align+'">\n  '+img+'\n</p>';
+  return neonSnippet({caption:state.caption,theme:state.theme,width:state.width,align:state.align});
 }
+
 function updateMarkdown() {
   els.code.textContent=markdown();
+  $('#modalCaptionPreview').textContent=state.caption;
+  $('#modalCaptionPreview').hidden=!state.caption;
   const area=$('#modalPreview');
   area.classList.toggle('centered',state.align==='center');
   area.classList.toggle('right-aligned',state.align==='right');
@@ -153,6 +151,8 @@ function openModal(id) {
   state.align = 'left';
   state.width = 100;
   state.offset = 0;
+  state.caption = neonDefaults.caption;
+  $('#modalCaption').value=state.caption;
   $('#modalWidth').value='100';
   $('#modalOffset').value='0';
   state.focusBeforeModal = document.activeElement;
@@ -276,6 +276,9 @@ function setupEvents() {
       choice.setAttribute('aria-pressed', String(active));
     });
     updateMarkdown();
+  });
+  $('#modalCaption').addEventListener('input',event=>{
+    state.caption=event.target.value.slice(0,90);updateMarkdown();
   });
   $('#modalWidth').addEventListener('change',event=>{
     state.width=Number(event.target.value);updateMarkdown();
