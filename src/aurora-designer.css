@@ -1,0 +1,183 @@
+/* README DESIGNER / Aurora Neon: matches the main site while keeping the compact,
+   fixed-height three-column desktop workflow and GitHub-safe output unchanged. */
+:root{
+  color-scheme:dark;
+  --bg:#141d3b;--paper:#1d2e55;--ink:#eff6ff;
+  --line:rgba(166,198,255,.18);--muted:#adc1dd;
+  --orange:#85eaff;
+  --cyan:#85eaff;--purple:#b5a0ff;--mint:#99f3d7;
+  --glow:0 27px 75px rgba(6,13,46,.40);
+}
+html{background:#141d3b}
+.designer-body{
+  color:var(--ink);
+  background:
+    radial-gradient(ellipse 51% 49% at 5% 11%,rgba(109,100,226,.19),transparent 79%),
+    radial-gradient(ellipse 42% 53% at 95% 81%,rgba(45,160,214,.10),transparent 77%),
+    linear-gradient(135deg,#172344,#182342 70%,#1b284e);
+}
+:focus-visible{outline-color:var(--cyan)}
+::selection{background:rgba(151,124,253,.35);color:#fff}
+.studio-header{
+  background:rgba(24,37,72,.83);
+  border-bottom-color:rgba(174,215,255,.20);
+  backdrop-filter:blur(21px) saturate(150%);
+  -webkit-backdrop-filter:blur(21px) saturate(150%);
+  box-shadow:0 10px 45px rgba(7,15,49,.23);
+}
+.brand{color:#f2f7ff}
+.brand-icon{
+  border-radius:12px;background:linear-gradient(135deg,#535fc0,#2c9bad);
+  box-shadow:0 0 24px rgba(107,173,250,.30),inset 0 1px rgba(246,251,255,.25);
+}
+.accent{color:var(--cyan)}
+.studio-heading>span{color:#afc1e0}
+.studio-heading h1{color:#f0f7ff}
+.studio-heading em{color:var(--purple);text-shadow:0 0 25px rgba(166,146,253,.24)}
+.studio-actions{gap:9px}
+.btn{
+  border-radius:999px;border-color:rgba(168,212,255,.30);
+  background:rgba(126,163,235,.09);color:#eaf3ff;
+  box-shadow:inset 0 1px rgba(230,244,255,.08);
+  transition:transform .42s cubic-bezier(.22,1,.36,1),border-color .27s,background .27s,box-shadow .35s;
+}
+.btn:hover{transform:translateY(-2px);border-color:rgba(156,234,255,.68);background:rgba(111,166,231,.20);box-shadow:0 11px 24px rgba(13,26,77,.22)}
+.btn.primary{
+  color:#12213d;border-color:rgba(224,245,255,.2);
+  background:linear-gradient(125deg,#95ecff,#b5b7ff 55%,#d1b6ff);
+  box-shadow:0 11px 25px rgba(69,161,246,.20),inset 0 1px rgba(255,255,255,.56);
+}
+.btn.primary:hover{color:#11213d;background:linear-gradient(125deg,#b4f7ff,#c7baff);box-shadow:0 15px 35px rgba(87,182,245,.29)}
+.repository-bar{color:#bdceea}
+.repository-bar label{color:#a6bcdc}
+.repository-bar input{
+  background:rgba(24,43,83,.75);color:var(--ink);
+  border:1px solid rgba(163,201,255,.30);border-radius:13px;
+  transition:border-color .25s,box-shadow .25s;
+}
+.repository-bar input:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(110,224,251,.11)}
+.repository-bar input::placeholder{color:#819cbf}
+.repository-bar>span{color:#91dbc6}
+.repository-bar .error{color:#ffb4c2}
+.workspace{
+  border:1px solid rgba(174,213,255,.23);
+  border-radius:26px;
+  background:linear-gradient(160deg,rgba(37,54,98,.95),rgba(25,41,78,.97));
+  box-shadow:var(--glow),inset 0 1px rgba(222,243,255,.08);
+  overflow:hidden;
+}
+.pane{position:relative;background:linear-gradient(155deg,rgba(41,56,101,.58),rgba(27,44,83,.72))}
+.pane+.pane{border-left:1px solid rgba(168,202,255,.18)}
+.pane-heading{
+  color:#d1e3ff;
+  background:rgba(19,37,75,.28);
+  border-color:var(--line);
+}
+.pane-heading span:last-child{color:#9eb7d7}
+.component-body{scrollbar-color:rgba(150,184,241,.34) transparent}
+.intro{color:#afc1df}
+.component-card{
+  border:1px solid rgba(175,207,255,.23);
+  border-radius:21px;
+  overflow:hidden;
+  color:var(--ink);
+  background:linear-gradient(145deg,rgba(43,62,111,.96),rgba(33,50,94,.96));
+  box-shadow:0 18px 36px rgba(8,17,57,.26),inset 0 1px rgba(255,255,255,.07);
+  transition:transform .5s cubic-bezier(.22,1,.36,1),border-color .35s,box-shadow .35s;
+}
+.component-card:hover{
+  transform:translateY(-3px);
+  border-color:rgba(143,236,255,.62);
+  box-shadow:0 24px 55px rgba(5,16,51,.36),0 0 29px rgba(118,207,255,.12);
+}
+.component-art{
+  border-radius:14px;
+  background:radial-gradient(ellipse at var(--spot-x,50%) var(--spot-y,50%),rgba(109,93,241,.26),transparent 75%),linear-gradient(140deg,#162950,#1b3156);
+}
+.component-art img{border-radius:12px;box-shadow:0 0 20px rgba(118,227,255,.13)}
+.component-row strong{color:#f3f9ff}
+.component-row small{color:#b8c6e3}
+.component-card p{color:#b0c5e4}
+.component-card button{
+  border-radius:12px;border:1px solid rgba(195,235,255,.25);
+  background:linear-gradient(120deg,#7eddf4,#adb7f4);
+  color:#132240;font-weight:750;
+  transition:box-shadow .25s,filter .25s;
+}
+.component-card button:hover{filter:brightness(1.09);box-shadow:0 0 25px rgba(118,221,255,.28);background:linear-gradient(120deg,#a1efff,#c1c4fa)}
+.inspector{border-color:var(--line)}
+.inspector h2{color:var(--cyan)}
+.inspector label{color:#c5d6ef}
+.inspector input[type=text],.inspector select{
+  border:1px solid rgba(161,198,254,.26);border-radius:12px;
+  background:rgba(18,36,72,.78);color:var(--ink);
+}
+.inspector input[type=text]:focus,.inspector select:focus{
+  border-color:var(--cyan);box-shadow:0 0 0 3px rgba(129,235,255,.10);
+}
+.inspector input[type=range],.preview-toolbar input{accent-color:var(--cyan)}
+.width-label output{color:var(--mint)}
+.note{color:#9fb7d6}
+.text-tools{background:rgba(26,43,81,.62);border-color:var(--line)}
+.text-tools button{color:#b8cee9;border-radius:9px;transition:background .22s,color .22s}
+.text-tools button:hover{background:rgba(135,186,244,.19);color:#fff;border-color:rgba(146,229,255,.30)}
+#markdownInput{
+  background:linear-gradient(145deg,#17294c,#192c50);
+  color:#d1edff;caret-color:var(--cyan);
+  scrollbar-color:rgba(153,187,244,.42) transparent;
+}
+#markdownInput:focus-visible{outline:2px solid rgba(135,229,255,.55)}
+.pane-footer{border-color:var(--line);background:rgba(23,37,75,.38);color:#a6bddb}
+.live{color:#9cf6d5!important}
+.live i{background:#a0ffdc;box-shadow:0 0 11px rgba(151,255,215,.66)}
+.preview-toolbar{
+  background:rgba(22,38,77,.54);border-color:var(--line);
+}
+.preview-toolbar label{color:#c9d8ee}
+.preview-toolbar output{color:#e6f6ff}
+.preview-toolbar button{
+  border-radius:10px;border-color:rgba(163,207,255,.25);
+  background:rgba(117,161,232,.13);color:#e7f6ff;
+}
+.preview-toolbar button:hover{border-color:var(--cyan);background:rgba(111,208,249,.2)}
+.preview-viewport{
+  background:
+    radial-gradient(ellipse 56% 64% at 80% 31%,rgba(101,93,206,.15),transparent 75%),
+    linear-gradient(145deg,#18274b,#192952);
+  scrollbar-color:rgba(153,187,244,.32) transparent;
+}
+.readme-preview{
+  border:1px solid rgba(162,201,255,.24);
+  border-radius:18px;
+  background:#22335d;color:#eef6ff;
+  box-shadow:0 21px 64px rgba(6,13,40,.30),0 0 30px rgba(130,179,251,.08);
+}
+.readme-preview h1,.readme-preview h2,.readme-preview h3{border-color:rgba(164,188,228,.24)}
+.readme-preview p,.readme-preview li{color:#dae9ff}
+.readme-preview pre,.readme-preview code{background:#192a51;color:#c6eeff}
+.readme-preview blockquote{color:#b1c3e0;border-color:rgba(158,200,255,.38)}
+.readme-preview hr{border-color:rgba(177,197,245,.22)}
+.readme-preview a{color:#8eeaff}
+.readme-preview.dark{
+  background:#22335d;color:#eef6ff;border-color:rgba(177,214,255,.25);
+}
+.readme-preview.dark pre,.readme-preview.dark code{background:#192b54;color:#d1efff}
+.readme-preview:not(.dark){
+  background:#f1f7ff;color:#1e3054;
+}
+.readme-preview:not(.dark) p,.readme-preview:not(.dark) li{color:#25375b}
+.readme-preview:not(.dark) pre,.readme-preview:not(.dark) code{background:#e7effb;color:#213c62}
+.readme-preview:not(.dark) a{color:#166f9d}
+.toast{background:linear-gradient(125deg,#26396d,#2e4b7e);color:#f3f9ff;border:1px solid rgba(166,221,255,.34);border-radius:15px;box-shadow:0 15px 36px rgba(7,14,52,.40)}
+@media(max-width:760px){
+  .designer-body{background:linear-gradient(150deg,#172244,#1b2a4d)}
+  .studio-header{border-color:var(--line)}
+  .workspace{border-radius:21px;overflow:visible}
+  .pane:first-child{border-radius:21px 21px 0 0}
+  .pane:last-child{border-radius:0 0 21px 21px}
+  .pane+.pane{border-left:0;border-top:1px solid var(--line)}
+  .component-card{max-width:510px}
+}
+@media(prefers-reduced-motion:reduce){
+  .btn,.component-card,.text-tools button,.toast{transition:none;animation:none}
+}
