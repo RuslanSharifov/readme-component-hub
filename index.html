@@ -234,6 +234,9 @@
               <select id="composeWidth"><option value="100">100%</option><option value="70">70%</option><option value="50">50%</option></select>
             </label>
           </div>
+          <label class="field">Waveform text
+            <input id="composeCaption" type="text" maxlength="90" value="the rhythm of building" placeholder="Write your message"/>
+          </label>
           <p class="field-label">Parts <span id="composeCount" class="muted-count"></span></p>
           <div id="composeChips" class="compose-chips"></div>
         </div>
@@ -309,7 +312,7 @@
       <div class="modal-columns">
         <div class="preview-column">
           <div class="preview-label"><span>LIVE PREVIEW</span><span id="previewFormat">SVG</span></div>
-          <div id="modalPreview" class="modal-preview"><img id="modalImage" alt="" /></div>
+          <div id="modalPreview" class="modal-preview"><strong id="modalCaptionPreview" class="modal-caption-preview">the rhythm of building</strong><img id="modalImage" alt="" /></div>
           <div class="preview-credit"><span id="modalAuthor"></span><a id="viewSource" target="_blank" rel="noopener noreferrer" href="#">View source ↗</a></div>
         </div>
         <div class="customize-column">
@@ -317,6 +320,10 @@
             <div class="setting-heading">Tracked repository <span>updates hourly</span></div>
             <select id="repoSelect" class="repo-select" aria-label="Choose tracked GitHub repository"></select>
             <p class="repo-explanation">This card shows the selected repository’s data. Embedding it elsewhere does not change its source.</p>
+          </div>
+          <div class="setting">
+            <label class="setting-heading" for="modalCaption">Text above waveform</label>
+            <input type="text" id="modalCaption" maxlength="90" value="the rhythm of building" class="neon-caption-input" />
           </div>
           <div class="setting">
             <div class="setting-heading">Theme <span id="themeCount">2 options</span></div>

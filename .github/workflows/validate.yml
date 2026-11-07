@@ -1,13 +1,10 @@
-name: Validate community components
-
+name: Validate README Component Hub
 on:
   pull_request:
   push:
     branches: [main]
-
 permissions:
   contents: read
-
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -18,20 +15,19 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Install GIF generator
+      - name: Install animation dependencies
         run: python -m pip install -r requirements-assets.txt
-      - name: Validate contributed manifests and assets
+      - name: Validate Neon Waveform catalog
         run: python scripts/build_catalog.py
-      - name: Confirm built-in GIF animations render
+      - name: Verify generated GIFs have real animation
         run: python scripts/render_gifs.py
-      - name: Check SVG generators and run offline Python tests
+      - name: Check browser JavaScript and tests
         run: |
-          python -m py_compile scripts/render_dynamic.py scripts/render_showcase.py scripts/render_target.py
-          python -m unittest discover -s tests -p 'test_*.py'
-      - name: Check browser scripts and Node layout tests
-        run: |
-          node --check src/main.js
+          node --check src/neon-core.mjs
           node --check src/designer.js
-          node --check src/designer-core.mjs
-          node --check src/repo-preview.mjs
+          node --check src/main.js
+          node --check src/hero.js
+          node --check src/site.js
+          node --check src/repo.js
+          node --check src/composer.js
           node --test tests/*.test.mjs

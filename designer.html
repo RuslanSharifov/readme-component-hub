@@ -1,155 +1,89 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <meta name="theme-color" content="#0d1419" />
-  <meta name="description" content="Design a beautiful GitHub README with drag-and-drop components, Markdown editing and live preview." />
-  <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="./src/styles.css" />
-  <link rel="stylesheet" href="./src/designer.css" />
-  <title>README Designer · README Component Hub</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#f3f2ee"/>
+<meta name="description" content="Minimal GitHub README editor. Live Markdown preview, configurable Neon Waveform and responsive sizing."/>
+<link rel="icon" type="image/svg+xml" href="./favicon.svg"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"/>
+<link rel="stylesheet" href="./src/designer.css"/>
+<title>README Designer — README Component Hub</title>
 </head>
-<body>
-  <a href="#designerMain" class="skip-link">Skip to README designer</a>
-  <header class="site-header">
-    <div class="container header-content">
-      <a class="brand" href="./index.html"><span class="brand-icon" aria-hidden="true">&lt;/&gt;</span><span>readme<span class="accent">.</span>hub</span></a>
-      <nav class="desktop-navigation" aria-label="Main navigation">
-        <a href="./index.html#explore">Explore</a>
-        <a href="./designer.html" aria-current="page" class="accent">README Designer</a>
-        <a href="./index.html#contribute">Contribute</a>
-      </nav>
-      <div class="header-right">
-        <a class="github-link" href="https://github.com/RuslanSharifov/readme-component-hub" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-      </div>
-    </div>
-  </header>
-
-  <main id="designerMain" class="designer-page">
-    <div class="container designer-top">
-      <div>
-        <div class="section-topline"><span class="small-square"></span> README STUDIO / VISUAL BUILDER</div>
-        <h1>Design your <span class="accent">README.</span></h1>
-        <p>Combine components, write Markdown, and see a GitHub-style preview. Your draft stays in this browser.</p>
-      </div>
-      <div class="top-actions">
-        <button type="button" id="newReadme" class="button secondary-button">New</button>
-        <button type="button" id="downloadReadme" class="button secondary-button">Download .md</button>
-        <button type="button" id="copyReadme" class="button primary-button">Copy README</button>
-      </div>
-    </div>
-    <section class="repo-connection container" aria-label="Target GitHub repository settings">
-      <div class="repo-connection-top">
-        <div>
-          <div class="section-topline"><span class="small-square"></span> REPOSITORY CONNECTION</div>
-          <h2>Bind components to your project</h2>
-          <p>Enter your public repository once. Previously added cards, new components and copied Markdown will follow it.</p>
-        </div>
-        <span class="repo-service-pill"><span class="online-bullet"></span> GitHub API</span>
-      </div>
-      <label for="repositoryInput" class="repo-input-label">Target repository URL</label>
-      <div class="repo-input-line">
-        <input id="repositoryInput" class="studio-input" type="url" spellcheck="false" autocomplete="url" placeholder="https://github.com/OWNER/REPOSITORY" aria-describedby="repoStatus" />
-        <button type="button" id="applyRepository" class="button primary-button">Connect repository</button>
-        <button type="button" id="resetRepository" class="button secondary-button">Use default</button>
-      </div>
-      <p id="repoStatus" class="repo-status" role="status" aria-live="polite">Default: RuslanSharifov/readme-component-hub</p>
-      <details id="workflowSetup" class="workflow-setup" hidden>
-        <summary><span>One-time setup for auto-updating GitHub README cards</span><span class="workflow-disclosure">⌄</span></summary>
-        <div class="workflow-details">
-          <p>GitHub Pages cannot generate files inside your repository. Add this GitHub Actions workflow once. It writes SVG files into a separate readme-component-hub-assets branch, so protected main branches need no direct pushes. Static GIF/SVG components work without setup.</p>
-          <div class="workflow-instructions">
-            <span><strong>1.</strong> Create <code>.github/workflows/readme-component-hub.yml</code> in your target repository.</span>
-            <span><strong>2.</strong> Paste the workflow below and commit it to the default branch.</span>
-            <span><strong>3.</strong> Go to Actions → <strong>Update README Component Hub cards</strong> → Run workflow. Future updates are scheduled hourly, though GitHub may delay them.</span>
+<body class="designer-body">
+<a href="#markdownInput" class="skip-link">Skip to Markdown editor</a>
+<header class="studio-header">
+  <a href="./index.html" class="brand" aria-label="Back to Component Hub"><span class="brand-icon">R</span>readme<span class="accent">/</span>hub</a>
+  <div class="studio-heading"><span>STUDIO / 01</span><h1>README <em>Designer</em></h1></div>
+  <div class="studio-actions">
+    <button id="newReadme" class="btn subtle" type="button">New</button>
+    <button id="downloadReadme" class="btn subtle" type="button">Download .md</button>
+    <button id="copyReadme" class="btn primary" type="button">Copy README <span aria-hidden="true">↗</span></button>
+  </div>
+</header>
+<main id="designerMain" class="designer-page">
+  <div class="repository-bar">
+    <label for="repositoryInput">REPOSITORY</label>
+    <input type="text" id="repositoryInput" autocomplete="off" spellcheck="false" aria-describedby="repoStatus"
+      placeholder="https://github.com/OWNER/REPOSITORY"/>
+    <span id="repoStatus" role="status">Shared asset works in every README</span>
+  </div>
+  <section class="workspace" aria-label="README designer workspace">
+    <aside class="pane components-pane" aria-label="Component library">
+      <div class="pane-heading"><span>01 / COMPONENTS</span><span id="libraryCount">01</span></div>
+      <div class="component-body">
+        <p class="intro">A focused starting point. Other components will be added later.</p>
+        <div id="componentLibrary" class="component-list"><p>Loading component…</p></div>
+        <div class="inspector">
+          <h2>EDIT COMPONENT</h2>
+          <label for="neonCaption">Display text</label>
+          <input id="neonCaption" type="text" maxlength="90" spellcheck="false" value="the rhythm of building"/>
+          <div class="split">
+            <label for="neonTheme">Theme<select id="neonTheme"><option value="dark">Dark</option><option value="light">Light</option></select></label>
+            <label for="neonAlign">Position<select id="neonAlign"><option value="center">Centre</option><option value="left">Left</option><option value="right">Right</option></select></label>
           </div>
-          <div class="workflow-buttons">
-            <button type="button" id="copyWorkflow" class="button secondary-button">Copy workflow YAML</button>
-            <button type="button" id="downloadWorkflow" class="button secondary-button">Download workflow</button>
-            <a id="openTargetRepository" class="button secondary-button" href="https://github.com" target="_blank" rel="noopener noreferrer">Open target repository ↗</a>
-          </div>
-          <pre id="workflowCode" class="workflow-code" tabindex="0"></pre>
-          <p class="workflow-warning">Until this workflow has run successfully, your custom repository's dynamic images will not exist and GitHub README will display missing images. The Designer's live preview reads public GitHub API data, but its exported Markdown points to the repository's generated assets on the dedicated asset branch.</p>
+          <label for="neonWidth" class="width-label">Image width <output id="neonWidthValue">100%</output></label>
+          <input id="neonWidth" type="range" min="20" max="100" step="5" value="100"/>
+          <p class="note">Editable text is placed above the animated GIF in the exported README. GitHub does not support changing text baked into a hosted GIF.</p>
         </div>
-      </details>
+      </div>
+    </aside>
+    <section class="pane editor-pane" aria-label="Markdown editor">
+      <div class="pane-heading"><span>02 / SOURCE</span><span>README.md</span></div>
+      <div class="text-tools" role="toolbar" aria-label="Markdown formatting">
+        <button type="button" data-format="h1" title="Heading 1">H1</button>
+        <button type="button" data-format="h2" title="Heading 2">H2</button>
+        <button type="button" data-format="bold" title="Bold"><b>B</b></button>
+        <button type="button" data-format="italic" title="Italic"><i>I</i></button>
+        <button type="button" data-format="quote" title="Quote">❝</button>
+        <button type="button" data-format="list" title="List">☰</button>
+        <button type="button" data-format="link" title="Link">↗</button>
+        <button type="button" data-format="divider" title="Divider">—</button>
+        <button type="button" data-format="code" title="Code">&lt;/&gt;</button>
+      </div>
+      <label for="markdownInput" class="sr-only">Markdown source</label>
+      <textarea id="markdownInput" spellcheck="false" autocomplete="off"></textarea>
+      <div class="pane-footer"><span>Drag the component here or click Add</span><span id="sourceLength">0 characters</span></div>
     </section>
-    <section class="studio container" aria-label="README designer workspace">
-      <aside class="studio-sidebar" aria-label="Component library">
-        <div class="panel-heading"><span>COMPONENT LIBRARY</span><span class="panel-tiny" id="libraryCount">—</span></div>
-        <div class="panel-inner">
-          <label for="librarySearch" class="visually-hidden">Search components</label>
-          <input id="librarySearch" class="studio-input" type="search" placeholder="Search components…" autocomplete="off" />
-          <label class="visually-hidden" for="libraryCategory">Component category</label>
-          <select id="libraryCategory" class="studio-select"><option value="All">All categories</option></select>
-          <p class="panel-help">Drag a card into the preview or click <strong>Add</strong>. On mobile, use Add.</p>
-        </div>
-        <div id="componentLibrary" class="component-library" aria-live="polite"><p class="panel-help">Loading library…</p></div>
-        <div class="panel-heading" id="structureHeading"><span>DOCUMENT BLOCKS</span><span class="panel-tiny" id="blockCount">0</span></div>
-        <div id="blockList" class="block-list" aria-labelledby="structureHeading"></div>
-      </aside>
-
-      <section class="editor-pane" aria-label="Markdown editor">
-        <div class="panel-heading"><span>README.md</span><span class="panel-tiny">MARKDOWN EDITOR</span></div>
-        <div class="editor-toolbar" role="toolbar" aria-label="Insert Markdown formatting">
-          <button type="button" data-format="h1" title="Heading level 1">H1</button>
-          <button type="button" data-format="h2" title="Heading level 2">H2</button>
-          <button type="button" data-format="bold" title="Bold"><strong>B</strong></button>
-          <button type="button" data-format="italic" title="Italic"><em>I</em></button>
-          <button type="button" data-format="quote" title="Blockquote">❝</button>
-          <button type="button" data-format="list" title="Bullet list">☷</button>
-          <button type="button" data-format="code" title="Code block">&lt;/&gt;</button>
-          <button type="button" data-format="divider" title="Horizontal rule">—</button>
-          <button type="button" data-format="table" title="Markdown table">▦</button>
-          <button type="button" data-format="link" title="Link">↗</button>
-        </div>
-        <label for="markdownInput" class="visually-hidden">Markdown source</label>
-        <textarea id="markdownInput" spellcheck="false" autocomplete="off" aria-describedby="editorHelp"></textarea>
-        <div class="editor-foot">
-          <span id="editorHelp">Edit Markdown directly or insert components from the library.</span>
-          <span id="sourceLength">0 characters</span>
-        </div>
-        <div class="panel-heading" id="layoutHeading"><span>LAYOUT BUILDER</span><span class="panel-tiny">SIDEBY-SIDE</span></div>
-        <div class="layout-builder">
-          <label>First component<select id="rowFirst" class="studio-select"></select></label>
-          <label>Second component<select id="rowSecond" class="studio-select"></select></label>
-          <label>Third (optional)<select id="rowThird" class="studio-select"><option value="">None · 2 columns</option></select></label>
-          <button type="button" id="addComponentRow" class="button secondary-button">+ Add side-by-side row</button>
-          <p class="panel-help">Uses a GitHub README HTML table. Mobile GitHub layouts may scroll horizontally; exact spacing varies.</p>
-        </div>
-        <div class="panel-heading"><span>BLOCK APPEARANCE</span><span class="panel-tiny" id="selectionName">Select a block</span></div>
-        <div class="appearance-panel" id="appearancePanel">
-          <label>Width<select id="blockWidth" class="studio-select"><option value="30">30%</option><option value="50">50%</option><option value="70">70%</option><option value="100">100%</option></select></label>
-          <label>Alignment<select id="blockAlign" class="studio-select"><option value="left">Left</option><option value="center">Center</option><option value="right">Right</option></select></label>
-          <label>Offset from left<select id="blockOffset" class="studio-select"><option value="0">0%</option><option value="10">10%</option><option value="20">20%</option><option value="30">30%</option><option value="40">40%</option></select></label>
-          <label>Style<select id="blockTheme" class="studio-select"><option value="dark">Dark</option><option value="light">Light</option><option value="neon">Neon</option></select></label>
-          <p class="panel-help span-full">Width and offset use HTML attributes supported by GitHub's README renderer, but exact spacing and mobile behavior are approximate. No inline CSS or JavaScript is exported.</p>
-        </div>
-      </section>
-
-      <section class="preview-pane" aria-label="GitHub Markdown preview">
-        <div class="panel-heading"><span>LIVE PREVIEW</span><span class="preview-status"><span class="online-bullet"></span> RENDERED</span></div>
-        <div class="preview-controls">
-          <div class="seg-controls" aria-label="Preview width">
-            <button type="button" data-size="desktop" class="selected" aria-pressed="true">Desktop</button>
-            <button type="button" data-size="mobile" aria-pressed="false">Mobile</button>
-          </div>
-          <div class="seg-controls" aria-label="Preview theme">
-            <button type="button" data-skin="dark" class="selected" aria-pressed="true">Dark</button>
-            <button type="button" data-skin="light" aria-pressed="false">Light</button>
-          </div>
-        </div>
-        <div class="preview-surface" id="previewSurface">
-          <div class="readme-preview dark-skin" id="readmePreview" aria-live="polite"></div>
-        </div>
-        <div class="preview-caption">GitHub-style preview, not GitHub's exact renderer. Unsupported Markdown, SVG caching and mobile table layout may differ on GitHub.</div>
-      </section>
+    <section class="pane preview-pane" aria-label="GitHub-style README preview">
+      <div class="pane-heading"><span>03 / PREVIEW</span><span class="live"><i></i> LIVE</span></div>
+      <div class="preview-toolbar">
+        <label for="screenWidth">Screen <output for="screenWidth" id="screenWidthValue">720px</output></label>
+        <input id="screenWidth" type="range" min="320" max="1100" step="20" value="720"/>
+        <button type="button" id="togglePreviewTheme" title="Toggle preview appearance">Dark</button>
+      </div>
+      <div id="previewDropZone" class="preview-viewport">
+        <div id="readmePreview" class="readme-preview" aria-live="polite"></div>
+      </div>
+      <div class="pane-footer"><span>GitHub-style approximation. Scroll within the preview to inspect content.</span></div>
     </section>
-    <div class="container bottom-help">No account or database needed. Markdown is generated locally. <a href="./index.html#explore">Back to component gallery ↗</a></div>
-  </main>
-  <div id="designerToast" class="toast" role="status" aria-live="polite"></div>
-  <script defer src="https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/dist/markdown-it.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
-  <script type="module" src="./src/designer.js"></script>
+  </section>
+</main>
+<div id="designerToast" class="toast" aria-live="polite" role="status"></div>
+<script defer src="https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/dist/markdown-it.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
+<script type="module" src="./src/designer.js"></script>
 </body>
 </html>
