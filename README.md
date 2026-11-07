@@ -37,7 +37,7 @@ Example output:
 
 ### Aurora Neon site theme
 
-The site uses deep navy and violet surfaces, mint/cyan lighting, rounded glass panels and pointer-driven glow. The 3D hero draws **3–4×** the previous particle density (depending on frame rate) and adapts between **1,530–2,040** points on phones, **2,940–3,920** on tablets and **5,100–6,800** on desktops. Clicking the hero moves to the next 3D shape; the renderer no longer forces shape changes on a fixed interval. Motion respects `prefers-reduced-motion` and stops when off-screen.
+The site uses deep navy and violet surfaces, mint/cyan lighting, rounded glass panels and pointer-driven glow. The 3D hero draws **3–5×** the previous particle density (depending on frame rate) and adapts between **1,530–2,550** points on phones, **2,940–4,900** on tablets and **5,100–8,500** on desktops. Clicking the hero moves to the next 3D shape; the renderer no longer forces shape changes on a fixed interval. Motion respects `prefers-reduced-motion` and stops when off-screen.
 
 ## Local development
 

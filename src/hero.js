@@ -7,11 +7,11 @@ const TAU = Math.PI * 2;
 const INK = 'rgb(149, 213, 255)';
 const ACCENT = 'rgb(178, 146, 255)';
 const HIGHLIGHT = 'rgb(143, 245, 226)';
-// A baseline of 3× the previous density, growing to 4× where performance allows.
+// A baseline of 3× the previous density, growing to 5× where performance allows.
 export const PARTICLE_TARGETS = Object.freeze({
-  mobile: { min: 1530, max: 2040 },
-  tablet: { min: 2940, max: 3920 },
-  desktop: { min: 5100, max: 6800 },
+  mobile: { min: 1530, max: 2550 },
+  tablet: { min: 2940, max: 4900 },
+  desktop: { min: 5100, max: 8500 },
 });
 function particleTier(width = window.innerWidth) {
   return width < 768 ? PARTICLE_TARGETS.mobile :
@@ -222,7 +222,7 @@ export function initHero() {
     const dt = Math.min(3, (now - s.last) / 16.67) || 1;
     s.last = now;
     draw(dt, now);
-    // Adapt gracefully within 3–4× density instead of making phones stutter.
+    // Adapt gracefully within 3–5× density instead of making phones stutter.
     // A rolling average avoids triggering quality changes on occasional long frames.
     if (s.visible && !document.hidden && dt < 3) {
       s.frameSamples++;
