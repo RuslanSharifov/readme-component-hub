@@ -4,8 +4,19 @@
    - Pauses when scrolled out of view and respects reduced motion */
 
 const TAU = Math.PI * 2;
-const INK = 'rgb(14, 15, 16)';
-const ACCENT = 'rgb(255, 90, 31)';
+const INK = 'rgb(149, 213, 255)';
+const ACCENT = 'rgb(178, 146, 255)';
+const HIGHLIGHT = 'rgb(143, 245, 226)';
+// A baseline of 3× the previous density, growing to 4× where performance allows.
+export const PARTICLE_TARGETS = Object.freeze({
+  mobile: { min: 1530, max: 2040 },
+  tablet: { min: 2940, max: 3920 },
+  desktop: { min: 5100, max: 6800 },
+});
+function particleTier(width = window.innerWidth) {
+  return width < 768 ? PARTICLE_TARGETS.mobile :
+    width < 1280 ? PARTICLE_TARGETS.tablet : PARTICLE_TARGETS.desktop;
+}
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 const SHAPES = {
@@ -93,14 +104,15 @@ export function initHero() {
   const label = document.getElementById('shapeName');
   const index = document.getElementById('shapeIndex');
   if (!canvas || !stage || !canvas.getContext) return;
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d', { alpha: true });
+  if (!ctx) return;
 
   const s = {
     W: 0, H: 0, dpr: 1, count: 0,
+    renderCount: 0, minCount: 0, frameSamples: 0, sampleElapsed: 0,
     targets: null, cur: null,
     shape: 0, rotX: 0.25, rotY: 0, spin: 0,
     running: false, visible: true, last: 0,
-    timer: 0,
   };
   const pointer = { x: -9999, y: -9999, tx: 0, ty: 0, nx: 0, ny: 0 };
 
@@ -114,32 +126,40 @@ export function initHero() {
     const rect = stage.getBoundingClientRect();
     s.W = rect.width;
     s.H = rect.height;
-    s.dpr = Math.min(window.devicePixelRatio || 1, 2);
+    // Limit canvas pixel density to preserve animation quality on high-DPR phones.
+    s.dpr = Math.min(window.devicePixelRatio || 1, 1.75);
     canvas.width = Math.floor(s.W * s.dpr);
     canvas.height = Math.floor(s.H * s.dpr);
     ctx.setTransform(s.dpr, 0, 0, s.dpr, 0, 0);
-    const count = s.W < 700 ? 510 : s.W < 1100 ? 980 : 1700;
-    if (count !== s.count) {
-      s.count = count;
-      s.targets = buildTargets(count);
-      s.cur = reduceMotion.matches ? new Float32Array(s.targets[ORDER[s.shape]]) : randomCloud(count);
+    const tier = particleTier();
+    s.minCount = tier.min;
+    if (tier.max !== s.count) {
+      s.count = tier.max;
+      s.renderCount = (navigator.hardwareConcurrency || 8) <= 4 ? tier.min : tier.max;
+      s.targets = buildTargets(tier.max);
+      s.cur = reduceMotion.matches ? new Float32Array(s.targets[ORDER[s.shape]]) : randomCloud(tier.max);
+      s.frameSamples = 0;
+      s.sampleElapsed = 0;
     }
     if (reduceMotion.matches) draw(1);
   }
 
-  function draw(dt) {
+  function draw(dt, now = performance.now()) {
     const name = ORDER[s.shape];
     const target = s.targets[name];
     const cur = s.cur;
     const tune = TUNING[name];
-    const { W, H, count } = s;
+    const { W, H } = s;
+    const count = s.renderCount;
 
     const ease = 1 - Math.pow(1 - 0.05, dt);
     pointer.nx += (pointer.tx - pointer.nx) * 0.06 * dt;
     pointer.ny += (pointer.ty - pointer.ny) * 0.06 * dt;
-    s.rotX += (tune.tilt - s.rotX) * 0.03 * dt;
-    s.rotY += (0.0016 + s.spin + pointer.nx * 0.0012) * dt;
-    s.spin *= Math.pow(0.95, dt);
+    // Fluid camera motion responds to the pointer, not a hard-coded shape loop.
+    const targetTilt = tune.tilt + Math.sin(now * 0.00034) * 0.035;
+    s.rotX += (targetTilt - s.rotX) * 0.035 * dt;
+    s.rotY += (0.00055 + Math.sin(now * 0.00023) * 0.00032 + s.spin + pointer.nx * 0.0014) * dt;
+    s.spin *= Math.pow(0.91, dt);
 
     const cosY = Math.cos(s.rotY), sinY = Math.sin(s.rotY);
     const tilt = s.rotX + pointer.ny * 0.3;
@@ -151,6 +171,7 @@ export function initHero() {
 
     ctx.clearRect(0, 0, W, H);
     ctx.fillStyle = INK;
+    ctx.shadowBlur = 0;
 
     for (let i = 0; i < count; i++) {
       const j = i * 3;
@@ -179,21 +200,40 @@ export function initHero() {
       }
 
       const depth = Math.min(1, Math.max(0, (zc + 1.3) / 2.6));
-      ctx.fillStyle = (i % 17 === 0) ? ACCENT : INK;
-      ctx.globalAlpha = 0.18 + depth * 0.78;
+      // Three harmonious neon pigments create real depth, with sparse halo dots.
+      const glowDot = i % 47 === 0;
+      ctx.fillStyle = glowDot ? HIGHLIGHT : (i % 11 === 0 ? ACCENT : INK);
+      ctx.globalAlpha = 0.28 + depth * 0.7;
+      ctx.shadowBlur = glowDot ? 11 : 0;
+      if (glowDot) ctx.shadowColor = HIGHLIGHT;
       ctx.beginPath();
-      // Keep individual particles crisp even when the shape is more compact.
-      ctx.arc(sx, sy, 0.55 + persp * 0.77, 0, TAU);
+      ctx.arc(sx, sy, 0.38 + persp * (glowDot ? 0.95 : 0.69), 0, TAU);
       ctx.fill();
     }
     ctx.globalAlpha = 1;
+    ctx.shadowBlur = 0;
   }
 
   function loop(now) {
     if (!s.running) return;
     const dt = Math.min(3, (now - s.last) / 16.67) || 1;
     s.last = now;
-    draw(dt);
+    draw(dt, now);
+    // Adapt gracefully within 3–4× density instead of making phones stutter.
+    // A rolling average avoids triggering quality changes on occasional long frames.
+    if (s.visible && !document.hidden && dt < 3) {
+      s.frameSamples++;
+      s.sampleElapsed += dt * 16.67;
+      if (s.frameSamples >= 110) {
+        const average = s.sampleElapsed / s.frameSamples;
+        if (average > 24 && s.renderCount > s.minCount)
+          s.renderCount = Math.max(s.minCount, Math.floor(s.renderCount * 0.91));
+        else if (average < 16.5 && s.renderCount < s.count)
+          s.renderCount = Math.min(s.count, Math.ceil(s.renderCount * 1.06));
+        s.frameSamples = 0;
+        s.sampleElapsed = 0;
+      }
+    }
     requestAnimationFrame(loop);
   }
 
@@ -209,14 +249,9 @@ export function initHero() {
 
   function next() {
     s.shape = (s.shape + 1) % ORDER.length;
+    if (!reduceMotion.matches) s.spin += 0.025;
     setLabel();
     if (reduceMotion.matches) draw(1);
-  }
-
-  function schedule() {
-    clearInterval(s.timer);
-    if (reduceMotion.matches) return;
-    s.timer = setInterval(next, 5200);
   }
 
   setLabel();
@@ -235,7 +270,8 @@ export function initHero() {
   hero.addEventListener('pointerleave', () => {
     pointer.x = -9999; pointer.y = -9999; pointer.tx = 0; pointer.ty = 0;
   });
-  stage.addEventListener('click', () => { next(); schedule(); });
+  // The user controls shape transitions; never force a rigid timed slideshow.
+  stage.addEventListener('click', next);
 
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(([entry]) => {
@@ -245,7 +281,6 @@ export function initHero() {
   }
   document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
 
-  schedule();
   requestAnimationFrame(() => { canvas.classList.add('is-ready'); start(); });
 }
 
