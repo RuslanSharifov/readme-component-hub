@@ -2,7 +2,7 @@
 
 # README Component Hub
 
-**Minimal, open-source README components.**
+**An interactive, aurora-neon README experience.**
 
 [**Open the Gallery**](https://ruslansharifov.github.io/readme-component-hub/) · [**README Designer**](https://ruslansharifov.github.io/readme-component-hub/designer.html) · [Contribute](CONTRIBUTING.md)
 
@@ -34,6 +34,10 @@ Example output:
 ```
 
 **Important:** GitHub README cannot put arbitrary editable text *inside* a remotely hosted animated GIF. The Designer therefore places the caption immediately above the GIF within the same HTML paragraph. What you preview is what the copied Markdown will render. The GIF remains animated, and you do not need a backend.
+
+### Aurora Neon site theme
+
+The site uses deep navy and violet surfaces, mint/cyan lighting, rounded glass panels and pointer-driven glow. The 3D hero draws **3–5×** the previous particle density (depending on frame rate) and adapts between **1,530–2,550** points on phones, **2,940–4,900** on tablets and **5,100–8,500** on desktops. Clicking the hero moves to the next 3D shape; the renderer no longer forces shape changes on a fixed interval. Motion respects `prefers-reduced-motion` and stops when off-screen.
 
 ## Local development
 

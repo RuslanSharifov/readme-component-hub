@@ -10,7 +10,7 @@ const key='readme-hub-neon-studio-v2';
 const repoKey='readme-hub-studio-repository';
 let component=null;
 let config={...DEFAULTS};
-let editingTheme='light';
+let editingTheme='dark';
 let toastTimer=0;
 
 const starter='# My GitHub README\n\nCreate something remarkable.\n\n'+block(config)+'\n\n---\n\nBuilt with [README Component Hub](https://github.com/RuslanSharifov/readme-component-hub).\n';
@@ -208,6 +208,7 @@ async function init(){
     // Old designs from prior versions are not imported automatically.
   }else{source.value=starter}
   $('#repositoryInput').value=readStorage(repoKey)||'https://github.com/RuslanSharifov/readme-component-hub';
+  rendered.classList.add('dark');
   updateRepository();updateControls();updateScreen();initEvents();refresh();
   try{
     const res=await fetch('./components/catalog.json',{cache:'no-store'});

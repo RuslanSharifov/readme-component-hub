@@ -46,3 +46,20 @@ test('repository URL parsing is safe and optional for shared asset',()=>{
   assert.throws(()=>parseRepo('https://evil.test/Owner/Repo'));
   assert.throws(()=>parseRepo('https://github.com/Owner/Repo/tree/main'));
 });
+
+test('aurora particle design keeps at least triple density and no automated shape timer', async () => {
+  const {readFileSync}=await import('node:fs');
+  const hero=readFileSync(new URL('../src/hero.js',import.meta.url),'utf8');
+  const page=readFileSync(new URL('../index.html',import.meta.url),'utf8');
+  const designer=readFileSync(new URL('../designer.html',import.meta.url),'utf8');
+  const neon=readFileSync(new URL('../src/aurora-theme.css',import.meta.url),'utf8');
+  assert.match(hero,/mobile: \{ min: 1530, max: 2550 \}/);
+  assert.match(hero,/tablet: \{ min: 2940, max: 4900 \}/);
+  assert.match(hero,/desktop: \{ min: 5100, max: 8500 \}/);
+  assert.doesNotMatch(hero,/setInterval\(next/);
+  assert.match(hero,/const stride = s.count \/ count/);
+  assert.match(neon,/--glow-purple:#ad8dff/);
+  assert.match(page,/aurora-theme\.css/);
+  assert.match(designer,/aurora-designer\.css/);
+  assert.match(designer,/aurora-interactions\.js/);
+});
