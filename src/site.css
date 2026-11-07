@@ -480,3 +480,11 @@ p, h1, h2, h3 { margin: 0; }
 .modal-caption-preview{display:block;color:var(--ink);font-weight:750;font-size:15px;text-align:center;line-height:1.5;overflow-wrap:anywhere;max-width:100%}
 .modal-preview.light-preview .modal-caption-preview{color:#1b2727}
 .neon-caption-input{min-height:41px;padding:8px 11px;width:100%;background:var(--white);border:1px solid var(--line-2);color:var(--ink);font:13px var(--sans)}
+
+/* Keep component captions aligned with their generated README markup. */
+.modal-preview{align-items:flex-start;justify-content:center}
+.modal-preview.centered{align-items:center;justify-content:center}
+.modal-preview.right-aligned{align-items:flex-end;justify-content:center}
+@media (max-width:950px) and (min-width:761px){
+  .modal-caption-preview{font-size:13px}
+}
