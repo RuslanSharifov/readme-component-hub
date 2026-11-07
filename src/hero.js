@@ -173,7 +173,10 @@ export function initHero() {
     ctx.fillStyle = INK;
     ctx.shadowBlur = 0;
 
-    for (let i = 0; i < count; i++) {
+    // Evenly sample all morph targets when adaptive quality lowers the rendered count.
+    const stride = s.count / count;
+    for (let k = 0; k < count; k++) {
+      const i = Math.floor(k * stride);
       const j = i * 3;
       cur[j] += (target[j] - cur[j]) * ease;
       cur[j + 1] += (target[j + 1] - cur[j + 1]) * ease;
