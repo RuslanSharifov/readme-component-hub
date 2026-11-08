@@ -3,6 +3,8 @@ export const BLOCK_OPEN='<!-- RCH:NEON -->';
 export const BLOCK_CLOSE='<!-- /RCH:NEON -->';
 export const RAW='https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/generated/neon-wave/';
 export const DEFAULTS=Object.freeze({caption:'the rhythm of building',theme:'dark',width:100,align:'center'});
+export const PAIR_OPEN='<!-- RCH:PAIR -->';
+export const PAIR_CLOSE='<!-- /RCH:PAIR -->';
 export const BLOCKS=/<!-- RCH:NEON -->[\s\S]*?<!-- \/RCH:NEON -->/g;
 export function escapeHTML(value){
   return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -27,7 +29,20 @@ export function snippet(input=DEFAULTS){
 }
 export function block(input=DEFAULTS){return BLOCK_OPEN+'\n'+snippet(input)+'\n'+BLOCK_CLOSE}
 export function updateBlocks(markdown,input){return String(markdown??'').replace(BLOCKS,()=>block(input))}
-export function exportMarkdown(markdown){return String(markdown??'').replaceAll(BLOCK_OPEN+'\n','').replaceAll('\n'+BLOCK_CLOSE,'').trim()+'\n'}
+export function exportMarkdown(markdown){
+  let out=String(markdown??'');
+  // GitHub supports tables and images, not free-positioned elements.
+  out=out.replace(/<!-- RCH:PAIR -->\\s*([\\s\\S]*?)\\s*<!-- \\/RCH:PAIR -->/g,(_,inside)=>{
+    const children=[...inside.matchAll(BLOCKS)].map(m=>m[0]);
+    if(children.length!==2)return inside;
+    const cells=children.map(child=>{
+      const html=child.replaceAll(BLOCK_OPEN,'').replaceAll(BLOCK_CLOSE,'').trim();
+      return '<td width="50%" valign="top">\\n'+html+'\\n</td>';
+    });
+    return '<table width="100%">\\n<tr>\\n'+cells.join('\\n')+'\\n</tr>\\n</table>';
+  });
+  return out.replaceAll(BLOCK_OPEN+'\\n','').replaceAll('\\n'+BLOCK_CLOSE,'').trim()+'\\n';
+}
 export function insertBlock(markdown,index,input=DEFAULTS){
   const str=String(markdown??''),i=Math.min(str.length,Math.max(0,Number(index)||0));
   const before=str.slice(0,i),after=str.slice(i);
