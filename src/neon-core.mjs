@@ -32,16 +32,16 @@ export function updateBlocks(markdown,input){return String(markdown??'').replace
 export function exportMarkdown(markdown){
   let out=String(markdown??'');
   // GitHub supports tables and images, not free-positioned elements.
-  out=out.replace(/<!-- RCH:PAIR -->\\s*([\\s\\S]*?)\\s*<!-- \\/RCH:PAIR -->/g,(_,inside)=>{
+  out=out.replace(/<!-- RCH:PAIR -->\s*([\s\S]*?)\s*<!-- \/RCH:PAIR -->/g,(_,inside)=>{
     const children=[...inside.matchAll(BLOCKS)].map(m=>m[0]);
     if(children.length!==2)return inside;
     const cells=children.map(child=>{
       const html=child.replaceAll(BLOCK_OPEN,'').replaceAll(BLOCK_CLOSE,'').trim();
       return '<td width="50%" valign="top">\\n'+html+'\\n</td>';
     });
-    return '<table width="100%">\\n<tr>\\n'+cells.join('\\n')+'\\n</tr>\\n</table>';
+    return '<table width="100%">\\n<tr>\\n'+cells.join('\n')+'\\n</tr>\\n</table>';
   });
-  return out.replaceAll(BLOCK_OPEN+'\\n','').replaceAll('\\n'+BLOCK_CLOSE,'').trim()+'\\n';
+  return out.replaceAll(BLOCK_OPEN+'\n','').replaceAll('\n'+BLOCK_CLOSE,'').trim()+'\n';
 }
 export function insertBlock(markdown,index,input=DEFAULTS){
   const str=String(markdown??''),i=Math.min(str.length,Math.max(0,Number(index)||0));
