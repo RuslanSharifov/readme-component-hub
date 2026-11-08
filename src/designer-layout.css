@@ -161,3 +161,37 @@
 @media(prefers-reduced-motion:reduce){
   .readme-preview .layout-actions,.readme-preview .layout-actions .layout-action{transition:none}
 }
+
+/* GitHub README import: explicit destructive confirmation */
+.repository-bar .repo-pull-button{
+  flex:none;white-space:nowrap;padding:11px 14px;
+  border:1px solid rgba(144,182,239,.65);border-radius:13px;
+  background:rgba(49,75,123,.86);color:#eaf4ff;
+  font-size:12px;font-weight:700;cursor:pointer;
+  transition:border-color .16s ease,background .16s ease;
+}
+.repository-bar .repo-pull-button:hover{border-color:#90e8ef;background:rgba(65,95,149,.95)}
+.repository-bar .repo-pull-button:disabled{opacity:.55;cursor:progress}
+.readme-pull-dialog{
+  width:min(460px,calc(100vw - 32px));max-height:calc(100dvh - 32px);
+  padding:28px;border:1px solid #7186bc;border-radius:22px;
+  background:linear-gradient(150deg,#202e56,#151e3c);
+  color:#e7f2ff;box-shadow:0 28px 75px rgba(0,0,0,.52);
+  font-family:Inter,system-ui,sans-serif;
+}
+.readme-pull-dialog::backdrop{background:rgba(4,9,25,.7);backdrop-filter:blur(5px)}
+.readme-pull-dialog h2{font-size:20px;line-height:1.3;margin:0 0 12px}
+.readme-pull-dialog p{font-size:13px;line-height:1.7;color:#bfcff0}
+.readme-pull-dialog .pull-repo-label{overflow-wrap:anywhere;color:#a4ebe8}
+.readme-pull-dialog .readme-pull-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:10px;margin-top:23px}
+.readme-pull-dialog button{
+  padding:11px 14px;border-radius:10px;border:1px solid #7384aa;
+  background:#2e406d;color:#f0f6ff;font-weight:650;cursor:pointer
+}
+.readme-pull-dialog button.confirm-pull{border-color:#f5a6ad;background:#9b334f;color:white}
+.readme-pull-dialog button:hover:not(:disabled){filter:brightness(1.13)}
+.readme-pull-dialog button:disabled{opacity:.55;cursor:progress}
+@media(max-width:850px){
+  .repository-bar .repo-pull-button{flex:1}
+  .repository-bar .repo-connect-button{flex:1}
+}

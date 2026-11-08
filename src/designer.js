@@ -1,3 +1,4 @@
+import {fetchRepositoryReadme} from './readme-pull.mjs';
 import {fetchRepositoryData,updateBoundComponents,createLanguageBlock,repoOverviewBlock} from './repository-binding.mjs';
 import {readLayout,serializeLayout,blocksInOrder,moveBlock,appendBlock,resizeBlock,resizeHeight,blockWidth,blockHeight,removeBlock,moveBlockRow,adjacentRowAvailable} from './layout-core.mjs';
 import {
@@ -362,6 +363,62 @@ async function connectRepository(){
     $('#repoStatus').classList.add('error');
   }finally{button.disabled=false;button.textContent='Bağla / Tətbiq et'}
 }
+let pendingReadmeRepo=null;
+let readmePullBusy=false;
+function startReadmePull(){
+  const dialog=$('#readmePullDialog');
+  if(readmePullBusy||dialog.open)return;
+  let repo;
+  try{
+    if(!linkedRepository?.repo)throw new Error('Əvvəlcə repository-ni “Bağla / Tətbiq et” ilə bağla.');
+    repo=parseRepo($('#repositoryInput').value);
+    if(repo.toLowerCase()!==linkedRepository.repo.toLowerCase())
+      throw new Error('Repository linki dəyişib. Əvvəlcə yeni repository-ni bağla.');
+  }catch(error){
+    $('#repoStatus').textContent=error.message;
+    $('#repoStatus').classList.add('error');
+    showToast(error.message);
+    return;
+  }
+  pendingReadmeRepo=repo;
+  $('#pullRepoName').textContent=repo;
+  dialog.showModal();
+}
+async function confirmReadmePull(){
+  if(readmePullBusy||!pendingReadmeRepo)return;
+  const repo=pendingReadmeRepo;
+  readmePullBusy=true;
+  const confirm=$('#confirmReadmePull');
+  const cancel=$('#cancelReadmePull');
+  confirm.disabled=true;cancel.disabled=true;
+  confirm.textContent='Yüklənir…';
+  $('#pullRepositoryReadme').disabled=true;
+  try{
+    // Fetch before mutating state; failed requests preserve the current editor.
+    const markdown=await fetchRepositoryReadme(repo);
+    if(!$('#readmePullDialog').open)return;
+    source.value=markdown;
+    source.setSelectionRange(0,0);
+    selectedIndex=0;
+    document.querySelector('.inspector').hidden=false;
+    refresh();
+    $('#repoStatus').textContent='✓ '+repo+' · README.md olduğu kimi yükləndi';
+    $('#repoStatus').classList.remove('error');
+    $('#readmePullDialog').close();
+    showToast('Repository README.md editorə yükləndi');
+  }catch(error){
+    $('#repoStatus').textContent=error.message;
+    $('#repoStatus').classList.add('error');
+    $('#readmePullDialog').close();
+    showToast(error.message);
+  }finally{
+    pendingReadmeRepo=null;
+    readmePullBusy=false;
+    confirm.disabled=false;cancel.disabled=false;
+    confirm.textContent='Bəli, README-ni əvəz et';
+    $('#pullRepositoryReadme').disabled=false;
+  }
+}
 function updateRepository(){
   try{
     const slug=parseRepo($('#repositoryInput').value);
@@ -474,6 +531,10 @@ function initEvents(){
       showToast('README.md downloaded');
     }catch(e){showToast(e.message)}
   });
+  $('#pullRepositoryReadme').addEventListener('click',startReadmePull);
+  $('#cancelReadmePull').addEventListener('click',()=>$('#readmePullDialog').close());
+  $('#readmePullDialog').addEventListener('close',()=>{if(!readmePullBusy)pendingReadmeRepo=null});
+  $('#confirmReadmePull').addEventListener('click',confirmReadmePull);
   $('#connectRepository').addEventListener('click',connectRepository);
   $('#repositoryInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();connectRepository()}});
   $('#repositoryInput').addEventListener('change',updateRepository);
