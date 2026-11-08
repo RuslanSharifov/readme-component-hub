@@ -37,9 +37,9 @@ export function exportMarkdown(markdown){
     if(children.length!==2)return inside;
     const cells=children.map(child=>{
       const html=child.replaceAll(BLOCK_OPEN,'').replaceAll(BLOCK_CLOSE,'').trim();
-      return '<td width="50%" valign="top">\\n'+html+'\\n</td>';
+      return '<td width="50%" valign="top">\n'+html+'\n</td>';
     });
-    return '<table width="100%">\\n<tr>\\n'+cells.join('\n')+'\\n</tr>\\n</table>';
+    return '<table width="100%">\n<tr>\n'+cells.join('\n')+'\n</tr>\n</table>';
   });
   return out.replaceAll(BLOCK_OPEN+'\n','').replaceAll('\n'+BLOCK_CLOSE,'').trim()+'\n';
 }
