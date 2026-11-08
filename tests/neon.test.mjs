@@ -124,6 +124,6 @@ test('Repository Languages is catalogued and automatically published with new HT
   const main=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
   assert.equal(manifest.id,'repository-languages');
   assert.equal(manifest.category,'Dynamic');
-  assert.match(deploy,/cp \\*\.html favicon\.svg dist\//);
+  assert.ok(deploy.includes('cp *.html favicon.svg dist/'));
   assert.match(main,/repository-languages/);
 });
