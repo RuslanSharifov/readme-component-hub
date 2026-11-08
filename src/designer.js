@@ -1,4 +1,4 @@
-import {readLayout,serializeLayout,blocksInOrder,moveBlock,appendBlock,resizeBlock,blockWidth} from './layout-core.mjs';
+import {readLayout,serializeLayout,blocksInOrder,moveBlock,appendBlock,resizeBlock,resizeHeight,blockWidth,blockHeight} from './layout-core.mjs';
 import {
   BLOCK_OPEN, DEFAULTS, block, insertBlock, updateBlocks, exportMarkdown,
   escapeHTML, options, parseRepo
@@ -82,6 +82,30 @@ function enhancePreview(){
     handle.title='Drag to resize width';handle.setAttribute('aria-label','Resize component '+(index+1));
     handle.textContent='↔';
     wrapper.appendChild(handle);
+    const heightHandle=document.createElement('button');
+    heightHandle.type='button';heightHandle.className='resize-height-handle';
+    heightHandle.title='Drag to resize height';heightHandle.setAttribute('aria-label','Resize component height '+(index+1));
+    heightHandle.textContent='↕';wrapper.appendChild(heightHandle);
+    heightHandle.addEventListener('pointerdown',event=>{
+      event.preventDefault();event.stopPropagation();
+      const rect=img.getBoundingClientRect();
+      resizing={index,axis:'y',startY:event.clientY,startHeight:rect.height};
+      heightHandle.setPointerCapture(event.pointerId);
+    });
+    heightHandle.addEventListener('pointermove',event=>{
+      if(!resizing||resizing.index!==index||resizing.axis!=='y')return;
+      const px=Math.max(60,Math.min(480,Math.round((resizing.startHeight+event.clientY-resizing.startY)/10)*10));
+      img.style.height=px+'px';img.style.objectFit='fill';
+      heightHandle.dataset.height=String(px);
+    });
+    const finishHeight=()=>{
+      if(!resizing||resizing.index!==index||resizing.axis!=='y')return;
+      const height=Number(heightHandle.dataset.height)||Math.round(resizing.startHeight/10)*10;
+      resizing=null;source.value=resizeHeight(source.value,index,height);
+      selectedIndex=index;refresh();showToast('Height: '+height+'px');
+    };
+    heightHandle.addEventListener('pointerup',finishHeight);
+    heightHandle.addEventListener('pointercancel',finishHeight);
     wrapper.addEventListener('click',()=>{
       selectedIndex=index;
       rendered.querySelectorAll('.layout-component').forEach(el=>el.classList.toggle('selected',Number(el.dataset.blockIndex)===index));
@@ -202,7 +226,12 @@ function applyChanges(){
   for(const node of nodes){
     if(node.type!=='components')continue;
     for(let i=0;i<node.items.length;i++,cursor++){
-      if(cursor===selectedIndex){node.items[i]=block(config);break}
+      if(cursor===selectedIndex){
+        const height=blockHeight(node.items[i]);
+        let updated=block(config);
+        if(height)updated=updated.replace(/(<img\b[^>]*?)(\s*\/>)/,'$1 height="'+height+'"$2');
+        node.items[i]=updated;break
+      }
     }
   }
   source.value=serializeLayout(nodes);
