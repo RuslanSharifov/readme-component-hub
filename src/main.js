@@ -1,4 +1,4 @@
-import {snippet as neonSnippet, DEFAULTS as neonDefaults} from './neon-core.mjs';
+import {snippet as neonSnippet, DEFAULTS as neonDefaults, languageBlock} from './neon-core.mjs';
 /* README Component Hub — entirely static, no backend required. */
 const REPOSITORY = 'https://github.com/RuslanSharifov/readme-component-hub';
 const RAW_ASSETS_ROOT = 'https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/';
@@ -114,6 +114,9 @@ function renderCatalog() {
 function markdown() {
   const entry=state.selected;
   if(!entry) return '';
+  if(entry.id.startsWith('repository-languages-'))
+    return languageBlock(entry.id.replace('repository-languages-',''))
+      .replace(/<!-- \/?RCH:LANG:[a-z]+ -->\n?/g,'');
   return neonSnippet({caption:state.caption,theme:state.theme,width:state.width,align:state.align});
 }
 
@@ -247,8 +250,12 @@ function setupEvents() {
   els.grid.addEventListener('click', (event) => {
     const card = event.target.closest('[data-component]');
     if (card) {
-      if(card.dataset.component==='repository-languages') window.location.assign('./languages.html');
-      else openModal(card.dataset.component);
+      if(card.dataset.component.startsWith('repository-languages-')){
+        // One tap copies the GitHub-ready image embed; no modal or configuration.
+        const mode=card.dataset.component.replace('repository-languages-','');
+        const embed=languageBlock(mode).replace(/<!-- \/?RCH:LANG:[a-z]+ -->\n?/g,'');
+        copyToClipboard(embed);
+      }else openModal(card.dataset.component);
     }
   });
   $('#resetFilters').addEventListener('click', () => {
