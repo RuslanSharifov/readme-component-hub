@@ -116,3 +116,14 @@ test('repository languages card includes GitHub API, three chart modes and safe 
   assert.match(js,/image\/svg\+xml/);
   assert.match(designer,/languages\.html/);
 });
+
+test('Repository Languages is catalogued and automatically published with new HTML pages',async()=>{
+  const {readFileSync}=await import('node:fs');
+  const manifest=JSON.parse(readFileSync(new URL('../components/repository-languages/component.json',import.meta.url),'utf8'));
+  const deploy=readFileSync(new URL('../.github/workflows/deploy.yml',import.meta.url),'utf8');
+  const main=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
+  assert.equal(manifest.id,'repository-languages');
+  assert.equal(manifest.category,'Dynamic');
+  assert.match(deploy,/cp \\*\.html favicon\.svg dist\//);
+  assert.match(main,/repository-languages/);
+});
