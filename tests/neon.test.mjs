@@ -148,3 +148,58 @@ test('language components insert without settings, export cleanly and can be pai
   assert.match(resizeBlock(draft,0,60),/width="60%"/);
   assert.throws(()=>languageBlock('invalid'),RangeError);
 });
+
+
+test('component toolbar removes only the selected card and collapses two-column groups',async()=>{
+  const {readLayout,blocksInOrder,moveBlock,removeBlock}=await import('../src/layout-core.mjs');
+  const {languageBlock,block,DEFAULTS,exportMarkdown}=await import('../src/neon-core.mjs');
+  const neon=block(DEFAULTS),donut=languageBlock('donut'),row=languageBlock('row');
+  const input='# My profile\n\n'+neon+'\n\n'+donut+'\n\n'+row+'\n\nMy unchanged introduction.\n';
+  const paired=moveBlock(input,1,0,'right');
+  assert.equal(blocksInOrder(readLayout(paired)).length,3);
+  assert.match(paired,/RCH:PAIR/);
+  const withoutDonut=removeBlock(paired,1);
+  assert.equal(blocksInOrder(readLayout(withoutDonut)).length,2);
+  assert.doesNotMatch(withoutDonut,/RCH:PAIR/);
+  assert.match(withoutDonut,/RCH:NEON/);
+  assert.match(withoutDonut,/RCH:LANG:row/);
+  assert.doesNotMatch(withoutDonut,/RCH:LANG:donut/);
+  assert.match(withoutDonut,/# My profile/);
+  assert.match(withoutDonut,/My unchanged introduction/);
+  assert.doesNotMatch(exportMarkdown(withoutDonut),/RCH:LANG|RCH:NEON|RCH:PAIR/);
+  assert.equal(removeBlock(withoutDonut,30),withoutDonut);
+});
+test('move up and down extracts a paired component into the adjacent row without overlap',async()=>{
+  const {readLayout,blocksInOrder,moveBlock,moveBlockRow,adjacentRowAvailable}=await import('../src/layout-core.mjs');
+  const {languageBlock,block,DEFAULTS}=await import('../src/neon-core.mjs');
+  const a=block({...DEFAULTS,caption:'Unique A'}),b=languageBlock('donut'),c=languageBlock('column');
+  let input='# Header\n\n'+a+'\n\n'+b+'\n\n'+c+'\n\nFooter text';
+  input=moveBlock(input,1,0,'right');
+  assert.deepEqual(readLayout(input).filter(n=>n.type==='components').map(n=>n.items.length),[2,1]);
+  assert.equal(adjacentRowAvailable(input,0,'up'),false);
+  assert.equal(adjacentRowAvailable(input,0,'down'),true);
+  let down=moveBlockRow(input,0,'down');
+  const rows=readLayout(down).filter(n=>n.type==='components');
+  assert.deepEqual(rows.map(n=>n.items.length),[1,1,1]);
+  assert.match(rows[0].items[0],/RCH:LANG:donut/);
+  assert.match(rows[1].items[0],/RCH:LANG:column/);
+  assert.match(rows[2].items[0],/Unique A/);
+  assert.match(down,/Footer text/);
+  const up=moveBlockRow(down,2,'up');
+  const after=readLayout(up).filter(n=>n.type==='components');
+  assert.match(after[1].items[0],/Unique A/);
+  assert.equal(blocksInOrder(readLayout(up)).length,3);
+  assert.equal(moveBlockRow(input,0,'up'),input);
+  assert.equal(moveBlockRow(input,0,'horizontal'),input);
+  assert.equal(moveBlockRow(input,42,'down'),input);
+});
+test('designer preview includes working component action hooks',async()=>{
+  const {readFileSync}=await import('node:fs');
+  const js=readFileSync(new URL('../src/designer.js',import.meta.url),'utf8');
+  const css=readFileSync(new URL('../src/designer-layout.css',import.meta.url),'utf8');
+  assert.match(js,/removeBlock\(source\.value,index\)/);
+  assert.match(js,/moveBlockRow\(source\.value,index,control\.action\)/);
+  assert.match(js,/className='layout-actions'/);
+  assert.match(css,/focus-within>\.layout-actions/);
+  assert.match(css,/layout-action-delete/);
+});
