@@ -96,3 +96,43 @@ export function blockHeight(blockText){
   const match=String(blockText).match(/<img\b[^>]*height="(\d+)"/);
   return match?Number(match[1]):null;
 }
+
+/** Remove just the selected component; a two-item row automatically becomes one. */
+export function removeBlock(markdown,index){
+  const nodes=readLayout(markdown);
+  const found=locate(nodes,index);
+  if(!found)return markdown;
+  nodes[found.ni].items.splice(found.ci,1);
+  if(!nodes[found.ni].items.length)nodes.splice(found.ni,1);
+  return serializeLayout(nodes);
+}
+/** Move a component to its own row immediately before/after the next real row.
+ * Rows can contain a maximum of two components, and surrounding raw Markdown
+ * must never be merged into a component or dropped.
+ */
+export function moveBlockRow(markdown,index,direction){
+  if(direction!=='up'&&direction!=='down')return markdown;
+  const nodes=readLayout(markdown);
+  const found=locate(nodes,index);
+  if(!found)return markdown;
+  const rows=nodes.map((node,i)=>node.type==='components'?i:-1).filter(i=>i>=0);
+  const rowPos=rows.indexOf(found.ni);
+  const nextPos=rowPos+(direction==='up'?-1:1);
+  if(nextPos<0||nextPos>=rows.length)return markdown;
+  const target=nodes[rows[nextPos]];
+  const item=nodes[found.ni].items[found.ci];
+  nodes[found.ni].items.splice(found.ci,1);
+  // Target row object stays stable even if the empty original row is removed.
+  if(!nodes[found.ni].items.length)nodes.splice(found.ni,1);
+  const targetIndex=nodes.indexOf(target);
+  nodes.splice(targetIndex+(direction==='down'?1:0),0,{type:'components',items:[item]});
+  return serializeLayout(nodes);
+}
+export function adjacentRowAvailable(markdown,index,direction){
+  const nodes=readLayout(markdown);
+  const found=locate(nodes,index);
+  if(!found)return false;
+  const rows=nodes.filter(node=>node.type==='components');
+  const current=rows.indexOf(nodes[found.ni]);
+  return direction==='up'?current>0:direction==='down'?current<rows.length-1:false;
+}
