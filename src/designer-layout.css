@@ -104,3 +104,60 @@
   .repository-bar input{flex:1;min-width:180px;width:auto}
   .repository-bar #repoStatus{flex-basis:100%}
 }
+
+/* Preview component actions: visible on hover/focus and always on touch devices. */
+.readme-preview .layout-actions{
+  position:absolute;z-index:6;
+  top:-14px;right:10px;
+  display:flex;gap:5px;align-items:center;
+  padding:4px;
+  border:1px solid rgba(126,217,255,.4);
+  border-radius:14px;
+  background:linear-gradient(145deg,rgba(33,55,100,.97),rgba(42,39,91,.97));
+  box-shadow:0 8px 24px rgba(5,14,37,.35);
+  opacity:0;
+  pointer-events:none;
+  transform:translateY(4px);
+  transition:opacity .16s ease,transform .16s ease;
+}
+.readme-preview .layout-component:hover>.layout-actions,
+.readme-preview .layout-component:focus-within>.layout-actions,
+.readme-preview .layout-component.selected>.layout-actions{
+  opacity:1;pointer-events:auto;transform:translateY(0);
+}
+.readme-preview .layout-actions .layout-action{
+  width:31px;height:29px;
+  display:grid;place-items:center;
+  padding:0;
+  border:1px solid rgba(156,205,255,.25);
+  border-radius:9px;
+  background:rgba(103,145,205,.13);
+  color:#e8f6ff;
+  font-size:16px;line-height:1;
+  font-family:inherit;
+  cursor:pointer;
+  transition:background .12s ease,transform .12s ease;
+}
+.readme-preview .layout-actions .layout-action:hover:not(:disabled){
+  background:rgba(96,192,235,.35);
+  transform:translateY(-1px);
+}
+.readme-preview .layout-actions .layout-action-delete{
+  color:#ffcbcf;
+  border-color:rgba(247,140,168,.4);
+}
+.readme-preview .layout-actions .layout-action-delete:hover:not(:disabled){
+  background:rgba(222,67,102,.35);
+}
+.readme-preview .layout-actions .layout-action:disabled{
+  opacity:.30;cursor:not-allowed;
+}
+.readme-preview .layout-actions .layout-action:focus-visible{
+  outline:2px solid #9aeaf9;outline-offset:2px;
+}
+@media(hover:none){
+  .readme-preview .layout-actions{opacity:1;pointer-events:auto;transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .readme-preview .layout-actions,.readme-preview .layout-actions .layout-action{transition:none}
+}
