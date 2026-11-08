@@ -4,21 +4,21 @@
 <text x="36" y="49" font-family="Arial,sans-serif" font-size="26" font-weight="bold" fill="#273455">Languages · Donut</text>
 <text x="36" y="75" font-family="Arial,sans-serif" font-size="12" letter-spacing="2" fill="#536585">RuslanSharifov/readme-component-hub</text>
 <circle cx="224" cy="220" r="92" fill="none" stroke="#b3c2e1" stroke-opacity=".20" stroke-width="35"/>
-<circle cx="224" cy="220" r="92" fill="none" stroke="#78b9ff" stroke-width="35" stroke-dasharray="262.24 578.05" stroke-dashoffset="0.00" transform="rotate(-90 224 220)"/>
-<circle cx="224" cy="220" r="92" fill="none" stroke="#8a88ff" stroke-width="35" stroke-dasharray="191.74 578.05" stroke-dashoffset="-263.24" transform="rotate(-90 224 220)"/>
-<circle cx="224" cy="220" r="92" fill="none" stroke="#5be0c2" stroke-width="35" stroke-dasharray="85.19 578.05" stroke-dashoffset="-455.98" transform="rotate(-90 224 220)"/>
-<circle cx="224" cy="220" r="92" fill="none" stroke="#ffb879" stroke-width="35" stroke-dasharray="34.88 578.05" stroke-dashoffset="-542.17" transform="rotate(-90 224 220)"/>
+<circle cx="224" cy="220" r="92" fill="none" stroke="#78b9ff" stroke-width="35" stroke-dasharray="280.37 578.05" stroke-dashoffset="0.00" transform="rotate(-90 224 220)"/>
+<circle cx="224" cy="220" r="92" fill="none" stroke="#8a88ff" stroke-width="35" stroke-dasharray="181.27 578.05" stroke-dashoffset="-281.37" transform="rotate(-90 224 220)"/>
+<circle cx="224" cy="220" r="92" fill="none" stroke="#5be0c2" stroke-width="35" stroke-dasharray="79.90 578.05" stroke-dashoffset="-463.65" transform="rotate(-90 224 220)"/>
+<circle cx="224" cy="220" r="92" fill="none" stroke="#ffb879" stroke-width="35" stroke-dasharray="32.51 578.05" stroke-dashoffset="-544.54" transform="rotate(-90 224 220)"/>
 <text x="224" y="229" text-anchor="middle" fill="#273455" font-family="Arial,sans-serif" font-size="29" font-weight="bold">100%</text>
 <circle cx="420" cy="138" r="7" fill="#78b9ff"/>
 <text x="437" y="144" fill="#273455" font-family="Arial,sans-serif" font-size="16">JavaScript</text>
-<text x="663" y="144" text-anchor="end" fill="#273455" font-family="Arial,sans-serif" font-size="16" font-weight="bold">45.5%</text>
+<text x="663" y="144" text-anchor="end" fill="#273455" font-family="Arial,sans-serif" font-size="16" font-weight="bold">48.7%</text>
 <circle cx="420" cy="180" r="7" fill="#8a88ff"/>
 <text x="437" y="186" fill="#273455" font-family="Arial,sans-serif" font-size="16">CSS</text>
-<text x="663" y="186" text-anchor="end" fill="#273455" font-family="Arial,sans-serif" font-size="16" font-weight="bold">33.3%</text>
+<text x="663" y="186" text-anchor="end" fill="#273455" font-family="Arial,sans-serif" font-size="16" font-weight="bold">31.5%</text>
 <circle cx="420" cy="222" r="7" fill="#5be0c2"/>
 <text x="437" y="228" fill="#273455" font-family="Arial,sans-serif" font-size="16">HTML</text>
-<text x="663" y="228" text-anchor="end" fill="#273455" font-family="Arial,sans-serif" font-size="16" font-weight="bold">14.9%</text>
+<text x="663" y="228" text-anchor="end" fill="#273455" font-family="Arial,sans-serif" font-size="16" font-weight="bold">14.0%</text>
 <circle cx="420" cy="264" r="7" fill="#ffb879"/>
 <text x="437" y="270" fill="#273455" font-family="Arial,sans-serif" font-size="16">Python</text>
-<text x="663" y="270" text-anchor="end" fill="#273455" font-family="Arial,sans-serif" font-size="16" font-weight="bold">6.2%</text>
+<text x="663" y="270" text-anchor="end" fill="#273455" font-family="Arial,sans-serif" font-size="16" font-weight="bold">5.8%</text>
 </svg>
