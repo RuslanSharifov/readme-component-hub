@@ -1,6 +1,6 @@
 import {BLOCK_OPEN,BLOCK_CLOSE,PAIR_OPEN,PAIR_CLOSE,BLOCKS,block,options} from './neon-core.mjs';
 
-const TOKENS=/<!-- RCH:PAIR -->[\s\S]*?<!-- \/RCH:PAIR -->|<!-- RCH:NEON -->[\s\S]*?<!-- \/RCH:NEON -->/g;
+const TOKENS=/<!-- RCH:PAIR -->[\s\S]*?<!-- \/RCH:PAIR -->|<!-- RCH:NEON -->[\s\S]*?<!-- \/RCH:NEON -->|<!-- RCH:LANG:(?:donut|row|column) -->[\s\S]*?<!-- \/RCH:LANG:(?:donut|row|column) -->/g;
 export function readLayout(markdown){
   const nodes=[];
   let end=0;
