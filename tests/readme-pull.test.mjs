@@ -20,7 +20,7 @@ test('missing and invalid README do not produce replacement content',async()=>{
   await assert.rejects(fetchRepositoryReadme('Demo/Repo',async()=>({ok:false,status:403})),/limiti/);
   await assert.rejects(fetchRepositoryReadme('Demo/Repo',async()=>({ok:true,json:async()=>({type:'dir',encoding:'base64',content:'YQ=='})})),/formatı/);
   await assert.rejects(fetchRepositoryReadme('Demo/Repo',async()=>({ok:true,json:async()=>({type:'file',encoding:'base64',content:'invalid!!!'})})),/kodlaşdırılmayıb/);
-  assert.throws(()=>fetchRepositoryReadme('https://evil.example/Owner/Repo'),/Only GitHub/);
+  await assert.rejects(fetchRepositoryReadme('https://evil.example/Owner/Repo'),/Only GitHub/);
 });
 test('README pull is confirmed explicitly, replaces only on successful fetch, and has cancel',()=>{
   const page=readFileSync(new URL('../designer.html',import.meta.url),'utf8');
