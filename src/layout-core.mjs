@@ -44,17 +44,9 @@ export function moveBlock(markdown,from,to,side='after'){
   const fromLoc=locate(nodes,from),toLoc=locate(nodes,to);
   if(!fromLoc||!toLoc||from===to)return markdown;
   const item=nodes[fromLoc.ni].items[fromLoc.ci];
-  // Remove the dragged item, then resolve the destination by its stable block object.
-  const target=nodes[toLoc.ni].items[toLoc.ci];
   nodes[fromLoc.ni].items.splice(fromLoc.ci,1);
   nodes=compact(nodes);
-  let found=null;
-  outer:for(let ni=0;ni<nodes.length;ni++){
-    if(nodes[ni].type!=='components')continue;
-    for(let ci=0;ci<nodes[ni].items.length;ci++){
-      if(nodes[ni].items[ci]===target){found={ni,ci};break outer}
-    }
-  }
+  const found=locate(nodes,to-(from<to?1:0));
   if(!found)return markdown;
   const destination=nodes[found.ni];
   if(side==='left'||side==='right'){
