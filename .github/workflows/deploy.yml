@@ -3,6 +3,8 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: '15 5 * * *'
 permissions:
   contents: write
   pages: write
@@ -36,11 +38,15 @@ jobs:
           node --check src/repo.js
           node --check src/composer.js
           node --test tests/*.test.mjs
-      - name: Commit updated shared GIFs
+      - name: Refresh live repository language charts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/update_language_cards.py
+      - name: Commit updated shared graphics
         run: |
-          git add -f generated/neon-wave/
+          git add -f generated/neon-wave/ components/repository-languages-*/dark.svg components/repository-languages-*/light.svg
           if ! git diff --cached --quiet; then
-            git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "chore: refresh Neon Waveform GIFs [skip ci]"
+            git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "chore: refresh README component graphics [skip ci]"
             git push origin HEAD:main
           fi
       - name: Package static site
