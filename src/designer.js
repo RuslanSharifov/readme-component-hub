@@ -62,11 +62,11 @@ function preview(){
   $('#sourceLength').textContent=source.value.length+' characters';
 }
 function enhancePreview(){
-  const imgs=[...rendered.querySelectorAll('img[src*="/neon-wave/"],img[src*="/repository-languages-"],img[src^="https://quickchart.io/chart"]')];
+  const imgs=[...rendered.querySelectorAll('img[src*="/neon-wave/"],img[src*="/repository-languages-"],img[src^="https://quickchart.io/chart"],img[src*="img.shields.io/github/stars/"]')];
   const nodes=readLayout(source.value);
   const items=blocksInOrder(nodes);
   imgs.forEach((img,index)=>{
-    const languageCard=items[index]?.includes('RCH:LANG:');
+    const languageCard=items[index]?.includes('RCH:LANG:')||items[index]?.includes('RCH:REPO');
     const wrapper=document.createElement('div');
     wrapper.className='layout-component'+(index===selectedIndex?' selected':'');
     wrapper.draggable=true;
@@ -237,7 +237,7 @@ function addLanguage(mode){
   refresh();showToast(mode[0].toUpperCase()+mode.slice(1)+' card added');
 }
 function applyChanges(){
-  if(blocksInOrder(readLayout(source.value))[selectedIndex]?.includes('RCH:LANG:'))return;
+  if(/RCH:(?:LANG:|REPO)/.test(blocksInOrder(readLayout(source.value))[selectedIndex]||''))return;
   config=options({
     caption:$('#neonCaption').value,theme:$('#neonTheme').value,
     align:$('#neonAlign').value,width:$('#neonWidth').value
@@ -290,6 +290,8 @@ function addRepositoryOverview(){
   if(!linkedRepository){showToast('Əvvəl repository-ni bağla');return}
   const content=repoOverviewBlock(linkedRepository.info,linkedRepository.commits);
   source.value=source.value.replace(/\s*$/,'')+'\n\n'+content+'\n';
+  selectedIndex=blocksInOrder(readLayout(source.value)).length-1;
+  document.querySelector('.inspector').hidden=true;
   refresh();showToast('Repo statistikası əlavə edildi');
 }
 async function connectRepository(){

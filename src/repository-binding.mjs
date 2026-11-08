@@ -49,9 +49,9 @@ export function repoOverviewBlock(info,commits){
   const slug=parseRepo(info.full_name);
   const owner=slug.split('/')[0],name=slug.split('/')[1];
   const badge=(kind,label)=>'<img src="https://img.shields.io/github/'+kind+'/'+slug+'?style=for-the-badge" alt="'+label+'" />';
-  return '<!-- RCH:REPO -->\n<p align="center"><a href="https://github.com/'+slug+'"><strong>'+escapeHTML(name)+'</strong></a></p>\n'+
-    '<p align="center">'+badge('stars','Stars')+' '+badge('forks','Forks')+' '+badge('issues','Issues')+' '+badge('last-commit','Last commit')+'</p>\n'+
-    '<p align="center"><sub>'+escapeHTML(info.description||'GitHub repository')+' · '+(Number.isInteger(commits)?commits.toLocaleString('en-US')+' commits (at sync)':'Commit count unavailable')+'</sub></p>\n<!-- /RCH:REPO -->';
+  return '<!-- RCH:REPO -->\n<p align="center"><a href="https://github.com/'+slug+'"><strong>'+escapeHTML(name)+'</strong></a><br />\n'+
+    badge('stars','Stars')+' '+badge('forks','Forks')+' '+badge('issues','Issues')+' '+badge('last-commit','Last commit')+'<br />\n'+
+    '<sub>'+escapeHTML(info.description||'GitHub repository')+' · '+(Number.isInteger(commits)?commits.toLocaleString('en-US')+' commits (at sync)':'Commit count unavailable')+'</sub></p>\n<!-- /RCH:REPO -->';
 }
 export function updateBoundComponents(markdown,repo,languageData,info,commits){
   let count=0;

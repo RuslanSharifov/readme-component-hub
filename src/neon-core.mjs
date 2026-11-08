@@ -6,7 +6,7 @@ export const DEFAULTS=Object.freeze({caption:'the rhythm of building',theme:'dar
 export const PAIR_OPEN='<!-- RCH:PAIR -->';
 export const PAIR_CLOSE='<!-- /RCH:PAIR -->';
 export const LANGUAGE_MODES=Object.freeze(['donut','row','column']);
-export const BLOCKS=/<!-- RCH:NEON -->[\s\S]*?<!-- \/RCH:NEON -->|<!-- RCH:LANG:(?:donut|row|column) -->[\s\S]*?<!-- \/RCH:LANG:(?:donut|row|column) -->/g;
+export const BLOCKS=/<!-- RCH:NEON -->[\s\S]*?<!-- \/RCH:NEON -->|<!-- RCH:LANG:(?:donut|row|column) -->[\s\S]*?<!-- \/RCH:LANG:(?:donut|row|column) -->|<!-- RCH:REPO -->[\s\S]*?<!-- \/RCH:REPO -->/g;
 export function languageBlock(mode='donut'){
   if(!LANGUAGE_MODES.includes(mode))throw new RangeError('Unknown language chart');
   const id='repository-languages-'+mode;
@@ -43,12 +43,13 @@ export function exportMarkdown(markdown){
     const children=[...inside.matchAll(BLOCKS)].map(m=>m[0]);
     if(children.length!==2)return inside;
     const cells=children.map(child=>{
-      const html=child.replace(/<!-- \/?RCH:(?:NEON|LANG:(?:donut|row|column)) -->/g,'').trim();
+      const html=child.replace(/<!-- \/?RCH:(?:NEON|REPO|LANG:(?:donut|row|column)) -->/g,'').trim();
       return '<td width="50%" valign="top">\n'+html+'\n</td>';
     });
     return '<table width="100%">\n<tr>\n'+cells.join('\n')+'\n</tr>\n</table>';
   });
-  return out.replace(/<!-- RCH:LANG:(?:donut|row|column) -->\n/g,'')
+  return out.replace(/<!-- RCH:REPO -->\n/g,'').replace(/\n<!-- \/RCH:REPO -->/g,'')
+    .replace(/<!-- RCH:LANG:(?:donut|row|column) -->\n/g,'')
     .replace(/\n<!-- \/RCH:LANG:(?:donut|row|column) -->/g,'')
     .replaceAll(BLOCK_OPEN+'\n','').replaceAll('\n'+BLOCK_CLOSE,'').trim()+'\n';
 }
