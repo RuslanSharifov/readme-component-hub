@@ -5,7 +5,14 @@ export const RAW='https://raw.githubusercontent.com/RuslanSharifov/readme-compon
 export const DEFAULTS=Object.freeze({caption:'the rhythm of building',theme:'dark',width:100,align:'center'});
 export const PAIR_OPEN='<!-- RCH:PAIR -->';
 export const PAIR_CLOSE='<!-- /RCH:PAIR -->';
-export const BLOCKS=/<!-- RCH:NEON -->[\s\S]*?<!-- \/RCH:NEON -->/g;
+export const LANGUAGE_MODES=Object.freeze(['donut','row','column']);
+export const BLOCKS=/<!-- RCH:NEON -->[\s\S]*?<!-- \/RCH:NEON -->|<!-- RCH:LANG:(?:donut|row|column) -->[\s\S]*?<!-- \/RCH:LANG:(?:donut|row|column) -->/g;
+export function languageBlock(mode='donut'){
+  if(!LANGUAGE_MODES.includes(mode))throw new RangeError('Unknown language chart');
+  const id='repository-languages-'+mode;
+  const url='https://raw.githubusercontent.com/RuslanSharifov/readme-component-hub/main/components/'+id+'/dark.svg';
+  return '<!-- RCH:LANG:'+mode+' -->\n<p align="center"><img src="'+url+'" alt="Repository languages '+mode+' chart" width="100%" /></p>\n<!-- /RCH:LANG:'+mode+' -->';
+}
 export function escapeHTML(value){
   return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
@@ -28,7 +35,7 @@ export function snippet(input=DEFAULTS){
   return result.join('\n');
 }
 export function block(input=DEFAULTS){return BLOCK_OPEN+'\n'+snippet(input)+'\n'+BLOCK_CLOSE}
-export function updateBlocks(markdown,input){return String(markdown??'').replace(BLOCKS,()=>block(input))}
+export function updateBlocks(markdown,input){return String(markdown??'').replace(/<!-- RCH:NEON -->[\s\S]*?<!-- \/RCH:NEON -->/g,()=>block(input))}
 export function exportMarkdown(markdown){
   let out=String(markdown??'');
   // GitHub supports tables and images, not free-positioned elements.
@@ -36,12 +43,14 @@ export function exportMarkdown(markdown){
     const children=[...inside.matchAll(BLOCKS)].map(m=>m[0]);
     if(children.length!==2)return inside;
     const cells=children.map(child=>{
-      const html=child.replaceAll(BLOCK_OPEN,'').replaceAll(BLOCK_CLOSE,'').trim();
+      const html=child.replace(/<!-- \/?RCH:(?:NEON|LANG:(?:donut|row|column)) -->/g,'').trim();
       return '<td width="50%" valign="top">\n'+html+'\n</td>';
     });
     return '<table width="100%">\n<tr>\n'+cells.join('\n')+'\n</tr>\n</table>';
   });
-  return out.replaceAll(BLOCK_OPEN+'\n','').replaceAll('\n'+BLOCK_CLOSE,'').trim()+'\n';
+  return out.replace(/<!-- RCH:LANG:(?:donut|row|column) -->\n/g,'')
+    .replace(/\n<!-- \/RCH:LANG:(?:donut|row|column) -->/g,'')
+    .replaceAll(BLOCK_OPEN+'\n','').replaceAll('\n'+BLOCK_CLOSE,'').trim()+'\n';
 }
 export function insertBlock(markdown,index,input=DEFAULTS){
   const str=String(markdown??''),i=Math.min(str.length,Math.max(0,Number(index)||0));

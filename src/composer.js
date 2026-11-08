@@ -1,4 +1,4 @@
-import {snippet as neonSnippet, escapeHTML} from './neon-core.mjs';
+import {snippet as neonSnippet, escapeHTML, languageBlock} from './neon-core.mjs';
 /* README Composer: pick components and produce a complete README.md document.
    Uses the same asset URLs as the gallery, so the output renders on GitHub. */
 
@@ -42,6 +42,8 @@ function buildMarkdown() {
     if(item.id==='neon-wave')
       lines.push(neonSnippet({caption:els.caption.value,theme:els.theme.value,
         width:Number(els.width.value),align:els.align.value}),'');
+    else if(item.id.startsWith('repository-languages-'))
+      lines.push(languageBlock(item.id.replace('repository-languages-','')).replace(/<!-- \/?RCH:LANG:[a-z]+ -->\n?/g,''),'');
   }
   return lines.join('\n');
 }

@@ -1,7 +1,7 @@
 import {readLayout,serializeLayout,blocksInOrder,moveBlock,appendBlock,resizeBlock,resizeHeight,blockWidth,blockHeight} from './layout-core.mjs';
 import {
   BLOCK_OPEN, DEFAULTS, block, insertBlock, updateBlocks, exportMarkdown,
-  escapeHTML, options, parseRepo
+  escapeHTML, options, parseRepo, languageBlock, LANGUAGE_MODES
 } from './neon-core.mjs';
 
 const $=(selector)=>document.querySelector(selector);
@@ -60,17 +60,18 @@ function preview(){
   $('#sourceLength').textContent=source.value.length+' characters';
 }
 function enhancePreview(){
-  const imgs=[...rendered.querySelectorAll('img[src*="/neon-wave/"]')];
+  const imgs=[...rendered.querySelectorAll('img[src*="/neon-wave/"],img[src*="/repository-languages-"]')];
   const nodes=readLayout(source.value);
   const items=blocksInOrder(nodes);
   imgs.forEach((img,index)=>{
+    const languageCard=items[index]?.includes('RCH:LANG:');
     const wrapper=document.createElement('div');
     wrapper.className='layout-component'+(index===selectedIndex?' selected':'');
     wrapper.draggable=true;
     wrapper.dataset.blockIndex=String(index);
     wrapper.tabIndex=0;
     wrapper.setAttribute('role','group');
-    wrapper.setAttribute('aria-label','Neon component '+(index+1)+'. Drag to move or resize from right edge.');
+    wrapper.setAttribute('aria-label','README component '+(index+1)+'. Drag to move or resize from right edge.');
     const host=img.closest('p')||img;
     host.parentNode.insertBefore(wrapper,host);
     wrapper.appendChild(host);
@@ -109,6 +110,8 @@ function enhancePreview(){
     wrapper.addEventListener('click',()=>{
       selectedIndex=index;
       rendered.querySelectorAll('.layout-component').forEach(el=>el.classList.toggle('selected',Number(el.dataset.blockIndex)===index));
+      document.querySelector('.inspector').hidden=languageCard;
+      if(languageCard)return;
       const width=blockWidth(items[index]);
       $('#neonWidth').value=String(width);
       $('#neonWidthValue').textContent=width+'%';
@@ -129,7 +132,7 @@ function enhancePreview(){
     });
     wrapper.addEventListener('dragend',()=>{draggingIndex=null;clearDropHints()});
     wrapper.addEventListener('dragover',event=>{
-      if(!event.dataTransfer.types.includes('application/x-layout-index')&&!event.dataTransfer.types.includes('application/x-neon-wave'))return;
+      if(!event.dataTransfer.types.includes('application/x-layout-index')&&!event.dataTransfer.types.includes('application/x-neon-wave')&&!event.dataTransfer.types.includes('application/x-language-mode'))return;
       event.preventDefault();event.stopPropagation();
       const rect=wrapper.getBoundingClientRect();
       const x=(event.clientX-rect.left)/rect.width;
@@ -145,7 +148,12 @@ function enhancePreview(){
       const side=wrapper.dataset.dropSide||'after';
       const from=Number(event.dataTransfer.getData('application/x-layout-index'));
       const isLibrary=event.dataTransfer.getData('application/x-neon-wave')==='neon-wave';
-      if(isLibrary){
+      const libraryLanguage=event.dataTransfer.getData('application/x-language-mode');
+      if(libraryLanguage&&LANGUAGE_MODES.includes(libraryLanguage)){
+        const count=blocksInOrder(readLayout(source.value)).length;
+        source.value=appendLanguageBlock(source.value,libraryLanguage);
+        source.value=moveBlock(source.value,count,index,side);
+      }else if(isLibrary){
         const count=blocksInOrder(readLayout(source.value)).length;
         source.value=appendBlock(source.value,config);
         source.value=moveBlock(source.value,count,index,side);
@@ -211,10 +219,20 @@ function addNeon(){
   if(!component)return;
   source.value=appendBlock(source.value,config);
   selectedIndex=blocksInOrder(readLayout(source.value)).length-1;
+  document.querySelector('.inspector').hidden=false;
   refresh();
   showToast('Neon Waveform added to README');
 }
+function appendLanguageBlock(markdown,mode){return String(markdown).replace(/\s*$/,'')+'\n\n'+languageBlock(mode)+'\n'}
+function addLanguage(mode){
+  if(!LANGUAGE_MODES.includes(mode))return;
+  source.value=appendLanguageBlock(source.value,mode);
+  selectedIndex=blocksInOrder(readLayout(source.value)).length-1;
+  document.querySelector('.inspector').hidden=true;
+  refresh();showToast(mode[0].toUpperCase()+mode.slice(1)+' card added');
+}
 function applyChanges(){
+  if(blocksInOrder(readLayout(source.value))[selectedIndex]?.includes('RCH:LANG:'))return;
   config=options({
     caption:$('#neonCaption').value,theme:$('#neonTheme').value,
     align:$('#neonAlign').value,width:$('#neonWidth').value
@@ -286,7 +304,23 @@ function drawLibrary(){
    '<div class="component-row"><strong>'+escapeHTML(component.title)+'</strong><small>GIF · LOOP</small></div>'+
    '<p>'+escapeHTML(component.description)+'</p>'+
    '<button type="button" id="addNeon" aria-label="Add Neon Waveform to README">+ Add to README</button></article>';
-  list.insertAdjacentHTML('beforeend','<article class="component-card language-library-card"><div class="component-art language-art"><span>◉</span><div><b>JavaScript</b><i style="width:72%"></i><b>CSS</b><i style="width:40%"></i></div></div><div class="component-row"><strong>Repository Languages</strong><small>LIVE · SVG</small></div><p>Animated donut, row and column charts with GitHub language percentages, hover and touch details.</p><a class="language-library-link" href="./languages.html">Customize component ↗</a></article>');
+  for(const mode of LANGUAGE_MODES){
+    const id='repository-languages-'+mode;
+    const title={donut:'Languages · Donut',row:'Languages · Row',column:'Languages · Column'}[mode];
+    const path='./components/'+id+'/dark.svg';
+    const article=document.createElement('article');
+    article.className='component-card language-library-card';
+    article.draggable=true;
+    article.innerHTML='<div class="component-art"><img src="'+path+'" alt="'+title+' chart preview" loading="lazy"/></div>'+
+      '<div class="component-row"><strong>'+title+'</strong><small>SVG · ONE CLICK</small></div>'+
+      '<p>Instant README language chart. No setup required.</p><button type="button" data-add-language="'+mode+'">+ Add to README</button>';
+    article.querySelector('button').addEventListener('click',()=>addLanguage(mode));
+    article.addEventListener('dragstart',event=>{
+      event.dataTransfer.setData('application/x-language-mode',mode);
+      event.dataTransfer.effectAllowed='copy';
+    });
+    list.appendChild(article);
+  }
   $('#addNeon').addEventListener('click',addNeon);
   $('#neonLibraryCard').addEventListener('dragstart',e=>{
     e.dataTransfer.setData('application/x-neon-wave','neon-wave');
@@ -295,13 +329,15 @@ function drawLibrary(){
 }
 function allowDrop(element){
   element.addEventListener('dragover',e=>{
-    if([...e.dataTransfer.types].includes('application/x-neon-wave')){
+    if([...e.dataTransfer.types].includes('application/x-neon-wave')||[...e.dataTransfer.types].includes('application/x-language-mode')){
       e.preventDefault();e.dataTransfer.dropEffect='copy';
     }
   });
   element.addEventListener('drop',e=>{
     if(e.target.closest('.layout-component'))return;
-    if(e.dataTransfer.getData('application/x-neon-wave')!=='neon-wave')return;
+    const mode=e.dataTransfer.getData('application/x-language-mode');
+    const neon=e.dataTransfer.getData('application/x-neon-wave')==='neon-wave';
+    if(!neon&&!LANGUAGE_MODES.includes(mode))return;
     e.preventDefault();
     if(element.id==='previewDropZone'){
       source.setSelectionRange(source.value.length,source.value.length);
@@ -310,7 +346,7 @@ function allowDrop(element){
       const selectionStart=source.selectionStart;
       source.setSelectionRange(selectionStart,selectionStart);
     }
-    addNeon();
+    if(neon)addNeon();else addLanguage(mode);
   });
 }
 function updateScreen(){
@@ -384,9 +420,13 @@ async function init(){
     if(!res.ok)throw new Error('Catalog HTTP '+res.status);
     const entries=await res.json();
     component=entries.find(item=>item.id==='neon-wave')||null;
-    $('#libraryCount').textContent=component?'02':'01';
+    $('#libraryCount').textContent=component?'04':'03';
     drawLibrary();
     const query=new URLSearchParams(location.search).get('component');
+    if(query.startsWith('repository-languages-')&&LANGUAGE_MODES.includes(query.replace('repository-languages-',''))){
+      addLanguage(query.replace('repository-languages-',''));
+      history.replaceState(null,'',location.pathname);
+    }
     if(query==='neon-wave'&&component){
       source.setSelectionRange(source.value.length,source.value.length);
       addNeon();
