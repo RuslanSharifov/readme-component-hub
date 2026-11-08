@@ -114,16 +114,37 @@ test('repository languages card includes GitHub API, three chart modes and safe 
   assert.match(js,/data-language/);
   assert.match(js,/touchstart/);
   assert.match(js,/image\/svg\+xml/);
-  assert.match(designer,/languages\.html/);
+  assert.match(designer,/data-add-language/);
 });
 
 test('Repository Languages is catalogued and automatically published with new HTML pages',async()=>{
   const {readFileSync}=await import('node:fs');
-  const manifest=JSON.parse(readFileSync(new URL('../components/repository-languages/component.json',import.meta.url),'utf8'));
+  const modes=['donut','row','column'];
+  const manifests=modes.map(mode=>JSON.parse(readFileSync(new URL('../components/repository-languages-'+mode+'/component.json',import.meta.url),'utf8')));
   const deploy=readFileSync(new URL('../.github/workflows/deploy.yml',import.meta.url),'utf8');
   const main=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
-  assert.equal(manifest.id,'repository-languages');
-  assert.equal(manifest.category,'Dynamic');
+  assert.deepEqual(manifests.map(x=>x.id),modes.map(mode=>'repository-languages-'+mode));
+  assert.ok(manifests.every(x=>x.category==='Dynamic'));
+  assert.ok(manifests.every(x=>x.format==='svg'));
   assert.ok(deploy.includes('cp *.html favicon.svg dist/'));
   assert.match(main,/repository-languages/);
+});
+
+test('language components insert without settings, export cleanly and can be paired',async()=>{
+  const {languageBlock,LANGUAGE_MODES,exportMarkdown,block,DEFAULTS,updateBlocks}=await import('../src/neon-core.mjs');
+  const {readLayout,blocksInOrder,moveBlock,resizeBlock}=await import('../src/layout-core.mjs');
+  assert.deepEqual(LANGUAGE_MODES,['donut','row','column']);
+  const draft='# Profile\n\n'+LANGUAGE_MODES.map(languageBlock).join('\n\n')+'\n\n'+block(DEFAULTS);
+  assert.equal(blocksInOrder(readLayout(draft)).length,4);
+  const changed=updateBlocks(draft,{caption:'Updated'});
+  assert.equal((changed.match(/RCH:LANG:/g)||[]).length,6);
+  assert.equal((changed.match(/Updated/g)||[]).length,1);
+  const paired=moveBlock(draft,2,1,'right');
+  assert.match(paired,/RCH:PAIR/);
+  const exported=exportMarkdown(paired);
+  assert.equal((exported.match(/<td width="50%"/g)||[]).length,2);
+  assert.equal((exported.match(/repository-languages-(?:donut|row|column)\/dark.svg/g)||[]).length,3);
+  assert.doesNotMatch(exported,/RCH:(?:LANG|PAIR|NEON)/);
+  assert.match(resizeBlock(draft,0,60),/width="60%"/);
+  assert.throws(()=>languageBlock('invalid'),RangeError);
 });
