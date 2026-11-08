@@ -63,3 +63,32 @@ test('aurora particle design keeps at least triple density and no automated shap
   assert.match(designer,/aurora-designer\.css/);
   assert.match(designer,/aurora-interactions\.js/);
 });
+
+test('layout groups at most two components and exports GitHub-compatible table',async()=>{
+  const {readLayout,blocksInOrder,moveBlock,appendBlock,resizeBlock,blockWidth}=await import('../src/layout-core.mjs');
+  const one=block(DEFAULTS);
+  let md='# Demo\n\n'+one+'\n\n'+one+'\n\n'+one+'\n';
+  md=moveBlock(md,2,0,'right');
+  assert.equal(blocksInOrder(readLayout(md)).length,3);
+  assert.match(md,/RCH:PAIR/);
+  let output=exportMarkdown(md);
+  assert.match(output,/<table width="100%">/);
+  assert.equal((output.match(/<td width="50%"/g)||[]).length,2);
+  assert.equal((output.match(/neon-wave\/dark\.gif/g)||[]).length,3);
+  assert.doesNotMatch(output,/RCH:PAIR|RCH:NEON/);
+  md=moveBlock(md,2,0,'left');
+  assert.equal((exportMarkdown(md).match(/<td width="50%"/g)||[]).length,2);
+  md=resizeBlock(md,1,35);
+  assert.equal(blockWidth(blocksInOrder(readLayout(md))[1]),35);
+  assert.match(md,/width="35%"/);
+});
+test('layout preserves ordinary Markdown and handles missing targets',async()=>{
+  const {readLayout,moveBlock,resizeBlock}=await import('../src/layout-core.mjs');
+  const original='# Hello\n\n'+block(DEFAULTS)+'\n\nParagraph.\n\n'+block(DEFAULTS);
+  assert.equal(moveBlock(original,9,0,'left'),original);
+  assert.equal(resizeBlock(original,9,50),original);
+  const moved=moveBlock(original,0,1,'before');
+  assert.match(moved,/# Hello/);
+  assert.match(moved,/Paragraph\./);
+  assert.equal(readLayout(moved).filter(n=>n.type==='components').length,2);
+});
