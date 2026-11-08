@@ -92,3 +92,12 @@ test('layout preserves ordinary Markdown and handles missing targets',async()=>{
   assert.match(moved,/Paragraph\./);
   assert.equal(readLayout(moved).filter(n=>n.type==='components').length,2);
 });
+
+test('component height is retained in GitHub export and can be resized',async()=>{
+  const {resizeHeight,blockHeight,blocksInOrder,readLayout}=await import('../src/layout-core.mjs');
+  const input='# Readme\n\n'+block(DEFAULTS);
+  const updated=resizeHeight(input,0,215);
+  assert.equal(blockHeight(blocksInOrder(readLayout(updated))[0]),220);
+  assert.match(exportMarkdown(updated),/height="220"/);
+  assert.equal(resizeHeight(input,8,300),input);
+});
