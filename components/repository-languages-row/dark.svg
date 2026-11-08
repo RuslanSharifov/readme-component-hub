@@ -1,1 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="720" height="400" viewBox="0 0 720 400"><rect width="720" height="400" fill="#202f58" rx="25"/><rect x="1" y="1" width="718" height="398" rx="24" fill="none" stroke="#6476a8"/><text x="36" y="49" font-family="Arial" font-size="26" font-weight="bold" fill="#eaf2ff">Languages · Row</text><text x="36" y="75" font-family="Arial" font-size="12" letter-spacing="2" fill="#a5b7d9">REPOSITORY LANGUAGE BREAKDOWN</text><text x="42" y="133" fill="#eaf2ff" font-size="18" font-family="Arial">JavaScript</text><text x="666" y="133" text-anchor="end" fill="#eaf2ff" font-size="19" font-weight="bold" font-family="Arial">62%</text><rect x="42" y="150" width="624" height="19" rx="9" fill="#6476a8" fill-opacity=".24"/><rect x="42" y="150" width="386.88" height="19" rx="9" fill="#78b9ff"/><text x="42" y="215" fill="#eaf2ff" font-size="18" font-family="Arial">HTML</text><text x="666" y="215" text-anchor="end" fill="#eaf2ff" font-size="19" font-weight="bold" font-family="Arial">23%</text><rect x="42" y="232" width="624" height="19" rx="9" fill="#6476a8" fill-opacity=".24"/><rect x="42" y="232" width="143.52" height="19" rx="9" fill="#8a88ff"/><text x="42" y="297" fill="#eaf2ff" font-size="18" font-family="Arial">CSS</text><text x="666" y="297" text-anchor="end" fill="#eaf2ff" font-size="19" font-weight="bold" font-family="Arial">15%</text><rect x="42" y="314" width="624" height="19" rx="9" fill="#6476a8" fill-opacity=".24"/><rect x="42" y="314" width="93.6" height="19" rx="9" fill="#5be0c2"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="400" viewBox="0 0 720 400">
+<rect width="720" height="400" fill="#202f58" rx="25"/>
+<rect x="1" y="1" width="718" height="398" rx="24" fill="none" stroke="#6476a8"/>
+<text x="36" y="49" font-family="Arial,sans-serif" font-size="26" font-weight="bold" fill="#eaf2ff">Languages · Row</text>
+<text x="36" y="75" font-family="Arial,sans-serif" font-size="12" letter-spacing="2" fill="#a5b7d9">RuslanSharifov/readme-component-hub</text>
+<text x="40" y="105" fill="#eaf2ff" font-family="Arial,sans-serif" font-size="16">JavaScript</text>
+<text x="664" y="105" text-anchor="end" fill="#eaf2ff" font-family="Arial,sans-serif" font-size="16" font-weight="bold">45.5%</text>
+<rect x="40" y="116" width="624" height="16" rx="8" fill="#6476a8" fill-opacity=".22"/>
+<rect x="40" y="116" width="284.16" height="16" rx="8" fill="#78b9ff"/>
+<text x="40" y="154" fill="#eaf2ff" font-family="Arial,sans-serif" font-size="16">CSS</text>
+<text x="664" y="154" text-anchor="end" fill="#eaf2ff" font-family="Arial,sans-serif" font-size="16" font-weight="bold">33.3%</text>
+<rect x="40" y="165" width="624" height="16" rx="8" fill="#6476a8" fill-opacity=".22"/>
+<rect x="40" y="165" width="208.06" height="16" rx="8" fill="#8a88ff"/>
+<text x="40" y="203" fill="#eaf2ff" font-family="Arial,sans-serif" font-size="16">HTML</text>
+<text x="664" y="203" text-anchor="end" fill="#eaf2ff" font-family="Arial,sans-serif" font-size="16" font-weight="bold">14.9%</text>
+<rect x="40" y="214" width="624" height="16" rx="8" fill="#6476a8" fill-opacity=".22"/>
+<rect x="40" y="214" width="93.04" height="16" rx="8" fill="#5be0c2"/>
+<text x="40" y="252" fill="#eaf2ff" font-family="Arial,sans-serif" font-size="16">Python</text>
+<text x="664" y="252" text-anchor="end" fill="#eaf2ff" font-family="Arial,sans-serif" font-size="16" font-weight="bold">6.2%</text>
+<rect x="40" y="263" width="624" height="16" rx="8" fill="#6476a8" fill-opacity=".22"/>
+<rect x="40" y="263" width="38.73" height="16" rx="8" fill="#ffb879"/>
+</svg>
