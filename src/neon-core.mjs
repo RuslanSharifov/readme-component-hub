@@ -35,7 +35,7 @@ export function snippet(input=DEFAULTS){
   return result.join('\n');
 }
 export function block(input=DEFAULTS){return BLOCK_OPEN+'\n'+snippet(input)+'\n'+BLOCK_CLOSE}
-export function updateBlocks(markdown,input){return String(markdown??'').replace(BLOCKS,()=>block(input))}
+export function updateBlocks(markdown,input){return String(markdown??'').replace(/<!-- RCH:NEON -->[\s\S]*?<!-- \/RCH:NEON -->/g,()=>block(input))}
 export function exportMarkdown(markdown){
   let out=String(markdown??'');
   // GitHub supports tables and images, not free-positioned elements.
