@@ -1,5 +1,5 @@
 import {fetchRepositoryData,updateBoundComponents,createLanguageBlock,repoOverviewBlock} from './repository-binding.mjs';
-import {readLayout,serializeLayout,blocksInOrder,moveBlock,appendBlock,resizeBlock,resizeHeight,blockWidth,blockHeight} from './layout-core.mjs';
+import {readLayout,serializeLayout,blocksInOrder,moveBlock,appendBlock,resizeBlock,resizeHeight,blockWidth,blockHeight,removeBlock,moveBlockRow,adjacentRowAvailable} from './layout-core.mjs';
 import {
   BLOCK_OPEN, DEFAULTS, block, insertBlock, updateBlocks, exportMarkdown,
   escapeHTML, options, parseRepo, languageBlock, LANGUAGE_MODES
@@ -80,6 +80,49 @@ function enhancePreview(){
     const badge=document.createElement('span');
     badge.className='layout-badge';badge.textContent='↕ Move · '+(index+1);
     wrapper.appendChild(badge);
+    const toolbar=document.createElement('div');
+    toolbar.className='layout-actions';
+    toolbar.setAttribute('role','toolbar');
+    toolbar.setAttribute('aria-label','Component '+(index+1)+' actions');
+    const controls=[
+      {action:'up',text:'↑',label:'Move component above previous container',disabled:!adjacentRowAvailable(source.value,index,'up')},
+      {action:'down',text:'↓',label:'Move component below next container',disabled:!adjacentRowAvailable(source.value,index,'down')},
+      {action:'delete',text:'✕',label:'Remove component from README',disabled:false}
+    ];
+    controls.forEach(control=>{
+      const button=document.createElement('button');
+      button.type='button';
+      button.className='layout-action layout-action-'+control.action;
+      button.textContent=control.text;button.title=control.label;
+      button.setAttribute('aria-label',control.label);
+      button.disabled=control.disabled;button.draggable=false;
+      button.addEventListener('pointerdown',event=>event.stopPropagation());
+      button.addEventListener('dragstart',event=>event.preventDefault());
+      button.addEventListener('click',event=>{
+        event.preventDefault();event.stopPropagation();
+        if(control.action==='delete'){
+          const next=removeBlock(source.value,index);
+          if(next===source.value)return;
+          source.value=next;
+          selectedIndex=Math.max(0,Math.min(index,blocksInOrder(readLayout(next)).length-1));
+          document.querySelector('.inspector').hidden=true;
+          refresh();showToast('Component removed');
+        }else{
+          const next=moveBlockRow(source.value,index,control.action);
+          if(next===source.value)return;
+          source.value=next;
+          const newItems=blocksInOrder(readLayout(next));
+          // A move creates a single-item row; find its new position by relative
+          // component ordering, not by assuming an empty row was preserved.
+          const original=items[index];
+          selectedIndex=newItems.indexOf(original);
+          selectedIndex=Math.max(0,selectedIndex);
+          refresh();showToast(control.action==='up'?'Moved to previous row':'Moved to next row');
+        }
+      });
+      toolbar.appendChild(button);
+    });
+    wrapper.appendChild(toolbar);
     const handle=document.createElement('button');
     handle.type='button';handle.className='resize-handle';
     handle.title='Drag to resize width';handle.setAttribute('aria-label','Resize component '+(index+1));
