@@ -1,0 +1,67 @@
+/* Direct-manipulation README layout: selected cards, drop zones and resize handles. */
+.readme-preview .layout-component{
+  position:relative;
+  min-width:0;
+  max-width:100%;
+  margin:10px 0;
+  padding:13px 10px 8px;
+  border:1px solid transparent;
+  border-radius:15px;
+  cursor:grab;
+  transition:border-color .2s,box-shadow .2s,background .2s;
+  touch-action:pan-y;
+}
+.readme-preview .layout-component:hover,
+.readme-preview .layout-component.selected{
+  border-color:rgba(109,213,255,.7);
+  background:rgba(107,174,245,.075);
+  box-shadow:0 0 0 2px rgba(117,221,255,.10),0 9px 28px rgba(4,12,41,.15);
+}
+.readme-preview .layout-component.dragging{opacity:.45;cursor:grabbing}
+.readme-preview .layout-component>p{margin:4px 0 0}
+.readme-preview .layout-component img{max-width:100%;height:auto}
+.readme-preview .layout-badge{
+  position:absolute;top:-10px;left:12px;z-index:2;
+  padding:4px 9px;
+  background:#285a85;color:#eaffff;border:1px solid rgba(172,238,255,.3);
+  border-radius:999px;font:10px var(--mono);line-height:1.1;
+  opacity:0;transition:opacity .18s;pointer-events:none;
+}
+.readme-preview .layout-component:hover .layout-badge,
+.readme-preview .layout-component.selected .layout-badge{opacity:1}
+.readme-preview .resize-handle{
+  position:absolute;z-index:3;right:-8px;top:50%;transform:translateY(-50%);
+  display:grid;place-items:center;width:24px;height:54px;
+  border:1px solid #a8e8ff;border-radius:12px;
+  background:linear-gradient(145deg,#5ac5e5,#8276e8);
+  color:#fff;font-size:17px;cursor:ew-resize;
+  box-shadow:0 6px 20px rgba(18,93,167,.4);
+  opacity:0;transition:opacity .2s;touch-action:none;
+}
+.readme-preview .layout-component:hover .resize-handle,
+.readme-preview .layout-component.selected .resize-handle{opacity:1}
+.readme-preview .layout-component.resizing{cursor:ew-resize}
+.readme-preview .layout-component.drop-left{box-shadow:inset 5px 0 #6ce8d4}
+.readme-preview .layout-component.drop-right{box-shadow:inset -5px 0 #6ce8d4}
+.readme-preview .layout-component.drop-before{box-shadow:inset 0 5px #6ce8d4}
+.readme-preview .layout-component.drop-after{box-shadow:inset 0 -5px #6ce8d4}
+.readme-preview table{
+  width:100%;border-collapse:separate;border-spacing:8px;
+  table-layout:fixed;border:0;margin:13px 0;
+}
+.readme-preview table td{
+  width:50%;max-width:50%;vertical-align:top;
+  padding:6px;border:1px dashed rgba(141,187,237,.28);
+  border-radius:13px;overflow:visible;overflow-wrap:anywhere;
+}
+.readme-preview table td .layout-component{margin:0}
+.readme-preview table td img{max-width:100%}
+.readme-preview:not(.dark) .layout-component:hover,
+.readme-preview:not(.dark) .layout-component.selected{background:rgba(62,156,228,.07)}
+.readme-preview:not(.dark) table td{border-color:rgba(43,114,185,.24)}
+@media(hover:none){
+  .readme-preview .resize-handle,.readme-preview .layout-badge{opacity:1}
+}
+@media(prefers-reduced-motion:reduce){
+  .readme-preview .layout-component,.readme-preview .layout-badge,.readme-preview .resize-handle{transition:none}
+}
