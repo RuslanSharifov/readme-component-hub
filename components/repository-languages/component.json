@@ -1,0 +1,21 @@
+{
+  "id": "repository-languages",
+  "title": "Repository Languages",
+  "description": "Interactive language breakdown with donut, horizontal bars, vertical columns, and GitHub repository data.",
+  "category": "Dynamic",
+  "tags": [
+    "github",
+    "languages",
+    "statistics",
+    "interactive"
+  ],
+  "author": "RuslanSharifov",
+  "format": "svg",
+  "featured": true,
+  "order": 4,
+  "addedAt": "2026-11-08",
+  "themes": {
+    "dark": "components/repository-languages/dark.svg",
+    "light": "components/repository-languages/light.svg"
+  }
+}
