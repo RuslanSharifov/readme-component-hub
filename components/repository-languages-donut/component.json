@@ -1,0 +1,21 @@
+{
+  "id": "repository-languages-donut",
+  "title": "Repository Languages · Donut",
+  "description": "One-click README language statistics card. Dairəvi qrafik; hər dilin rəngi və faizi görünür.",
+  "category": "Dynamic",
+  "tags": [
+    "github",
+    "languages",
+    "statistics",
+    "donut"
+  ],
+  "author": "RuslanSharifov",
+  "format": "svg",
+  "featured": true,
+  "order": 4,
+  "addedAt": "2026-11-08",
+  "themes": {
+    "dark": "components/repository-languages-donut/dark.svg",
+    "light": "components/repository-languages-donut/light.svg"
+  }
+}

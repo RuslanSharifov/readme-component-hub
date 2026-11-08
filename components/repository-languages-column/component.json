@@ -1,0 +1,21 @@
+{
+  "id": "repository-languages-column",
+  "title": "Repository Languages · Column",
+  "description": "One-click README language statistics card. Şaquli faiz sütunları ilə dillərin müqayisəsi.",
+  "category": "Dynamic",
+  "tags": [
+    "github",
+    "languages",
+    "statistics",
+    "column"
+  ],
+  "author": "RuslanSharifov",
+  "format": "svg",
+  "featured": true,
+  "order": 6,
+  "addedAt": "2026-11-08",
+  "themes": {
+    "dark": "components/repository-languages-column/dark.svg",
+    "light": "components/repository-languages-column/light.svg"
+  }
+}

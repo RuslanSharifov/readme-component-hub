@@ -1,0 +1,21 @@
+{
+  "id": "repository-languages-row",
+  "title": "Repository Languages · Row",
+  "description": "One-click README language statistics card. Üfüqi faiz çubuqları ilə dillərin müqayisəsi.",
+  "category": "Dynamic",
+  "tags": [
+    "github",
+    "languages",
+    "statistics",
+    "row"
+  ],
+  "author": "RuslanSharifov",
+  "format": "svg",
+  "featured": true,
+  "order": 5,
+  "addedAt": "2026-11-08",
+  "themes": {
+    "dark": "components/repository-languages-row/dark.svg",
+    "light": "components/repository-languages-row/light.svg"
+  }
+}
