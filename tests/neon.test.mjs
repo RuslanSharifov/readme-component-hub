@@ -101,3 +101,18 @@ test('component height is retained in GitHub export and can be resized',async()=
   assert.match(exportMarkdown(updated),/height="220"/);
   assert.equal(resizeHeight(input,8,300),input);
 });
+
+test('repository languages card includes GitHub API, three chart modes and safe SVG export',async()=>{
+  const {readFileSync}=await import('node:fs');
+  const html=readFileSync(new URL('../languages.html',import.meta.url),'utf8');
+  const js=readFileSync(new URL('../src/languages-card.js',import.meta.url),'utf8');
+  const designer=readFileSync(new URL('../src/designer.js',import.meta.url),'utf8');
+  assert.match(html,/value="donut"/);
+  assert.match(html,/value="row"/);
+  assert.match(html,/value="column"/);
+  assert.match(js,/api\.github\.com\/repos/);
+  assert.match(js,/data-language/);
+  assert.match(js,/touchstart/);
+  assert.match(js,/image\/svg\+xml/);
+  assert.match(designer,/languages\.html/);
+});
