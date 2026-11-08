@@ -31,6 +31,7 @@
     <input type="text" id="repositoryInput" autocomplete="off" spellcheck="false" aria-describedby="repoStatus"
       placeholder="https://github.com/OWNER/REPOSITORY"/>
     <button type="button" id="connectRepository" class="repo-connect-button">Bağla / Tətbiq et</button>
+    <button type="button" id="pullRepositoryReadme" class="repo-pull-button">README-ni Pull et</button>
     <span id="repoStatus" role="status" aria-live="polite">Repo məlumatlarını bütün dinamik komponentlərə bağla</span>
   </div>
   <section class="workspace" aria-label="README designer workspace">
@@ -84,6 +85,15 @@
     </section>
   </section>
 </main>
+<dialog id="readmePullDialog" class="readme-pull-dialog" aria-labelledby="readmePullTitle" aria-describedby="readmePullWarning">
+  <h2 id="readmePullTitle">README.md faylını əvəz edirsən</h2>
+  <p id="readmePullWarning">Repository-dəki README.md olduğu kimi yüklənəcək. Editor-dəki hazırkı Markdown məzmunu, bütün komponentlər və edilməmiş dəyişikliklər silinərək həmin faylla əvəz olunacaq.</p>
+  <p class="pull-repo-label">Mənbə: <strong id="pullRepoName"></strong></p>
+  <div class="readme-pull-actions">
+    <button type="button" id="cancelReadmePull">Ləğv et</button>
+    <button type="button" id="confirmReadmePull" class="confirm-pull">Bəli, README-ni əvəz et</button>
+  </div>
+</dialog>
 <div id="designerToast" class="toast" aria-live="polite" role="status"></div>
 <script defer src="https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/dist/markdown-it.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
