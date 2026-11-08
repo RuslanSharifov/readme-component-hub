@@ -46,7 +46,7 @@ jobs:
       - name: Package static site
         run: |
           mkdir -p dist
-          cp index.html designer.html favicon.svg dist/
+          cp *.html favicon.svg dist/
           cp -r src components generated dist/
           touch dist/.nojekyll
       - uses: actions/configure-pages@v5

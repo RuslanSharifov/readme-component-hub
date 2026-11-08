@@ -246,7 +246,10 @@ function setupEvents() {
   });
   els.grid.addEventListener('click', (event) => {
     const card = event.target.closest('[data-component]');
-    if (card) openModal(card.dataset.component);
+    if (card) {
+      if(card.dataset.component==='repository-languages') window.location.assign('./languages.html');
+      else openModal(card.dataset.component);
+    }
   });
   $('#resetFilters').addEventListener('click', () => {
     state.category = 'All';

@@ -40,8 +40,8 @@ def render(theme):
 
 def main():
     catalog=json.loads(CATALOG.read_text(encoding="utf-8"))
-    assert len(catalog)==1 and catalog[0]["id"]=="neon-wave", "Only Neon Waveform may be active"
-    item=catalog[0]
+    item=next((entry for entry in catalog if entry["id"]=="neon-wave"),None)
+    assert item is not None and item["format"]=="gif", "Neon Waveform GIF manifest is required"
     for theme in ("dark","light"):
         target=ROOT/item["themes"][theme]
         target.parent.mkdir(parents=True,exist_ok=True)
