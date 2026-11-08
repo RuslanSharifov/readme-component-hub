@@ -1,4 +1,4 @@
-import {readLayout,blocksInOrder,moveBlock,appendBlock,resizeBlock,blockWidth} from './layout-core.mjs';
+import {readLayout,serializeLayout,blocksInOrder,moveBlock,appendBlock,resizeBlock,blockWidth} from './layout-core.mjs';
 import {
   BLOCK_OPEN, DEFAULTS, block, insertBlock, updateBlocks, exportMarkdown,
   escapeHTML, options, parseRepo
@@ -88,6 +88,13 @@ function enhancePreview(){
       const width=blockWidth(items[index]);
       $('#neonWidth').value=String(width);
       $('#neonWidthValue').textContent=width+'%';
+      const text=items[index]||'';
+      const caption=text.match(/<strong>([\s\S]*?)<\/strong>/);
+      const theme=text.includes('/light.gif')?'light':'dark';
+      const align=text.match(/<p align="(left|right|center)"/)?.[1]||'center';
+      if(caption)$('#neonCaption').value=new DOMParser().parseFromString(caption[1],'text/html').documentElement.textContent||'';
+      $('#neonTheme').value=theme;$('#neonAlign').value=align;
+      config=options({caption:$('#neonCaption').value,theme,align,width});
     });
     wrapper.addEventListener('dragstart',event=>{
       if(resizing){event.preventDefault();return}
@@ -189,8 +196,16 @@ function applyChanges(){
     align:$('#neonAlign').value,width:$('#neonWidth').value
   });
   $('#neonWidthValue').textContent=config.width+'%';
-  // Component width is per-item; the other controls retain their current global behavior.
-  source.value=updateBlocks(source.value,config);
+  // Apply controls only to the selected component; other blocks retain their own settings.
+  const nodes=readLayout(source.value);
+  let cursor=0;
+  for(const node of nodes){
+    if(node.type!=='components')continue;
+    for(let i=0;i<node.items.length;i++,cursor++){
+      if(cursor===selectedIndex){node.items[i]=block(config);break}
+    }
+  }
+  source.value=serializeLayout(nodes);
   refresh();
 }
 function formatSelection(kind){
