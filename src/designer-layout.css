@@ -79,3 +79,11 @@
 .readme-preview .layout-component.selected .resize-height-handle{opacity:1}
 @media(hover:none){.readme-preview .resize-height-handle{opacity:1}}
 @media(prefers-reduced-motion:reduce){.readme-preview .resize-height-handle{transition:none}}
+
+.language-library-card .language-art{display:flex;gap:16px;color:#9deaf2}
+.language-library-card .language-art>span{font-size:70px;line-height:1;color:#8c9dff;text-shadow:0 0 20px #6bbcff66}
+.language-library-card .language-art>div{display:grid;gap:5px;flex:1}
+.language-library-card .language-art b{font-size:10px;color:#c6d8ff}
+.language-library-card .language-art i{height:8px;border-radius:99px;background:linear-gradient(90deg,#6cdddf,#9288ff);display:block}
+.language-library-link{display:block;text-align:center;padding:11px;border:1px solid #7ccde5;border-radius:11px;background:#314d81;color:#e6faff;font-size:12px;font-weight:700;text-decoration:none}
+.language-library-link:hover{background:#45649a}
