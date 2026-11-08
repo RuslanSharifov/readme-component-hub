@@ -65,3 +65,17 @@
 @media(prefers-reduced-motion:reduce){
   .readme-preview .layout-component,.readme-preview .layout-badge,.readme-preview .resize-handle{transition:none}
 }
+
+.readme-preview .resize-height-handle{
+  position:absolute;z-index:3;left:50%;bottom:-10px;transform:translateX(-50%);
+  display:grid;place-items:center;width:58px;height:24px;
+  border:1px solid #a8e8ff;border-radius:12px;
+  background:linear-gradient(135deg,#5ac5e5,#8276e8);
+  color:#fff;font-size:17px;cursor:ns-resize;
+  box-shadow:0 6px 20px rgba(18,93,167,.4);
+  opacity:0;transition:opacity .2s;touch-action:none;
+}
+.readme-preview .layout-component:hover .resize-height-handle,
+.readme-preview .layout-component.selected .resize-height-handle{opacity:1}
+@media(hover:none){.readme-preview .resize-height-handle{opacity:1}}
+@media(prefers-reduced-motion:reduce){.readme-preview .resize-height-handle{transition:none}}
