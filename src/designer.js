@@ -1,3 +1,4 @@
+import {fetchRepositoryData,updateBoundComponents,createLanguageBlock,repoOverviewBlock} from './repository-binding.mjs';
 import {readLayout,serializeLayout,blocksInOrder,moveBlock,appendBlock,resizeBlock,resizeHeight,blockWidth,blockHeight} from './layout-core.mjs';
 import {
   BLOCK_OPEN, DEFAULTS, block, insertBlock, updateBlocks, exportMarkdown,
@@ -16,6 +17,7 @@ let toastTimer=0;
 let selectedIndex=0;
 let draggingIndex=null;
 let resizing=null;
+let linkedRepository=null;
 
 const starter='# My GitHub README\n\nCreate something remarkable.\n\n'+block(config)+'\n\n---\n\nBuilt with [README Component Hub](https://github.com/RuslanSharifov/readme-component-hub).\n';
 function readStorage(name){
@@ -32,7 +34,7 @@ function showToast(message){
   toastTimer=setTimeout(()=>el.classList.remove('visible'),2400);
 }
 function save(){
-  writeStorage(key,JSON.stringify({markdown:source.value,config}));
+  writeStorage(key,JSON.stringify({markdown:source.value,config,linkedRepository}));
 }
 function updateControls(){
   $('#neonCaption').value=config.caption;
@@ -60,11 +62,11 @@ function preview(){
   $('#sourceLength').textContent=source.value.length+' characters';
 }
 function enhancePreview(){
-  const imgs=[...rendered.querySelectorAll('img[src*="/neon-wave/"],img[src*="/repository-languages-"]')];
+  const imgs=[...rendered.querySelectorAll('img[src*="/neon-wave/"],img[src*="/repository-languages-"],img[src^="https://quickchart.io/chart"],img[src*="img.shields.io/github/stars/"]')];
   const nodes=readLayout(source.value);
   const items=blocksInOrder(nodes);
   imgs.forEach((img,index)=>{
-    const languageCard=items[index]?.includes('RCH:LANG:');
+    const languageCard=items[index]?.includes('RCH:LANG:')||items[index]?.includes('RCH:REPO');
     const wrapper=document.createElement('div');
     wrapper.className='layout-component'+(index===selectedIndex?' selected':'');
     wrapper.draggable=true;
@@ -223,7 +225,10 @@ function addNeon(){
   refresh();
   showToast('Neon Waveform added to README');
 }
-function appendLanguageBlock(markdown,mode){return String(markdown).replace(/\s*$/,'')+'\n\n'+languageBlock(mode)+'\n'}
+function appendLanguageBlock(markdown,mode){
+  const b=linkedRepository?createLanguageBlock(mode,linkedRepository.repo,linkedRepository.languages):languageBlock(mode);
+  return String(markdown).replace(/\s*$/,'')+'\n\n'+b+'\n';
+}
 function addLanguage(mode){
   if(!LANGUAGE_MODES.includes(mode))return;
   source.value=appendLanguageBlock(source.value,mode);
@@ -232,7 +237,7 @@ function addLanguage(mode){
   refresh();showToast(mode[0].toUpperCase()+mode.slice(1)+' card added');
 }
 function applyChanges(){
-  if(blocksInOrder(readLayout(source.value))[selectedIndex]?.includes('RCH:LANG:'))return;
+  if(/RCH:(?:LANG:|REPO)/.test(blocksInOrder(readLayout(source.value))[selectedIndex]||''))return;
   config=options({
     caption:$('#neonCaption').value,theme:$('#neonTheme').value,
     align:$('#neonAlign').value,width:$('#neonWidth').value
@@ -281,10 +286,43 @@ async function copy(contents){
   const ok=document.execCommand('copy');ta.remove();
   if(!ok)throw new Error('Clipboard is not available');
 }
+function addRepositoryOverview(){
+  if(!linkedRepository){showToast('Əvvəl repository-ni bağla');return}
+  const content=repoOverviewBlock(linkedRepository.info,linkedRepository.commits);
+  source.value=source.value.replace(/\s*$/,'')+'\n\n'+content+'\n';
+  selectedIndex=blocksInOrder(readLayout(source.value)).length-1;
+  document.querySelector('.inspector').hidden=true;
+  refresh();showToast('Repo statistikası əlavə edildi');
+}
+async function connectRepository(){
+  const button=$('#connectRepository');
+  let slug;
+  try{slug=parseRepo($('#repositoryInput').value)}catch(e){
+    $('#repoStatus').textContent=e.message;$('#repoStatus').classList.add('error');return
+  }
+  button.disabled=true;button.textContent='Yüklənir…';
+  $('#repoStatus').textContent='GitHub məlumatları oxunur…';
+  $('#repoStatus').classList.remove('error');
+  try{
+    const fetched=await fetchRepositoryData(slug);
+    // Do not replace existing data until all requested remote reads succeed.
+    const updated=updateBoundComponents(source.value,fetched.repo,fetched.languages,fetched.info,fetched.commits);
+    source.value=updated.markdown;linkedRepository=fetched;
+    $('#repositoryInput').value='https://github.com/'+fetched.repo;
+    writeStorage(repoKey,'https://github.com/'+fetched.repo);
+    refresh();
+    $('#repoStatus').textContent='✓ '+fetched.repo+' · '+updated.count+' dinamik komponent yeniləndi'+
+      (fetched.commits!==null?' · '+fetched.commits+' commit':'');
+    showToast('Repository bütün dinamik komponentlərə bağlandı');
+  }catch(e){
+    $('#repoStatus').textContent=e.message;
+    $('#repoStatus').classList.add('error');
+  }finally{button.disabled=false;button.textContent='Bağla / Tətbiq et'}
+}
 function updateRepository(){
   try{
     const slug=parseRepo($('#repositoryInput').value);
-    $('#repoStatus').textContent='Target: '+slug+' · Neon GIF is hosted by Component Hub';
+    $('#repoStatus').textContent=(linkedRepository?.repo.toLowerCase()===slug.toLowerCase()?'✓ Bağlı: ':'Bağlamaq üçün düyməyə bas: ')+slug;
     $('#repoStatus').classList.remove('error');
     writeStorage(repoKey,'https://github.com/'+slug);
   }catch(err){
@@ -321,6 +359,8 @@ function drawLibrary(){
     });
     list.appendChild(article);
   }
+  list.insertAdjacentHTML('beforeend','<article class="component-card language-library-card"><div class="component-row"><strong>Repository Overview</strong><small>LIVE BADGES</small></div><p>Repo adı, stars, forks, issues, son commit və bağlama zamanı commit sayı.</p><button type="button" id="addRepositoryOverview">+ Add to README</button></article>');
+  $('#addRepositoryOverview').addEventListener('click',addRepositoryOverview);
   $('#addNeon').addEventListener('click',addNeon);
   $('#neonLibraryCard').addEventListener('dragstart',e=>{
     e.dataTransfer.setData('application/x-neon-wave','neon-wave');
@@ -391,6 +431,8 @@ function initEvents(){
       showToast('README.md downloaded');
     }catch(e){showToast(e.message)}
   });
+  $('#connectRepository').addEventListener('click',connectRepository);
+  $('#repositoryInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();connectRepository()}});
   $('#repositoryInput').addEventListener('change',updateRepository);
   $('#repositoryInput').addEventListener('input',updateRepository);
   allowDrop(source);allowDrop($('#previewDropZone'));
@@ -410,6 +452,9 @@ async function init(){
   if(stored&&typeof stored.markdown==='string'){
     source.value=stored.markdown;
     config=options(stored.config||DEFAULTS);
+    if(stored.linkedRepository&&typeof stored.linkedRepository.repo==='string'){
+      try{parseRepo(stored.linkedRepository.repo);linkedRepository=stored.linkedRepository}catch{}
+    }
     // Old designs from prior versions are not imported automatically.
   }else{source.value=starter}
   $('#repositoryInput').value=readStorage(repoKey)||'https://github.com/RuslanSharifov/readme-component-hub';
@@ -420,7 +465,7 @@ async function init(){
     if(!res.ok)throw new Error('Catalog HTTP '+res.status);
     const entries=await res.json();
     component=entries.find(item=>item.id==='neon-wave')||null;
-    $('#libraryCount').textContent=component?'04':'03';
+    $('#libraryCount').textContent=component?'05':'04';
     drawLibrary();
     const query=new URLSearchParams(location.search).get('component');
     if(query.startsWith('repository-languages-')&&LANGUAGE_MODES.includes(query.replace('repository-languages-',''))){

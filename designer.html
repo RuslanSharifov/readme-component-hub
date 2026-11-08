@@ -30,7 +30,8 @@
     <label for="repositoryInput">REPOSITORY</label>
     <input type="text" id="repositoryInput" autocomplete="off" spellcheck="false" aria-describedby="repoStatus"
       placeholder="https://github.com/OWNER/REPOSITORY"/>
-    <span id="repoStatus" role="status">Shared asset works in every README</span>
+    <button type="button" id="connectRepository" class="repo-connect-button">Bağla / Tətbiq et</button>
+    <span id="repoStatus" role="status" aria-live="polite">Repo məlumatlarını bütün dinamik komponentlərə bağla</span>
   </div>
   <section class="workspace" aria-label="README designer workspace">
     <aside class="pane components-pane" aria-label="Component library">

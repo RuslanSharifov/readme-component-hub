@@ -87,3 +87,20 @@
 .language-library-card .language-art i{height:8px;border-radius:99px;background:linear-gradient(90deg,#6cdddf,#9288ff);display:block}
 .language-library-link{display:block;text-align:center;padding:11px;border:1px solid #7ccde5;border-radius:11px;background:#314d81;color:#e6faff;font-size:12px;font-weight:700;text-decoration:none}
 .language-library-link:hover{background:#45649a}
+
+/* Global repository binding control */
+.repository-bar .repo-connect-button{
+  flex:none;white-space:nowrap;border:1px solid rgba(119,224,247,.65);
+  border-radius:13px;padding:11px 14px;color:#e9faff;font-size:12px;font-weight:700;
+  background:linear-gradient(125deg,#2d719e,#6757b3);
+  box-shadow:0 5px 20px rgba(61,157,230,.18);cursor:pointer;
+  transition:filter .16s ease,box-shadow .16s ease;
+}
+.repository-bar .repo-connect-button:hover{filter:brightness(1.14);box-shadow:0 6px 26px rgba(87,179,255,.33)}
+.repository-bar .repo-connect-button:disabled{opacity:.62;cursor:progress}
+.repository-bar #repoStatus{font-size:11px;line-height:1.45;max-width:410px}
+@media(max-width:850px){
+  .repository-bar{flex-wrap:wrap;align-items:center}
+  .repository-bar input{flex:1;min-width:180px;width:auto}
+  .repository-bar #repoStatus{flex-basis:100%}
+}
