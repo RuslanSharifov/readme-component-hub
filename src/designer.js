@@ -1,3 +1,4 @@
+import {readLayout,blocksInOrder,moveBlock,appendBlock,resizeBlock,blockWidth} from './layout-core.mjs';
 import {
   BLOCK_OPEN, DEFAULTS, block, insertBlock, updateBlocks, exportMarkdown,
   escapeHTML, options, parseRepo
@@ -12,6 +13,9 @@ let component=null;
 let config={...DEFAULTS};
 let editingTheme='dark';
 let toastTimer=0;
+let selectedIndex=0;
+let draggingIndex=null;
+let resizing=null;
 
 const starter='# My GitHub README\n\nCreate something remarkable.\n\n'+block(config)+'\n\n---\n\nBuilt with [README Component Hub](https://github.com/RuslanSharifov/readme-component-hub).\n';
 function readStorage(name){
@@ -45,6 +49,7 @@ function preview(){
       ADD_ATTR:['align','width','valign'],FORBID_TAGS:['script','style','iframe','object','embed','form']
     });
     rendered.innerHTML=safe;
+    enhancePreview();
     for(const link of rendered.querySelectorAll('a')){
       link.rel='noopener noreferrer';link.target='_blank';
     }
@@ -53,6 +58,112 @@ function preview(){
     rendered.style.whiteSpace='pre-wrap';
   }
   $('#sourceLength').textContent=source.value.length+' characters';
+}
+function enhancePreview(){
+  const imgs=[...rendered.querySelectorAll('img[src*="/neon-wave/"]')];
+  const nodes=readLayout(source.value);
+  const items=blocksInOrder(nodes);
+  imgs.forEach((img,index)=>{
+    const wrapper=document.createElement('div');
+    wrapper.className='layout-component'+(index===selectedIndex?' selected':'');
+    wrapper.draggable=true;
+    wrapper.dataset.blockIndex=String(index);
+    wrapper.tabIndex=0;
+    wrapper.setAttribute('role','group');
+    wrapper.setAttribute('aria-label','Neon component '+(index+1)+'. Drag to move or resize from right edge.');
+    const host=img.closest('p')||img;
+    host.parentNode.insertBefore(wrapper,host);
+    wrapper.appendChild(host);
+    const badge=document.createElement('span');
+    badge.className='layout-badge';badge.textContent='↕ Move · '+(index+1);
+    wrapper.appendChild(badge);
+    const handle=document.createElement('button');
+    handle.type='button';handle.className='resize-handle';
+    handle.title='Drag to resize width';handle.setAttribute('aria-label','Resize component '+(index+1));
+    handle.textContent='↔';
+    wrapper.appendChild(handle);
+    wrapper.addEventListener('click',()=>{
+      selectedIndex=index;
+      rendered.querySelectorAll('.layout-component').forEach(el=>el.classList.toggle('selected',Number(el.dataset.blockIndex)===index));
+      const width=blockWidth(items[index]);
+      $('#neonWidth').value=String(width);
+      $('#neonWidthValue').textContent=width+'%';
+    });
+    wrapper.addEventListener('dragstart',event=>{
+      if(resizing){event.preventDefault();return}
+      draggingIndex=index;
+      event.dataTransfer.setData('application/x-layout-index',String(index));
+      event.dataTransfer.effectAllowed='move';
+      wrapper.classList.add('dragging');
+    });
+    wrapper.addEventListener('dragend',()=>{draggingIndex=null;clearDropHints()});
+    wrapper.addEventListener('dragover',event=>{
+      if(!event.dataTransfer.types.includes('application/x-layout-index')&&!event.dataTransfer.types.includes('application/x-neon-wave'))return;
+      event.preventDefault();event.stopPropagation();
+      const rect=wrapper.getBoundingClientRect();
+      const x=(event.clientX-rect.left)/rect.width;
+      const y=(event.clientY-rect.top)/rect.height;
+      const side=x<.27?'left':x>.73?'right':y<.5?'before':'after';
+      clearDropHints();wrapper.classList.add('drop-'+side);wrapper.dataset.dropSide=side;
+    });
+    wrapper.addEventListener('dragleave',event=>{
+      if(!wrapper.contains(event.relatedTarget))wrapper.classList.remove('drop-left','drop-right','drop-before','drop-after');
+    });
+    wrapper.addEventListener('drop',event=>{
+      event.preventDefault();event.stopPropagation();
+      const side=wrapper.dataset.dropSide||'after';
+      const from=Number(event.dataTransfer.getData('application/x-layout-index'));
+      const isLibrary=event.dataTransfer.getData('application/x-neon-wave')==='neon-wave';
+      if(isLibrary){
+        const count=blocksInOrder(readLayout(source.value)).length;
+        source.value=appendBlock(source.value,config);
+        source.value=moveBlock(source.value,count,index,side);
+      }else if(Number.isInteger(from)&&event.dataTransfer.getData('application/x-layout-index')!==''){
+        source.value=moveBlock(source.value,from,index,side);
+      }
+      selectedIndex=index;
+      clearDropHints();refresh();
+      showToast(side==='left'||side==='right'?'Two-column layout updated':'Component moved');
+    });
+    handle.addEventListener('pointerdown',event=>{
+      event.preventDefault();event.stopPropagation();
+      const rect=wrapper.getBoundingClientRect();
+      resizing={index,startX:event.clientX,startWidth:blockWidth(items[index]),parentWidth:rect.width};
+      handle.setPointerCapture(event.pointerId);
+      wrapper.classList.add('resizing');
+    });
+    handle.addEventListener('pointermove',event=>{
+      if(!resizing||resizing.index!==index)return;
+      const width=Math.max(20,Math.min(100,resizing.startWidth+(event.clientX-resizing.startX)/resizing.parentWidth*100));
+      const snap=Math.round(width/5)*5;
+      img.style.width=snap+'%';
+      $('#neonWidthValue').textContent=snap+'%';
+      handle.dataset.width=String(snap);
+    });
+    const finish=event=>{
+      if(!resizing||resizing.index!==index)return;
+      const width=Number(handle.dataset.width)||resizing.startWidth;
+      resizing=null;
+      source.value=resizeBlock(source.value,index,width);
+      selectedIndex=index;refresh();showToast('Width: '+width+'%');
+    };
+    handle.addEventListener('pointerup',finish);
+    handle.addEventListener('pointercancel',finish);
+    wrapper.addEventListener('keydown',event=>{
+      if(!event.altKey)return;
+      if(event.key==='ArrowUp'||event.key==='ArrowDown'){
+        event.preventDefault();
+        const target=index+(event.key==='ArrowUp'?-1:1);
+        if(target>=0&&target<items.length){
+          source.value=moveBlock(source.value,index,target,event.key==='ArrowUp'?'before':'after');
+          selectedIndex=target;refresh();
+        }
+      }
+    });
+  });
+}
+function clearDropHints(){
+  rendered.querySelectorAll('.layout-component').forEach(el=>el.classList.remove('drop-left','drop-right','drop-before','drop-after','dragging'));
 }
 function refresh(){
   save();
@@ -67,7 +178,9 @@ function insertAtCursor(value){
 }
 function addNeon(){
   if(!component)return;
-  insertAtCursor(block(config));
+  source.value=appendBlock(source.value,config);
+  selectedIndex=blocksInOrder(readLayout(source.value)).length-1;
+  refresh();
   showToast('Neon Waveform added to README');
 }
 function applyChanges(){
@@ -76,6 +189,7 @@ function applyChanges(){
     align:$('#neonAlign').value,width:$('#neonWidth').value
   });
   $('#neonWidthValue').textContent=config.width+'%';
+  // Component width is per-item; the other controls retain their current global behavior.
   source.value=updateBlocks(source.value,config);
   refresh();
 }
@@ -141,6 +255,7 @@ function allowDrop(element){
     }
   });
   element.addEventListener('drop',e=>{
+    if(e.target.closest('.layout-component'))return;
     if(e.dataTransfer.getData('application/x-neon-wave')!=='neon-wave')return;
     e.preventDefault();
     if(element.id==='previewDropZone'){
@@ -198,6 +313,15 @@ function initEvents(){
   $('#repositoryInput').addEventListener('change',updateRepository);
   $('#repositoryInput').addEventListener('input',updateRepository);
   allowDrop(source);allowDrop($('#previewDropZone'));
+  $('#previewDropZone').addEventListener('dragover',e=>{if(e.dataTransfer.types.includes('application/x-layout-index'))e.preventDefault()});
+  $('#previewDropZone').addEventListener('drop',e=>{
+    if(e.target.closest('.layout-component'))return;
+    const index=Number(e.dataTransfer.getData('application/x-layout-index'));
+    if(e.dataTransfer.getData('application/x-layout-index')==='')return;
+    e.preventDefault();
+    const count=blocksInOrder(readLayout(source.value)).length;
+    if(count>1){source.value=moveBlock(source.value,index,count-1,'after');selectedIndex=count-1;refresh()}
+  });
 }
 async function init(){
   let stored;
