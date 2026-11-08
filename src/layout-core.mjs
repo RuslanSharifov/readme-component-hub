@@ -81,3 +81,18 @@ export function blockWidth(blockText){
 export function blockTheme(blockText){
   return String(blockText).includes('/light.gif')?'light':'dark';
 }
+
+export function resizeHeight(markdown,index,height){
+  const nodes=readLayout(markdown);
+  const loc=locate(nodes,index);
+  if(!loc)return markdown;
+  const px=Math.max(60,Math.min(480,Math.round(Number(height)/10)*10));
+  const original=nodes[loc.ni].items[loc.ci];
+  nodes[loc.ni].items[loc.ci]=original.replace(/(<img\b[^>]*?)\s+height="\d+"(?=[^>]*>)/,'$1')
+    .replace(/(<img\b[^>]*?)(\s*\/>)/,'$1 height="'+px+'"$2');
+  return serializeLayout(nodes);
+}
+export function blockHeight(blockText){
+  const match=String(blockText).match(/<img\b[^>]*height="(\d+)"/);
+  return match?Number(match[1]):null;
+}
