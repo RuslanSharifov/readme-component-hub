@@ -286,6 +286,7 @@ function drawLibrary(){
    '<div class="component-row"><strong>'+escapeHTML(component.title)+'</strong><small>GIF · LOOP</small></div>'+
    '<p>'+escapeHTML(component.description)+'</p>'+
    '<button type="button" id="addNeon" aria-label="Add Neon Waveform to README">+ Add to README</button></article>';
+  list.insertAdjacentHTML('beforeend','<article class="component-card language-library-card"><div class="component-art language-art"><span>◉</span><div><b>JavaScript</b><i style="width:72%"></i><b>CSS</b><i style="width:40%"></i></div></div><div class="component-row"><strong>Repository Languages</strong><small>LIVE · SVG</small></div><p>Animated donut, row and column charts with GitHub language percentages, hover and touch details.</p><a class="language-library-link" href="./languages.html">Customize component ↗</a></article>');
   $('#addNeon').addEventListener('click',addNeon);
   $('#neonLibraryCard').addEventListener('dragstart',e=>{
     e.dataTransfer.setData('application/x-neon-wave','neon-wave');
@@ -383,7 +384,7 @@ async function init(){
     if(!res.ok)throw new Error('Catalog HTTP '+res.status);
     const entries=await res.json();
     component=entries.find(item=>item.id==='neon-wave')||null;
-    $('#libraryCount').textContent=component?'01':'00';
+    $('#libraryCount').textContent=component?'02':'01';
     drawLibrary();
     const query=new URLSearchParams(location.search).get('component');
     if(query==='neon-wave'&&component){
